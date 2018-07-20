@@ -1,0 +1,133 @@
+<div class="modal modal-center fade" id="modal_pcap_list" tabindex="-1" role="dialog" aria-labelledby="my80sizeCenterModalLabel">
+  <div class="modal-dialog modal-lg modal-center" role="document">
+      <div class="modal-content modal-80size">
+          <div class="modal-header" style="background-color:#6ABDC1;">
+              <button type="button" onClick="pcapModalClose();" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span></button>
+              <h4 class="modal-title">pcap 목록</h4>
+          </div>
+          <div class="modal-body">
+              <table class="table table_1 table-hover table-striped" id="tblPcap" data-width="100%" data-toggle="table" data-striped="true"
+              data-pagination="true" data-page-size="100" data-page-list="[10, 20, 30, 50, 100]" data-locale="ko-KR"
+              data-show-columns="false" data-search="false" data-show-refresh="false" data-show-toggle="false"
+              data-show-export="false" data-smart-display="false"
+              data-click-to-select="true">
+              <thead>
+                  <tr>
+                      <th data-field="state" data-radio="true"></th>
+                      <th data-field="code" data-align="center" data-width="80">코드</th>
+                      <th data-field="category" data-align="center" data-width="150" data-formatter="fConvertCategory">카테고리</th>
+                      <th data-field="filename" data-align="left">파일명</th>
+                      <th data-field="comment" data-align="left">설명</th>
+                  </tr>
+              </thead>
+          </table>
+          </div>
+          <div class="modal-footer">
+              <button type="button" id="btnInBack" onclick="setBacktraffic();" class="col-sm-2 btn btn-success pull-right" style="display:none"><i class="fa fa-check"> 적용</i></button>
+              <button type="button" id="btnSelectInModal" onclick="selectPcap(tindex);" class="col-sm-2 btn btn-success pull-right"  style="display:none"><i class="fa fa-check"> pcap 선택</i></button>
+              <button type="button" id="btnUnselectInModal" onclick="unselectPcap(tindex);" class="col-sm-2 btn btn-danger pull-left"  style="display:none"> 선택된 pcap 지우기</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<script>  
+$(function () {
+    getPcapList();
+});
+
+function getPcapList() {
+    $.ajax({
+        url: '/api/settings/pcap',
+        method: 'get',
+        dataType: 'json',
+
+        beforeSend: function (xhr) {
+            $('#tblPcap').bootstrapTable("showLoading");
+        },
+        success: function (json) {
+
+            if (json.length > 0) {
+                var result = json[0].datas;
+
+                $('#tblPcap').bootstrapTable("load", result);
+                $('#tblPcap').bootstrapTable("hideLoading");
+            } else {
+                swal("Error", json.code, "error");
+            }
+        },
+        error: function (request, status, error) {
+            var msg = "code:" + request.status + "\n" + "error:" + error + "\n" + request.responseText;
+
+            swal("Error", msg, "error");
+        }
+    });
+}
+
+var tindex = ''; 
+function showPcapModal(openFrom,index){
+    switch(openFrom){
+        case 'BACK_DETECT':
+            $('#modal_pcap_list').modal();
+            $('#btnInBack').css('display','inline-block');
+        break;
+        case 'MODAL_DETECT':
+            $("input:checked").removeAttr("checked");
+            $('input[type=radio]').val('');
+            $('#modal_pcap_list').modal();  
+            tindex = index;
+
+            $('#btnSelectInModal').css('display','inline-block');
+            $('#btnUnselectInModal').css('display','inline-block');
+        break;
+    }
+}
+
+//설정할 때
+function setBacktraffic(){
+    var backtraffic = $('#tblPcap').bootstrapTable("getSelections");
+    $('input[name=backtraffic]').val(backtraffic[0].filename);
+    testingData.pcap_id = backtraffic[0].rowid;
+    pcapModalClose(); 
+}
+
+
+//모달에서
+function selectPcap(index) {            
+    if ($('input:radio').is(':checked')) {        
+        var selectedPcap = $('#tblPcap').bootstrapTable('getSelections');
+        var data = $('#tblRuleList').bootstrapTable('getData');
+        data[index].automake = 0;
+        data[index].pcap = selectedPcap[0].filename;     
+        data[index].pcapindex = selectedPcap[0].rowid;                      
+        $('#tblRuleList').bootstrapTable("load",data);
+
+        pcapModalClose();
+    } else {
+        swal('경고','선택한 pcap이 없습니다.','warning');
+        return false;
+    }
+
+    // pcapModalClose();
+}
+
+function unselectPcap(index) {        
+    var data = $('#tblRuleList').bootstrapTable('getData');
+    data[index].automake = 1;
+    data[index].pcap = '';     
+    data[index].pcapindex = 0;                      
+    $('#tblRuleList').bootstrapTable("load",data);
+
+    pcapModalClose(); 
+}    
+
+function pcapModalClose(){
+    $('#modal_pcap_list').modal('hide'); 
+    $('#btnInBack').css('display','none');
+    $('#btnSelectInModal').css('display','none');
+    $('#btnUnselectInModal').css('display','none');
+    
+    $('#modal_detect').css('overflow','scroll');   //pcap모달창을 끄면 scroll이 사라져서 강제 적용 
+}
+</script>

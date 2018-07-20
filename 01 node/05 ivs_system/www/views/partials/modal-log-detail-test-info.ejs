@@ -1,0 +1,92 @@
+<div class="modal fade" id="modal_log_detail_test_info">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form onsubmit="return false;">
+                <div class="modal-body">
+
+                    <div class="alert alert-info alert-dismissible">
+                        <button type="button" onClick="modalClose();" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>                    
+                        <h4><i class="icon fa fa-info-circle"></i> 수행 정보</h4>
+                        <span id='title_test'></span>검증 테스트 정보
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <div class="col-sm-2">
+                                <label for="test_code" class="pull-right">수행번호</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <p id="test_code">-</p>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <div class="col-sm-2">
+                                <label for="test" class="pull-right">종류</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <span id ='test' class='label label-default' style='background: #39cccc; color: white;'></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <div class="col-sm-2">
+                                <label for="type" class="pull-right">유형</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <span id ='type' class='label label-default' style='background:#f39c12; color: white;'></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <div class="col-sm-2">
+                                <label for="category" class="pull-right">카테고리</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <p id="category"></p>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <div class="col-sm-2">
+                                <label for="version" class="pull-right">버전</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <p id="version"> </p>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <div class="col-sm-2">
+                                <label for="backtraffic" class="pull-right">백 트래픽</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <span id ='backtraffic' class='label label-default' style='background:#3c8dbc; color: white;'></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <div class="col-sm-2">
+                                <label for="interval" class="pull-right">측정 시간</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <p id="interval">-</p>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <div class="col-sm-2">
+                                <label for="comment" class="pull-right">설명</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <p id="comment">-</p>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.modal-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>
+                </div>
+                <!-- /.modal-footer -->
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

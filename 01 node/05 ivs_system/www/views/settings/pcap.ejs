@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head') -%>
+</head>
+<style>
+
+</style>
+
+<body class="hold-transition skin-wins sidebar-mini fixed">
+    <div class="wrapper">
+
+        <%- include('../partials/main-header') -%>
+        <%- include('../partials/main-sidebar') -%>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper bg_w">
+            <!-- Content Header (Page header) -->
+
+            <section class="content-header content_border animated fadeInLeft">
+                    <h4>
+                       Pcap 관리
+                      <%# <small>Control panel</small> %>
+                    </h4>
+                    <ol class="breadcrumb">
+                      <li><a href="/"><i class="fa fa-home"></i> 홈</a></li>
+                      <li class="active">관리</li>
+                      <li class="active">Pcap 관리</li>
+                    </ol>
+            </section>
+            <section class="content">
+                <div class="row">
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12 ">
+                        <div class="box_1">
+                            <div class="box-body no-padding ">
+                                <div class="table-responsive mailbox-messages">
+                                    <div class="mailbox-controls pd_10" style="float:left;">
+                                        <button type="button" class="btn btn-default btn-sm" id="btnRefresh" title="새로고침" data-toggle="tooltip" data-container="body"><i class="fa fa-refresh"></i></button>
+                                        <button type="button" class="btn btn-default btn-sm" onclick="callModal()" title="업로드" data-toggle="tooltip" data-container="body"><i class="fa fa-upload"></i></button>
+                                    </div>
+                                    <table class="table table_1 table-hover table-striped" id="tblPcap" data-width="100%" data-toggle="table" data-striped="true"
+                                        data-pagination="true" data-page-size="100" data-page-list="[10, 20, 30, 50, 100]" data-locale="ko-KR"
+                                        data-show-columns="false" data-search="false" data-show-refresh="false" data-show-toggle="false"
+                                        data-show-export="false" data-smart-display="false">
+                                        <thead>
+                                            <tr>
+                                                <th data-field="code" data-align="center" data-width="80">코드</th>
+                                                <th data-field="category" data-align="center" data-width="150" data-formatter="fConvertCategory">카테고리</th>
+                                                <th data-field="filename" data-align="left">파일명</th>
+                                                <th data-field="comment" data-align="left">설명</th>
+                                                <th data-align="center" data-width="80" data-formatter="fPcapDownload">다운로드</th>
+                                                <th data-align="center" data-width="80" data-formatter="fPcapDelete">삭제</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- /.content-wrapper -->
+    </div>
+    <!-- ./wrapper -->
+
+    <%- include('../partials/foot') -%>
+    <%- include('../partials/modal-pcap-upload') -%>
+
+    <script>
+        $(function () {
+            $('#btnRefresh').click(GetPcapList);
+
+            GetPcapList();
+        });
+
+        function GetPcapList() {
+            $.ajax({
+                url: '/api/settings/pcap',
+                method: 'get',
+                dataType: 'json',
+
+                beforeSend: function (xhr) {
+                    $('#tblPcap').bootstrapTable("showLoading");
+                },
+                success: function (json) {
+
+                    if (json.length > 0) {
+                        var result = json[0].datas;
+
+                        $('#tblPcap').bootstrapTable("load", result);
+                        $('#tblPcap').bootstrapTable("hideLoading");
+                    } else {
+                        swal("Error", json.code, "error");
+                    }
+                },
+                error: function (request, status, error) {
+                    var msg = "code:" + request.status + "\n" + "error:" + error + "\n" + request.responseText;
+
+                    swal("Error", msg, "error");
+                }
+            });
+        }
+
+        // Pcap을 삭제한다.
+        function deletePcap(row) {
+
+            if(testStatus == 'NO_TEST'){
+
+                var url;
+                var param = JSON.parse(decodeURIComponent(row));
+
+                swal({
+                    title: 'Pcap 삭제',
+                    text: param.filename + ' (코드:' + param.code + ') 를 삭제합니다.',
+                    type: 'question',
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "삭제",
+                    showCancelButton: true,
+                    cancelButtonText: '취소'
+                }).then(function () {
+                    $.ajax({
+                        url: '/api/settings/pcap/delete',
+                        method: 'get',
+                        dataType: 'json',
+                        data: param,
+                        success: function (result) {
+                            GetPcapList();
+                        },
+                        error: function (request, status, error) {
+                            var msg = "code:" + request.status + "\n" + "error:" + error + "\n" + request.responseText;
+
+                            if (typeof swal !== 'undefined') {
+                                swal("Error", msg, "error");
+                            } else {
+                                alert(msg);
+                            }
+                            msg = null;
+                        }
+                    });
+                }, function (dismiss) {
+                    if (dismiss === 'cancel') {}
+                });
+
+            }else{
+                swal('경고','테스트 중에는 pcap 파일을 삭제할 수 없습니다.','warning');
+            }
+        }
+
+        function callModal() {
+            if(testStatus == 'NO_TEST'){
+                $('#modal_pcap_upload').modal();
+            }else{
+                swal('경고','테스트 중에는 pcap 파일을 업로드할 수 없습니다.','warning');
+            }
+        }
+
+        function uploadform(){
+            var form = $('#uploadform')[0];
+            var formData = new FormData(form);
+            var text = '기존 pcap 파일을 유지하고 업로드 하시겠습니까?';
+            if(formData.get('deleteAll') == "on"){
+                text = '기존 pcap 파일은 전부 삭제하고 업로드 하시겠습니까?';
+            }
+            swal({
+                title: 'Pcap 업로드',
+                text: text,
+                type: 'warning',
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "확인",
+                showCancelButton: true,
+                cancelButtonText: '취소'
+            }).then(function () {
+                $.ajax({
+                    url:'/api/settings/pcap/upload',
+                    type: 'post',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    enctype:"multipart/form-data",
+                    success:function(data){
+                        if(data.error == "err"){
+                            alert("tgz, pcap, cap 확장자 파일만 업로드 가능합니다.");
+                        }else if(data.err == "err1"){
+                            alert('shellCommand 실행 실패하였습니다.');
+                        }else{
+                            GetPcapList();
+                            $('#modal_pcap_upload').modal('hide');
+                        }
+                    },
+                    error:function(req,status,err){
+                    }
+                });
+            }, function (dismiss) {
+                if (dismiss === 'cancel') {}
+            });
+        }
+
+        function PcapDownload(filepath){
+            // var path = encodeURIComponent(row);
+            // window.location = '/api/settings/pcap/download/'+path;
+             
+            $.ajax({
+                url: '/api/settings/pcap/check_pcap_exist?filepath=' + encodeURIComponent(filepath),
+                method: 'get',
+                dataType: 'json',
+                success: function(json) {
+                    if(json == 'success'){
+                        window.location = '/api/settings/pcap/pcap_download?filepath=' + encodeURIComponent(filepath);
+                    }else{
+                        swal("Error", "pcap이 경로에 존재하지 않습니다.", "error");
+                    }
+                },
+                error: function(request, status, error) {
+                    swal("Error", "pcap 다운로드 중에 오류가 발생했습니다.", "error");
+                },
+            });
+        }
+
+        function checkFile(file){
+            var check = true;
+            var msg = '';
+            var a = file.files;
+            for (var i = 0; i < a.length; i++) {
+                if(!(/(.tgz|.pcap|.cap)$/i).test(a[i].name)){
+                    msg = 'tgz, pcap, cap 확장자 파일만 업로드 가능합니다.';
+                    check = false;
+                }
+                if(a.length > 1 && (/(.tgz)$/i).test(a[i].name)){
+                    msg = '압축파일은 하나만 업로드 가능합니다. ';
+                    check = false;
+                }
+            }
+
+            if(!check){
+                alert(msg);
+                $('#selectFile').val('');
+                return ;
+            }
+        }
+    </script>
+</body>
+
+</html>

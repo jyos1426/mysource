@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head') -%>
+</head>
+<style>  
+    .table-width-200 > .th-inner{
+            width: 200px;
+        } 
+    .table-width-100 > .th-inner{
+        width: 100px;
+    } 
+    .table-width-150 > .th-inner{
+        width: 150px;
+    } 
+    
+    #retestLoading {
+      border-radius: 30px;
+      padding: 10px;
+      background-color: white;
+      position:fixed;
+      top:40%;
+      left:50%;
+      z-index: 100;
+      box-shadow:3px 3px 10px 1px silver;
+    }
+</style>
+
+<body class="hold-transition skin-wins sidebar-mini fixed">
+    <div class="wrapper">
+        <%- include('../partials/main-header') -%>
+        <%- include('../partials/main-sidebar') -%>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper bg_w">
+            <!-- Form Element sizes -->
+            <section class="content-header content_border animated fadeInLeft">
+                <h4>
+                    탐지 검증 테스트
+                    <%# <small>Control panel</small> %>
+                </h4>
+                <ol class="breadcrumb">
+                    <li><a href="/"><i class="fa fa-home"></i> 홈</a></li>
+                    <li class="active">탐지 검증 테스트</li>
+                </ol>
+                </section>
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <!-- /.col -->
+                    <div class="col-md-12">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li id="liConfig" class="active">
+                                    <a href="#config" data-toggle="tab">검증 테스트 설정</a>
+                                </li>
+                                <li id="liDetectLog">
+                                    <a href="#detectLog" data-toggle="tab">로그</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="config">
+                                    <form action="javascript:void(0);" class="form-horizontal">                                        
+                                        <!-- Post -->
+                                        <div class="post clearfix">
+                                            <div class="user-block">
+                                                <img class="img-circle img-bordered-sm" src="/img/photo1.png" />
+                                                <span class="username">카테고리</span>
+                                                <span class="description">테스트 하고자 하는 정책의 카테고리를 선택합니다.
+                                                <li class="dropdown tasks-menu inline list-unstyled">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="fa fa-commenting-o">
+                                                        </i>
+                                                    </a>
+                                                    <div class="dropdown-content-des box">
+                                                        <ul class="list-unstyled">
+                                                            <li>테스트는 카테고리 단위로 설정할 수 있습니다.</li><br/>
+                                                            <li>카테고리는 SNIPER 장비에 설정된 카테고리 목록에 따라 변경됩니다.</li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </span>
+                                            </div>
+                                            <!-- /.user-block -->
+                                            <div class="form-group margin-bottom-none">
+                                                <div class="col-sm-12">
+                                                    <select name="category" class="form-control input-sm">
+                                                <!--
+                                                <option value="1300">Web CGI</option>
+                                                <option value="1100">PTBLK</option>
+                                                <option value="2402">REGEX</option>
+                                                <option value="1301">WEBCGI_U</option>
+                                                <option value="1500">PTBLK_U</option> -->
+                                                <option value="2400">RegEx</option>
+                                                <option value="2401">RegEx (사용자정의)</option>
+                                                <option value="2402">RegEx(배포룰)</option>
+                                                </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.post -->
+
+                                        <!-- Post -->
+                                        <div class="post clearfix">
+                                            <div class="user-block">
+                                                <img class="img-circle img-bordered-sm" src="/img/33.jpg" />
+                                                <span class="username"> 백 트래픽</span>
+                                                <span class="description">탐지 패킷과 함께 인가할 트래픽을 선택합니다.
+                                                <li class="dropdown tasks-menu list-unstyled inline">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="fa fa-commenting-o"></i>
+                                                    </a>
+                                                    <div class="dropdown-content-des inline box">
+                                                        <ul class="list-unstyled">
+                                                            <li><strong>generator</strong>
+                                                                <br/>
+                                                                [트래핏 생성기]에 등록한 트래픽 인가를 설정합니다.
+                                                            </li>
+                                                            <br/>
+                                                            <li><strong>Pcap</strong>
+                                                                <br/>
+                                                                　Pcap 리스트에 등록된 또는 Local PC에서 Pcap파일을 로드 해
+                                                                Pcap 리스트에 등록 후 합니다.
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </span>
+                                            </div>
+                                            <!-- /.user-block -->
+                                            <div class="form-group margin-bottom-none">
+                                                <div class="col-sm-9">
+                                                    <input name="backtraffic" class="form-control input-sm" readonly="true">
+                                                </div>                                             
+                                                <div class="col-sm-1">
+                                                    <input
+                                                        type="checkbox"
+                                                        id="chkNoUse" 
+                                                        checked data-toggle="toggle" 
+                                                        data-on="미사용" 
+                                                        data-off="사용" 
+                                                        data-onstyle="danger"
+                                                        data-size="small" >
+                                                </div>                                                
+                                                <div class="col-sm-2">
+                                                    <button name="btnPcapTraffic" onclick="showPcapModal('BACK_DETECT');" class="btn btn-success pull-right btn-block btn-sm" disabled>Pcap 선택</button>
+                                                </div>   
+                                            </div>
+                                        </div>
+                                        <!-- /.post -->
+
+                                        <!-- Post -->
+                                        <div class="post clearfix">
+                                            <div class="user-block">
+                                                <img class="img-circle img-bordered-sm" src="/img/time.jpg" />
+                                                <span class="username">측정 시간</span>
+                                                <span class="description">1개의 룰을 탐지하는데 소요되는 시간 입니다.
+                                                <li class="dropdown tasks-menu list-unstyled inline">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="fa fa-commenting-o"></i>
+                                                    </a>
+                                                    <div class="dropdown-content-des box">
+                                                        <ul class="list-unstyled">
+                                                            <li>범위는 <strong>5 ~ 10초</strong> 입니다.</li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </span>
+                                            </div>
+                                            <!-- /.user-block -->
+                                            <div class="form-group margin-bottom-none">
+                                                <div class="col-sm-12">
+                                                    <input type="number" name="interval" class="form-control input-sm" value="5" min="5" max="600" placeholder="Response">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.post -->
+
+                                        <!-- Post -->
+                                        <div class="post clearfix">
+                                            <div class="user-block">
+                                                <img class="img-circle img-bordered-sm" src="/img/photo2.png">
+                                                <span class="username">검증 유형
+                                            </span>
+                                                <span class="description">추가 정책등록 여부를 결정합니다.
+                                                <li class="dropdown tasks-menu list-unstyled inline">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="fa fa-commenting-o"></i>
+                                                    </a>
+                                                    <div class="dropdown-content-des box">
+                                                        <ul class="list-unstyled">
+                                                            <li><strong>그룹 테스트</strong></br>
+                                                            　설정한 룰 전체를 [탐지]로 설정 후 1개 패킷을 인가 했을 때 탐지여부를 확인합니다.</li><br/>
+                                                            <li><strong> 테스트</strong></br>
+                                                            　검증하고자 하는 정책만 [탐지]로 설정 후 해당 정책의 검증 패킷을 인가 했을 때 탐지여부를 확인합니다.</li><br/>
+                                                            </ul>
+                                                    </div>
+                                                </li>
+                                            </span>
+                                            </div>
+                                            <!-- /.user-block -->
+                                            <!-- <div class="form-group margin-bottom-none"> -->
+                                            <div class="col-sm-2">
+                                                <input type="radio" name="type" value="1" checked> 그룹 테스트
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <input type="radio" name="type" value="2"> 유닛 테스트
+                                            </div>
+                                            <!-- </div> -->
+                                        </div>
+                                        <!-- /.post -->
+
+                                        <!-- Post -->
+                                        <div class="post clearfix">
+                                            <button type="button" id="btnStartTest" onclick="startTest();" style="width:200px" class="btn btn-danger col-sm-4 margin">테스트 시작</button>
+                                            <button type="button" id="btnStopTest" onclick="stopTest();" style="width:200px; display:none" class="btn btn-default col-sm-4 margin">테스트 초기화</button>         
+                                            <span id="spanNotify" class="col-sm-4 margin" style="color:red; margin-top: 19px;"></span>
+                                        </div>
+                                        <!-- /.post -->
+                                    </form>
+                                </div>                                
+                                <!-- /.tab-pane_1 -->
+                                <div class="tab-pane box" style="border:none;" id="detectLog">
+                                    <div class="" id="toolbar">
+                                    <div class="btn-group pull-left">
+                                            <div class="input-group input-group-md" style="width: 170px;  margin-right: 5px;">
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-flat" id="btnPrev" title="이전" data-toggle="tooltip" data-container="body"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                                                </div>
+                                                <input type="text" class="form-control datepicker" id="date" style="text-align:center;">
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-flat" id="btnNext" title="다음" data-toggle="tooltip" data-container="body"><i class="glyphicon glyphicon-chevron-right"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!-- <button type="button" class="btn btn-default btn-sm" onclick="refreshLog();" title="새로고침" data-toggle="tooltip" data-container="body"><i class="fa fa-refresh"></i></button> -->
+                                        <!-- /.btn-group -->
+                                    </div>                                           
+                                    <div class="table-responsive mailbox-messages">
+                                            <table class="table table_1 table-hover table-striped"
+                                            id="tblDetectLog"
+                                            data-width="100%"
+                                            data-toolbar="#toolbar"
+                                            data-toggle="table"
+                                            data-striped="true"
+                                            data-pagination ="true"
+                                            data-page-size="100"
+                                            data-page-list="[10, 20, 30, 50, 100, 500, 1000]"
+                                            data-locale="ko-KR"
+                                            data-search="true"
+                                            data-filter-control="true"
+                                            data-filter-show-clear="true"
+                                            data-show-refresh="true"
+                                            data-show-toggle="true"
+                                            data-show-columns="true"
+                                            data-search-align="left"
+                                            data-buttons-align="left"
+                                            data-icon-size="btn-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th data-field="test_code"
+                                                        data-align="center"
+                                                        data-valign="middle"
+                                                        class="table-width-200"
+                                                        data-filter-type="input">수행번호</th>                                                          
+                                                    <th data-field="type"
+                                                        data-align="center"
+                                                        data-formatter="fConvertDetectType"
+                                                        data-valign="middle"
+                                                        class="table-width-100"
+                                                        data-filter-type="select">유형</th>                                                        
+                                                    <th data-field="category"
+                                                        data-align="center"
+                                                        data-width="150"
+                                                        data-formatter="fConvertCategory"
+                                                        data-valign="middle"
+                                                        class="table-width-150"
+                                                        data-filter-type="select">카테고리</th>                                                 
+                                                    <th data-field="version"
+                                                        data-align="center"
+                                                        data-valign="middle"
+                                                        class="table-width-150"
+                                                        data-filter-type="select">버전</th>
+                                                    <th data-field="backtraffic"
+                                                        data-align="center"
+                                                        data-formatter="fConvertDetectBacktraffic"
+                                                        data-valign="middle">백트래픽</th>
+                                                    <th data-field="backtraffic_dir"
+                                                        data-align="center"
+                                                        data-valign="middle">테스트 pcap 경로</th>
+                                                    <th data-field="interval"
+                                                        data-align="center"
+                                                        data-valign="middle"
+                                                        data-filter-control="input">측정 시간</th>
+                                                    <th data-field="comment"
+                                                        data-align="left"
+                                                        data-formatter="fConvertNull"
+                                                        data-valign="middle"
+                                                        data-filter-control="input">설명</th>   
+                                                    <th data-field="save"
+                                                        data-field="button"
+                                                        data-align="center"
+                                                        data-formatter="fTestApplyButton"
+                                                        data-valign="middle">설정 재적용</th>                                                   
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="overlay" id="overlay-detect-log">
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                    </div>
+                                </div>
+                                <!-- /.tab-pane_2 -->                                
+                            </div>
+                            <!-- /.tab-content -->
+
+                        </div>
+                        <!-- /.nav-tabs-custom -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <div id="retestLoading" style="display:none;"><i class="fa fa-spinner fa-spin"></i> 테스트 재적용 중 입니다... </div>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+    </div>
+    <!-- ./wrapper -->
+    <%- include('../partials/modal-detect') -%>
+    <%- include('../partials/modal-pcap-list') -%>
+    <%- include('../partials/foot') -%>
+    <script>
+
+        var $spanNotify = $('#spanNotify');
+        var $btnStopTest = $('#btnStopTest');
+        var $btnStartTest = $('#btnStartTest');
+
+        //setting buttons over table
+        $('#date').datepicker({
+            format: 'yyyy.mm.dd',
+            todayBtn: true,
+            todayHighlight: true
+        });
+        $('#date').datepicker('update', moment().format('YYYY.MM.DD'));
+        
+        $('#date').on('change', function() {
+            ivsGetDetectList();
+        });
+        $('#btnPrev').click(function() {
+            var datetime = moment($('#date').val(), 'YYYY.MM.DD').add(-1, 'day');
+            $('#date').datepicker('update', datetime.format('YYYY.MM.DD'));
+            ivsGetDetectList();
+        });
+        $('#btnNext').click(function() {
+            var datetime = moment($('#date').val(), 'YYYY.MM.DD').add(1, 'day');
+            $('#date').datepicker('update', datetime.format('YYYY.MM.DD'));
+            ivsGetDetectList();
+        });
+
+        $(function () {
+            ivsGetDetectList();
+            checkIVSstatus();          
+        });    
+
+
+        function checkIVSstatus() {
+            $.ajax({
+                url: '/api/dashboards/dashboard/ivs_testing_check',
+                method: 'get',
+                dataType: 'json',
+                success: function (json) {
+                    
+                    if(json.length > 0 ) {                        
+                        testStatus = json[0].datas[0].test_status;
+                        if (testStatus == 'NO_TEST') {
+
+                        } else if (json[2].datas[0].test == 1){
+                            $btnStopTest.css('display', 'block');
+
+                            testingData.ip = json[1].datas[0].dut_ip;
+                            testingData.port = json[1].datas[0].dut_port;
+                            testingData.category = json[2].datas[0].category;
+                            testingData.type = json[2].datas[0].type;
+                            testingData.pcap_id = json[2].datas[0].pcap_idx;
+                            testingData.interval = json[2].datas[0].interval;
+                            testingData.testcode = json[3].datas[0].testcode;
+                            testingData.dbpath = json[3].datas[0].rule_path;
+                            testingData.dbname = json[3].datas[0].rule_name;
+
+                            if(json[4].datas[0].reload == 1){
+                                testingData.retest = true;
+                            }
+
+                            $('select[name=category]').val(testingData.category);
+                            $('input[name=interval]').val(testingData.interval);
+                            if(testingData.pcap_id != 0){
+                                $('#chkNoUse').bootstrapToggle('off');
+                                getPcapPath(testingData.pcap_id);                             
+                            }
+                            $('input[name=type]:input[value=' + testingData.type + ']').attr("checked",true);                            
+
+                            disabledForm();
+                            if (testStatus == 'TEST_RUN') {
+                                $spanNotify.text('진행 중인 테스트가 있습니다.');
+                                $btnStartTest.text('테스트 이어서 진행');
+                                $btnStopTest.text('테스트 중지');                                
+                            } else if (testStatus == 'TEST_END') {
+                                $spanNotify.text('저장하지 않은 테스트가 있습니다.');
+                                $btnStartTest.text('테스트 결과 확인 및 저장');
+                                $btnStopTest.text('테스트 종료');
+                            } else{
+                                $spanNotify.text('이미 세팅된 테스트가 존재합니다.');
+                                $btnStartTest.text('테스트 이어서 진행');
+                            }
+                        }else {
+                        //테스트 진행중인데 탐지테스트는 아닐 때
+                            disabledForm();
+                            $btnStartTest.prop('disabled',true);
+                            $spanNotify.text('진행 중인 다른 테스트가 있습니다.');
+                        }
+                    }
+                },
+                error: function (request, status, error) {
+                }
+            });
+        }
+
+        function startTest(){
+        //테스트 상태 확인 후에만 모달창열 수있게함 - 아무것도 없는 창 뜨는 것 방지
+        if(testStatus != ''){
+            //센서에 연결된 상태인지 확인
+            if ('<%=session.isConnected%>' == 'true') {
+                testingData.ip = '<%= session.ip %>';
+                testingData.port = '<%= session.port %>';
+                testingData.category = $('select[name=category]').val();
+                testingData.type = $('input[name=type]:checked').val();
+                testingData.interval = $('input[name=interval]').val();
+                
+                //백트래픽 유효성검사     
+                var pcap_dir = $('input[name=backtraffic]').val();           
+                if( $('#chkNoUse').prop('checked') == false){
+                    if(pcap_dir == ''){
+                        swal('백 트래픽이 사용 상태입니다','백 트래픽을 입력해 주세요.','warning');
+                    }else{
+                        testingData.pcap_dir = pcap_dir;
+                        startModal();                    
+                    }
+                }else{
+                    testingData.pcap_id = 0;
+                    startModal();
+                }
+            } else {
+                swal("Warning", "센서와 연결이 필요합니다.", "error");
+            }
+            }
+        }
+        
+        // 측정시간 숫자 입력 범위 제한
+        $('input[name=interval]').bind('focusout', function () {
+            var result = $('input[name=interval]').val();
+            if (result > 10) {
+                $('input[name=interval]').val(10);
+            } else if (result < 5) {
+                $('input[name=interval]').val(5);
+            }
+        });
+
+
+        var tmpPcapDir = '';
+        // 백 트래픽 미사용 체크박스
+        $('#chkNoUse').change(function () {
+            if (this.checked) {
+                $('button[name=btnPcapTraffic]').prop('disabled', true);
+                tmpPcapDir = $('input[name=backtraffic]').val();
+                $('input[name=backtraffic]').val('');
+            } else {
+                $('button[name=btnPcapTraffic]').prop('disabled', false);
+                $('input[name=backtraffic]').val(tmpPcapDir);
+            }
+        });
+
+        // 테스트 셋팅, 진행, 완료 상태일 때 입력폼 제한
+        function disabledForm() {
+            $('select[name=category]').prop('disabled', true);
+            $('#chkNoUse').prop('disabled', true);
+            $('button[name=btnPcapTraffic]').prop('disabled', true);
+            $('input[name=interval]').prop('disabled', true);
+            $('input[name=type]').prop('disabled', true);
+        }        
+
+        // ============================================================================
+        function ivsGetDetectList() {
+            var param = {
+                date: $('#date').val(),
+            }
+
+            $.ajax({
+                url: '/api/detects/detect/ivs_get_detect_list',           
+                method: 'get',
+                data: param,
+                dataType: 'json',
+
+                beforeSend: function (xhr) {
+                    $('#tblDetectLog').bootstrapTable("showLoading");
+                    $('#overlay-detect-log').show();
+                },
+                success: function (json) {
+                    if (json.length > 0) {
+                        var result = json[0].datas;            
+                        $('#tblDetectLog').bootstrapTable("load", result);
+                    }
+                        $('#tblDetectLog').bootstrapTable("hideLoading");
+                        $('#overlay-detect-log').hide();
+                },
+                error: function (request, status, error) {
+                    var msg = "code:" + request.status + "\n" + "error:" + error + "\n" + request.responseText;
+
+                    swal("Error", msg, "error");
+                }
+            });
+        }
+
+        function getPcapPath (row_id){            
+            var param = {
+                rowid: row_id,
+            }
+            
+            $.ajax({
+                url: '/api/settings/pcap/get_pcap_path',           
+                method: 'get',
+                data: param,
+                dataType: 'json',
+                success: function (json) {
+                    if (json.length > 0) {
+                        var result = json[0].datas;           
+                        if(result.length > 0 ){
+                            $('input[name=backtraffic]').val(result[0].filename);    
+                        }else{
+                            $('input[name=backtraffic]').val('pcap 리스트에 해당 pcap 없음');     
+                        } 
+                    }
+                },
+                error: function (request, status, error) {
+                    $('input[name=backtraffic]').val('pcap 경로를 불러오는 중 오류가 발생했습니다.');     
+                }
+            });
+
+        }
+
+        
+        function setRetest( testcode, category, backtraffic, interval, type, pcap_dir ){     
+            
+            if (testStatus == 'NO_TEST') {    
+                $('#retestLoading').css('display','inline-block');   
+                             
+                var param = {
+                    testcode: testcode,
+                };
+
+                $.ajax({
+                    url: '/api/detects/detect/ivs_test_reload',
+                    method: 'get',
+                    data: param,
+                    dataType: 'json',
+                    beforeSend: function(xhr) {
+                    },
+                    success: function(json) {
+                        if(json.test_status == 'NO_TEST'){  
+                            swal("Error", "테스트 세팅 중 알 수 없는 오류가 발생하였습니다.", "error")
+                            .then(function(){
+                                $('#retestLoading').css('display','none');
+                            });         
+                        }else if(json.status == 'err'){
+                            swal("Error", "테스트 세팅 중 오류가 발생하여<br>"+
+                                            "테스트를 초기화 합니다. <br><br><span style='font-size:14px'> 오류내용: " + json.result + "</span>", "error")
+                            .then(function(){
+                                ivsClear();
+                            });
+                        }else if(json.status == 'success'){   
+                            testingData.testcode    = json.result.testcode;
+                            testingData.dbpath      = json.result.dbpath;
+                            testingData.dbname      = json.result.dbname;
+                            testingData.category    = category;
+                            testingData.backtraffic = backtraffic;
+                            testingData.interval    = interval;
+                            testingData.type        = type;
+                            testingData.pcap_dir    = pcap_dir;
+                            testingData.retest      = true;
+        
+                            $('span[name=dbpath]').text(testingData.dbpath+'/'+testingData.dbname);
+                            $('span[name=testcode]').text(testingData.testcode);
+                            
+                            testStatus = "TEST_UPDATE_DONE";
+                            $('#retestLoading').css('display','none');
+                            startModal();
+                            
+                            disabledForm();
+                            $btnStartTest.prop('disabled',true);
+
+                        }else{
+                            var msg = "테스트 세팅 중 오류가 발생하였습니다.";
+                            swal("Error", msg, "error")
+                            .then(function(){
+                                ivsClear();
+                            });
+                        }                        
+                        $("#config").addClass("active");
+                        $("#liConfig").addClass("active");
+                        $("#detectLog").removeClass("active");
+                        $("#liDetectLog").removeClass("active");  
+                    },
+                    error: function(request, status, error) {
+                        var msg = "테스트 세팅 중 오류가 발생하였습니다.";
+                        swal("Error", msg, "error")
+                        .then(function(){
+                            ivsClear()
+                        });
+                    },
+                });
+
+            } else { 
+                swal("진행 중인 테스트가 있습니다.","기존의 테스트를 종료하고 실행해 주세요.","warning");
+            }
+        }
+
+        // function refreshLog(){
+        //     ivsGetDetectList();
+        // }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SNIPER IVS</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <%# CORE JS %>
+    <!-- PACE -->
+    <script src="/components/pace/pace.min.js"></script>
+    <link href="/components/pace/themes/red/pace-theme-minimal.css" rel="stylesheet" />
+    <!-- jQuery 2.2.3 -->
+    <script src="/components/jquery/jquery-2.2.3.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="/components/jQueryUI/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="/components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css"> -->
+
+    <!-- AdminLTE App Options -->
+    <script src="/js/app.options.js"></script>
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/css/template.css">
+    <link rel="stylesheet" href="/css/skin-wins.css">
+    <link rel="stylesheet" href="/css/app.css">
+
+    <!-- Sweetalert2 -->
+    <%#
+    <script src="/components/es6-promise/es6-promise.min.js"></script> <!-- for IE support -->
+    <!-- <script src="https://cdn.jsdelivr.net/es6-promise/latest/es6-promise.min.js"></script> -->
+    %>
+    <script src="/components/es6-promise/es6-promise.v3.1.2.min.js"></script> <!-- for IE support -->
+    <link rel="stylesheet" type="text/css" href="/components/sweetalert2/dist/sweetalert2.min.css">
+    <script src="/components/sweetalert2/dist/sweetalert2.min.js"></script> 
+   
+
+    <%# ./CORE JS %>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/components/ionicons/css/ionicons.min.css">
+    <!-- WINS KOSIGN FONT -->
+    <link rel="stylesheet" href="/winsCbibFont/style.css">
+
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/components/iCheck/flat/blue.css">
+    <!-- Morris chart -->
+    <link rel="stylesheet" href="/components/morris/morris.css">
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="/components/jvectormap/jquery-jvectormap-1.2.2.css">
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="/components/datepicker/datepicker3.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="/components/daterangepicker/daterangepicker.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="/components/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="/components/html5shiv/html5shiv.min.js"></script>
+    <script src="/components/respond/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="/components/jstree-bootstrap/dist/themes/proton/style.min.css" />
+    <link rel="stylesheet" href="/components/bootstrap-table/dist/bootstrap-table.min.css">
+
+    <!-- Bootstrap Progress bar -->
+    <link rel="stylesheet" href="/components/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="/components/animate/css/animate.css">
+    <!-- Select2.css -->
+    <link rel="stylesheet" href="/components/select2/select2.min.css">
+
+    <!-- Bootstrap-treeview-1.2.0 -->
+    <script src="/components/bootstrap-treeview-1.2.0/dist/bootstrap-treeview.min.js"></script>
+    <link rel="stylesheet" href="/components/bootstrap-treeview-1.2.0/dist/bootstrap-treeview.min.css">
+
+    <!-- FLOT CHARTS -->
+    <script src="/components/flot/jquery.flot.min.js"></script>
+    <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+    <script src="/components/flot/jquery.flot.resize.min.js"></script>
+    <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+    <script src="/components/flot/jquery.flot.pie.min.js"></script>
+    <!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+    <script src="/components/flot/jquery.flot.categories.min.js"></script>
+
+    <link rel="stylesheet" href="/components/bootstrap-toggle-master/css/bootstrap-toggle.min.css">
+
+    <script src="/components/form/jquery.form.js"></script>
+
+    <style>
+        /*
+         * Progress bar 관련 추가 색상
+         */
+        .progress-bar-white {
+          background-color: #ffffff;
+        }
+
+        .progress-striped .progress-bar-white {
+          background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+          background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+          background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+        }
+
+    </style>
+
+  <%#
+  <!-- Sticky Sidebar footer -->
+  <style>
+  		.sidebar-footer {
+		    background-color:#1E282C;
+			bottom:0;
+		  	position:fixed;
+		    width:230px;
+		    height:51px;
+		    color:#ffffff;
+		    /*font-size:8pt;*/
+		    /*font-size:8pt;*/
+		}
+
+  		.footer-text {
+			position: absolute;
+  			top: 50%;
+  			transform: translateY(-50%);
+    		width: 100%;
+    		text-align: center;
+    		/*border: 1px dashed deeppink;	*/
+		}
+
+		/*
+		 * Component: Sidebar Mini
+		 */
+		 @media (max-height: 450px) {
+			.sidebar-footer {
+				/*display: none !important;
+                -webkit-transform: translateZ(0);*/
+                position: absolute;
+                bottom: 0;
+			}
+		}
+
+		@media (min-width: 768px) {
+			.sidebar-mini.sidebar-collapse .sidebar-footer {
+				display: none !important;
+                -webkit-transform: translateZ(0);
+			}
+		}
+  </style>
+  %>
