@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="200dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_inputs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <com.my.taxipool.view.InputCustomView
+            android:id="@+id/view_spot_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:leftLabel="출발지"
+            app:rightColor="@color/colorPink"
+            app:rightLabel="출발지를 지정해주세요" />
+
+        <com.my.taxipool.view.InputCustomView
+            android:id="@+id/view_spot_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:leftLabel="도착지"
+            app:rightColor="@color/colorPink"
+            app:rightLabel="도착지를 지정해주세요" />
+
+        <RelativeLayout
+            android:id="@+id/layout_input_showmap"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:visibility="gone"
+            android:background="#f2f2f2">
+
+            <include layout="@layout/view_line" />
+            <ImageView
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_toLeftOf="@+id/tv_mapview"
+                android:padding="3dp"
+                android:src="@drawable/ic_place_gray_24dp" />
+
+            <TextView
+                android:id="@+id/tv_mapview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:text="지도보기"
+
+                android:textSize="10sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/lightGray"
+                android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
+
+
+        <com.my.taxipool.view.InputCustomView
+            android:id="@+id/view_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:leftLabel="출발시간"
+            app:rightColor="@color/colorPink"
+            app:rightLabel="출발시간을 지정해주세요" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:text="탑승 인원"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+
+            <Spinner
+                android:id="@+id/home_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:entries="@array/spinner_item" />
+        </LinearLayout>
+
+        <include layout="@layout/view_line"></include>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:background="#ffffffff"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:text="결제 방법"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_bill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="현금   "
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/radio_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="포인트   "
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/radio_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="무관"
+                    android:textSize="14sp"
+                    android:checked="true"
+                    />
+            </RadioGroup>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/selector_drawable_click"
+                android:text="방 검색하기"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+<configuration>
+	<typeAliases>
+	  <typeAlias alias="Customer" type="com.my.vo.Customer"/>
+	  <typeAlias alias="Product" type="com.my.vo.Product"/>
+	  <typeAlias alias="OrderInfo" type="com.my.vo.OrderInfo"/>
+	  <typeAlias alias="OrderLine" type="com.my.vo.OrderLine"/>
+	  <typeAlias alias="RepBoard" type="com.my.vo.RepBoard"/>
+	</typeAliases> <!-- Type Alias Setting -->
+		
+	 <mappers>
+	   <mapper resource="CustomerDAOMapper.xml"/>
+	   <mapper resource="ProductDAOMapper.xml"/>
+	   <mapper resource="OrderDAOMapper.xml"/>
+	   <mapper resource="BoardDAOMapper.xml"/>
+	 </mappers>  <!-- Mapper.xml파일 Mapping -->
+</configuration>

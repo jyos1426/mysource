@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="0dp"
+    android:background="@drawable/message_border">
+    <TextView
+        android:id="@+id/sendUserNickTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="보낸 사람 :"
+        android:textColor="@color/black"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/sendUserNickContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/sendUserNickTitle"
+        android:textColor="@color/black"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/receiveMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sendUserNickTitle"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="@color/black"
+        android:textSize="12dp"/>
+    <TextView
+        android:id="@+id/replyButton"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:layout_toLeftOf="@+id/deleteButton"
+        android:layout_below="@+id/receiveMessage"
+        android:background="@drawable/message_border"
+        android:text="답장하기"
+        android:textColor="@color/black"
+        android:textSize="10dp"
+        android:layout_alignBottom="@+id/deleteButton" />
+    <TextView
+        android:id="@+id/deleteButton"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/message_border"
+        android:gravity="center"
+        android:text="삭제하기"
+        android:textColor="@color/black"
+        android:layout_below="@+id/receiveMessage"
+        android:textSize="10dp"/>
+
+</RelativeLayout>

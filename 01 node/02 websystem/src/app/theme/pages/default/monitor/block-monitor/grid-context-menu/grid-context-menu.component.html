@@ -1,0 +1,12 @@
+<kendo-popup *ngIf="show" [offset]="offset">
+  <ul class="menu">
+    <li *ngFor="let item of menuItems" (click)="menuItemSelected(item)">
+      <ng-template *ngIf="menuItemTemplate" [ngTemplateOutlet]="menuItemTemplate"
+          [ngOutletContext]="{ item: item, dataItem: dataItem }">
+      </ng-template>
+      <ng-container *ngIf="!menuItemTemplate">
+          {{ item }}
+      </ng-container>
+    </li>
+  </ul>
+</kendo-popup>

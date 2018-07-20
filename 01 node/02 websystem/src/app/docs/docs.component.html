@@ -1,0 +1,116 @@
+<div [ngClass]="'content'">
+	<div [ngClass]="'aside'">		
+		&nbsp;Contents		
+		<hr>
+		<ul>
+			<li *ngFor="let data of getMajerList(); let i = index">
+				<a (click)="gotoHashtag(data.name)">{{data.name}} ({{data.count}})</a>
+			</li>
+		</ul>
+	</div>
+	<div [ngClass]="'section'"  id="print-section">
+		<h1>SWF API Document</h1>
+		<p>Version: 1.0.0.0</p>
+		<button class="btn btn-info m-btn m-btn--air print-hidden" (click)="print()" title="PDF 출력">
+		PDF 출력
+		</button>
+		<div *ngFor="let data of jsonData; let i = index">		
+			<hr [hidden]=" i == 0 ? false : jsonData[i-1].major == data.major">
+			<table [ngClass]="['data-box','a4']">
+				<span [ngClass]="'data-title'" id={{data.major}}>&#9642; {{data.major}} > {{data.minor}} {{data.name == '' || data.name == undefined ? '' : '> ' + data.name }}</span><span [ngClass]="'data-added-version'">Added in v{{data.added == undefined ? '1.0.0.0' : data.added}}</span>			
+				<p [ngClass]="'data-history'"><button (click)="toggleHistory(data.index)" >{{data.isShowHistory ? "&#9652;" : "&#9662;"}} History</button></p>			
+				<table [ngClass]="'history-box'" *ngIf="data.isShowHistory">
+					<thead><tr><td>버전</td><td>수정이력</td></tr></thead>
+					<tbody>
+						<tr *ngIf="data.history == undefined || data.history.length == 0">
+							<td>v{{data.added == undefined ? '1.0.0.0' : data.added}}</td>
+							<td>Added</td>
+						</tr>
+						<tr *ngFor="let key of data.history;">
+							<td>v{{key.ver}}</td>
+							<td>{{key.desc}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<tr [ngClass]="'data-empty-row'"><td></td><td></td></tr>
+				<tr><td [ngClass]="'col-header'"> REST API</td><td [ngClass]="'col-value'"><span [ngClass]="'col-restapi'" [innerHTML]="getRestApiTag(data)"></span></td></tr>
+				<tr *ngIf="data.subUrl"><td [ngClass]="'col-header'"></td><td [ngClass]="'col-value'">
+					<ul *ngFor="let url of getSubUrl(data.subUrl);">
+						<li>{{url}}: {{data.subUrl[url]}}</li>
+					</ul>
+				</td></tr>
+				<tr><td [ngClass]="'col-header'"> Response Type</td><td [ngClass]="'col-value'">JSON</td></tr>	
+				<tr><td [ngClass]="'col-header'"> Method</td><td [ngClass]="'col-value'"><span [ngClass]="getMethodClass(data.method)">{{data.method}}</span></td></tr>	
+				<tr><td [ngClass]="'col-header'"> Support Engine Version</td><td [ngClass]="'col-value'">{{data.engine_ver}}</td></tr>	
+				<tr><td [ngClass]="'col-header'"> Description</td><td [ngClass]="'col-value'" [innerHTML]="data.desc"></td></tr>			
+				<tr *ngIf="data.parameters != undefined">
+					<td [ngClass]="'col-header'"><div [ngClass]="'help-parameter'">URL Parameters<pre [ngClass]="'tooltiptext'">ex) ?key1=value&key2=value</pre></div></td>						
+					<td [ngClass]="'col-value'">
+						<table [ngClass]="'param-box'" border="1">
+							<thead><tr><td>Key</td><td *ngIf="isExistDependencies(data, 'parameters')">Dependencies</td><td>Value</td><td>Description</td></tr></thead>
+							<tbody>
+								<tr *ngFor="let key of getObjectKeysByName(data.restAPI, data.method, 'parameters'); let j = index">
+									<td>
+										<span *ngIf="data.parameters[key].required" [ngClass]="'key-required'">required</span>{{key}}
+									</td>								
+									<td *ngIf="isExistDependencies(data, 'parameters')">
+										<table [ngClass]="'dependencies-box'">																				
+											<tr *ngFor="let dKey of getDependencyKeys(data.restAPI, key, data.method, 'parameters'); let k = index" [style.height]="'20px'">
+												<td [style.background-color]="'#ddd'" [style.padding]="5">{{dKey}}</td><td [style.padding]="5">{{data.parameters[key].dependencies[dKey]}}</td>
+											</tr>	
+										</table>
+									</td>
+									<td>
+										<span [innerHTML]="getParameterValues(data.parameters[key])"></span>
+									</td>
+									<td>
+										<span [innerHTML]="data.parameters[key].desc"></span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr *ngIf="data.body != undefined">
+					<td [ngClass]="'col-header'"><div [ngClass]="'help-parameter'">Body Parameters<pre [ngClass]="'tooltiptext'">ex) 
+	[
+	&#123;
+		key1: value,
+		key2: value,
+		...
+	&#125;
+	]
+					</pre></div></td>
+					<td [ngClass]="'col-value'">
+						<table [ngClass]="'param-box'" border="1">
+							<thead><tr><td>Key</td><td *ngIf="isExistDependencies(data, 'body')">Dependencies</td><td>Value</td><td>Description</td></tr></thead>
+							<tbody>
+								<tr *ngFor="let key of getObjectKeysByName(data.restAPI, data.method, 'body'); let j = index">
+									<td>
+										<span *ngIf="data.body[key].required" [ngClass]="'key-required'">required</span>{{key}}
+									</td>
+									<td *ngIf="isExistDependencies(data, 'body')">
+										<table [ngClass]="'dependencies-box'">
+											<tr *ngFor="let dKey of getDependencyKeys(data.restAPI, key, data.method, 'body'); let k = index" [style.height]="'20px'">
+												<td [style.background-color]="'#ddd'" [style.padding]="5">{{dKey}}</td><td [style.padding]="5">{{data.body[key].dependencies[dKey]}}</td>
+											</tr>	
+										</table>
+									</td>
+									<td>
+										<span [innerHTML]="getParameterValues(data.body[key])"></span>
+										<div *ngIf="data.body[key].sampleValue != undefined">
+											<pre>{{data.body[key].sampleValue | json}}</pre>
+										</div>
+									</td>
+									<td>
+										<span [innerHTML]="data.body[key].desc"></span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</table>	
+		</div>		
+	</div>		
+</div>

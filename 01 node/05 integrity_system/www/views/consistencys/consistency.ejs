@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<style>    
+    #loading {
+      border-radius: 30px;
+      padding: 10px;
+      background-color: white;
+      position:fixed;
+      top:40%;
+      left:50%;
+      z-index: 100;
+      box-shadow:3px 3px 10px 1px silver;
+    }
+</style>
+<head>
+    <%- include('../partials/head') -%>
+</head>
+<body class="hold-transition skin-wins sidebar-mini fixed">
+    <div class="wrapper">
+        <%- include('../partials/main-header') -%>
+        <%- include('../partials/main-sidebar') -%>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper bg_w">
+            <!-- Content Header (Page header) -->
+            <section class="content-header content_border animated fadeInLeft">
+              <h4>
+                 정합성 검증
+                <%# <small>Control panel</small> %>
+              </h4>
+              <ol class="breadcrumb">
+                <li><a href="/"><i class="fa fa-home"></i> 홈</a></li>
+                <li class="active">정합성 검증</li>                
+              </ol>
+            </section>
+
+            <section class="content">
+                <%# <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                    </div>
+                </div> %>
+                <div class="row content_border">
+                    <div class="col-lg-12 colr-xs-12">
+                        <div class="box_1" >
+                            <div>
+                                <div class="box-tools pull-right">
+                                    <%# <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> %>
+                                </div>
+                            </div>
+                            <div class="box-body no-padding">
+                                <div class="mailbox-controls pd_10">
+                                    <div class="form-group">
+                                        <button type="button" id="fileUpload" class="btn btn-default btn-sm" onclick="$('#file').click();" title="정책 불러오기" data-toggle="tooltip" data-container="body"><i class="fa fa-folder-open"></i></button>
+                                        <button type="button" id="fileDownload" class="btn btn-default btn-sm" onclick="pcapDownload();" title="Pcap 다운로드" data-toggle="tooltip" data-container="body" disabled><i class="fa fa-download"></i></button>                                        
+
+                                        <input type="checkbox" id="pcapsave" 
+                                        data-onstyle="info" 
+                                        data-offstyle="danger" 
+                                        data-size="small" 
+                                        checked data-toggle="toggle" 
+                                        data-on="<i class='fa fa-toggle-on'></i> Pcap 생성" 
+                                        data-off="<i class='fa fa-toggle-off'></i> Pcap 미생성">                                        
+
+                                        <button type="button" class="btn bg-olive btn-sm" id="btnConsistency" onclick="ivsCheckRule();" title="정합성 검증" data-toggle="tooltip" data-container="body"><i class="fa fa-balance-scale"></i> 정합성 검증</button>                                                                                
+                                        <button type="button" class="btn bg-red btn-sm pull-right" id="btnStopTest" onclick="stopTest();" style="display:none">테스트 종료</button>         
+                                        <form action="" method="post" enctype="multipart/form-data"  id="uploadform">
+                                            <input type="file" id="file" name="file" onchange="setRuleset();" style="display:none;" accept=".rules"/>
+                                        </form>   
+                                    </div>                                        
+                                    <p class="help-block" style="color:#444" id="spanNotify"></p>
+                                </div>    
+
+                                <div class="table-responsive mailbox-messages">
+                                    <table class="table table_1 table-hover table-striped"
+                                        id="tblConsistency"
+                                        data-width="100%"
+                                        data-toggle="table"
+                                        data-striped="true"
+                                        data-pagination ="false"
+                                        data-escape="true"
+                                        data-locale="ko-KR">
+                                        <thead>
+                                            <tr>
+                                                <th data-field="rule_code"
+                                                    data-align="center"
+                                                    data-valign="middle"
+                                                    data-formatter="fAutoNumber">정책 코드</th>
+                                                <th data-field="rule"
+                                                    data-align="left"
+                                                    data-valign="middle">정책</th>
+                                                <th data-field="valid"
+                                                    data-align="center"
+                                                    data-visible="false"
+                                                    data-formatter="fConsistencyResult"
+                                                    data-valign="middle">검증 결과</th>                                                    
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div id="loading" style="display:none;"><i class="fa fa-spinner fa-spin"></i> 테스트 중 입니다... </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+        <!-- /.content-wrapper -->
+    </div>
+    <!-- ./wrapper -->
+    
+    <%- include('../partials/foot') -%>
+
+    <script>
+        
+        var $spanNotify = $('#spanNotify');
+        var $btnStopTest = $('#btnStopTest');
+
+        var testingData = {
+            testcode : '',
+            length: 0,
+        }
+        var flag = 0;
+        // 정합성 검증을 누르고 다른 페이지에 갔다 온 상태를 구분하기위함
+        // 처음 페이지 들어왔을 때 : 0
+        // 정합성 검증 버튼을 눌렀을 때 : 1        
+
+        var testInterval;
+        
+        $(function(){
+            // ivsRunCheck();
+
+            ivsRunCheckFirst();
+            //처음 화면들어왔을 때
+        });
+    
+        
+        function ivsRunCheckFirst() {
+        $.ajax({
+            url: '/api/detects/detect/ivs_run_check',
+            method: 'get',
+            dataType: 'json',
+            beforeSend: function(){
+            },
+            success: function(json) {                    
+                if(json.length > 0 ) {               
+                    testStatus = json[0].datas[0].test_status;     
+
+                    if(testStatus != 'NO_TEST'){
+                    
+                        var test =  json[2].datas[0].test;  
+                        if( test == '4' ){
+                    //정합성 검증 진행 중일 때
+                            $('#loading').html('<i class="fa fa-spinner fa-spin"></i> 초기화 중 입니다...');  
+                            $('#loading').css('display','inline-block');
+                            ivsClear();
+                        }else {
+                    // 정합성 검증이 아닌 다른 테스트가 진행 중일 때
+                            disabledForm(true);
+                            $spanNotify.html('<i class="fa fa-tag" style="font-size:17px"></i> 진행 중인 다른 테스트가 있습니다.');
+                        }
+                    }  
+                }
+            },
+            error: function(request, status, error) {
+            },
+        });
+    }
+
+        function setRuleset(){
+            var form = $('#uploadform')[0];
+            var formData = new FormData(form);  
+            // formData.append("file", $("#file")[0].files[0]);
+
+            var thumbext = $('#file').val();
+            thumbext = thumbext.slice(thumbext.indexOf(".") + 1).toLowerCase(); 
+            if(thumbext == ""){ //그냥 취소 눌렀을 때 
+                return;
+            }else if(thumbext != "rules"){ //확장자 확인
+                alert('.rules 파일만 추가할 수 있습니다.');
+                return;
+            }else{
+                $.ajax({
+                    url: '/api/consistencys/consistency/set_tmp_ruleset',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    type: 'POST',   
+                    beforeSend: function (xhr) {
+                        $('#tblConsistency').bootstrapTable("showLoading");
+                    },       
+                    success: function(json) {
+                        if(json.length > 0){
+                            testingData.length = json.length;
+                            $spanNotify.html('<i class="fa fa-tag" style="font-size:17px"></i> ' + testingData.length + '개의 정책이 추가되었습니다.');
+                            $('#tblConsistency').bootstrapTable("load", json);
+                            $('#tblConsistency').bootstrapTable("hideLoading");
+                        }else{
+                        }
+                    },
+                    error: function(request, status, error) {
+                        var msg = "파일을 불러오는 중에 오류가 발생하였습니다.";
+                        if (typeof swal !== 'undefined') {
+                            swal("Error", msg, "error");
+                        } else {
+                            alert(msg);
+                        }
+                        msg = null;
+                    },
+                });
+            }
+        }        
+        
+
+        // ============================================================================
+
+        function ivsCheckRule(){ 
+            
+            var pcapsave = $("#pcapsave").prop("checked") ? 1:0;            
+            var selections = $('#tblConsistency').bootstrapTable('getData');  
+            var strTmpRules = '';
+            for( var i = 0; i < selections.length; i++){
+                strTmpRules += (i+1) + '|' + selections[i].rule + '\n';
+            }
+
+            var param = {              
+                pcap_save: pcapsave, 
+                ruleset : strTmpRules,                
+            }           
+
+            if (selections.length == 0) {
+                swal("Warning", "정합성 검증을 수행 할 정책이 없습니다.", "warning");    
+            } else {       
+
+                disabledForm(true);
+                $('#loading').css('display','inline-block');
+                flag = 1;
+                
+                $.ajax({
+                    url: '/api/consistencys/consistency/ivs_check_rule',
+                    method: 'post',
+                    data: param,
+                    dataType: 'json',                    
+                    success: function(json) {      
+                        if(json == 'err'){
+                            swal("Error", "오류가 발생하였습니다.", "error");
+                            disabledForm(false);
+                            $('#loading').css('display','none');
+                        }else{    
+                            testInterval = setInterval(function() {
+                                    testingData.testcode = json.testcode;
+                                    getRuleList();
+                                    ivsRunCheck();
+                                }, 1000);
+                        }             
+                    },
+                    error: function(request, status, error) {
+                        swal("Error", "오류가 발생하였습니다.", "error");
+                        disabledForm(false);
+                        $('#loading').css('display','none');
+                    },
+                });       
+
+            }
+        }     
+
+        function getRuleList() {
+            var data = {                
+                testcode: testingData.testcode ,
+            }
+            $.ajax({
+                url: '/api/consistencys/consistency/ivs_get_list',
+                method: 'get',
+                data: data,
+                dataType: 'json',
+                success: function(json) {
+                    if( json.length > 0 ){
+                        var data = json[0].datas;
+                        $('#tblConsistency').bootstrapTable("load", data);
+                        $('#tblConsistency').bootstrapTable("hideLoading");
+                    }
+                    $('#tblConsistency').bootstrapTable("hideLoading");
+                    $('#overlay-index1').css('display','none');
+                },
+                error: function(request, status, error) {
+                    swal("Error", "오류가 발생하였습니다.", "error");
+                    disabledForm(false);
+                    $('#loading').css('display','none');
+                },
+            });
+        }
+
+        
+
+    function ivsRunCheck() {
+        $.ajax({
+            url: '/api/detects/detect/ivs_run_check',
+            method: 'get',
+            dataType: 'json',
+            success: function(json) {                    
+                if(json.length > 0 ) {              
+                    testStatus = json[0].datas[0].test_status;     
+
+                    if(testStatus != 'NO_TEST'){
+                    
+                        var test =  json[2].datas[0].test;  
+                        if( test == '4' ){
+                    //정합성 검증 진행 중일 때
+
+                            $btnStopTest.css('display', 'inline-block');
+
+                            switch (testStatus) {
+                                case 'TEST_RULE_CHECK':             
+                    // 사용자 추가 정책 업로드 중
+                                    if(flag == 1){
+                                        checkIVSStatus_header();        
+                                    }else{              
+                                        $('#loading').css('display','inline-block');                                           
+                                        testInterval = setInterval(function() {
+                                                testingData.testcode = json[3].datas[0].testcode;
+                                                getRuleList();
+                                                ivsRunCheck();
+                                            }, 1000);
+                                    }
+
+                                    disabledForm(true);        
+                                    $spanNotify.html('<i class="fa fa-tag" style="font-size:17px"></i> 정합성 검증이 진행 중 입니다.');
+                                    $btnStopTest.text('검증 중지');        
+                                break;
+
+                                case 'TEST_RULE_CHECK_DONE':        
+                    // 사용자 추가 정책 업로드 완료     
+                                    clearTimeout(testInterval);   
+
+                                    if(flag == 1){
+                                        checkIVSStatus_header();
+                                        swal('Info','정합성 검증이 완료되었습니다.','info');   
+                                    }else{
+                                        testingData.testcode = json[3].datas[0].testcode;
+                                        getRuleList();
+                                    } 
+
+                                    //pcap 생성여부에 따른 다운로드 버튼 활성화 결정
+                                    if( $("#pcapsave").prop("checked") ? true : false ){
+                                        $('#fileDownload').prop('disabled',false);
+                                    }
+
+                                    $('#loading').css('display','none'); 
+                                    $('#tblConsistency').bootstrapTable('showColumn','valid');
+
+                                    disabledForm(true);  
+                                    $spanNotify.html('<i class="fa fa-tag" style="font-size:17px"></i> 정합성 검증이 완료되었습니다.');
+                                    $btnStopTest.text('검증 종료');               
+                                break;       
+                            }
+                        }else {
+                    // 정합성 검증이 아닌 다른 테스트가 진행 중일 때
+                            disabledForm(true);
+                            $spanNotify.html('<i class="fa fa-tag" style="font-size:17px"></i> 진행 중인 다른 테스트가 있습니다.');
+                        }
+                    }                    
+                }
+            },
+            error: function(request, status, error) {
+            },
+        });
+    }
+
+    function pcapDownload(){    
+        var parm = {
+            testcode : testingData.testcode,
+        }    
+        $.ajax({
+            url: '/api/consistencys/consistency/check_pcap_exist',
+            method: 'get',
+            data: parm,
+            dataType: 'json',
+            success: function(json) {
+                if(json == 'success'){
+                    window.location = '/api/consistencys/consistency/pcap_download/' + testingData.testcode;
+                }else{
+                    swal("Error", "pcap이 경로에 존재하지 않습니다.", "error");
+                }
+            },
+            error: function(request, status, error) {
+                swal("Error", "pcap 다운로드 중에 오류가 발생했습니다.", "error");
+            },
+        });
+    }
+
+
+    function stopTest(){
+        var str = '';
+        if(testStatus =='TEST_RULE_CHECK_DONE'){    
+            str = '정합성 검증을 종료 합니다.';
+        }else if(testStatus == 'TEST_RULE_CHECK' ){
+            str = '정합성 검증을 강제종료 합니다.';
+        }    
+        swal({
+            title: '검증 종료',
+            text: str,
+            type: 'question',
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "종료",
+            showCancelButton: true,
+            cancelButtonText: '취소'
+        }).then(function () {
+            ivsClear();
+            }, function (dismiss) {
+                if (dismiss === 'cancel') {                    
+                }
+            });               
+    }
+    
+    
+    function ivsClear() {
+        var step = 5;  //정합성 검증 테스트 강제 종료 : 5
+        var parm = {
+            step : step,
+        }
+        $.ajax({
+            url: '/api/detects/detect/ivs_clear',
+            method: 'get',
+            data: parm,
+            dataType: 'json',
+            success: function(json) {
+                window.location.reload();
+            },
+            error: function(request, status, error) {
+                swal("Error", "테스트 종료 중에 오류가 발생하였습니다.", "error");
+            },
+        });
+    }
+
+    // 정합성 검증 진행 상태일 때 폼 제한
+    function disabledForm(flag) {      
+        $('#fileUpload').prop('disabled', flag);
+        $('#pcapsave').prop('disabled', flag);
+        $('#btnConsistency').prop('disabled', flag);
+    }           
+
+    </script>
+</body>
+</html>

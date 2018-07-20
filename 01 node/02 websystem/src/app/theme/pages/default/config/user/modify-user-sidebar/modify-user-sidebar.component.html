@@ -1,0 +1,338 @@
+<style>
+	 .min-height-500{
+		 min-height: 500px;
+	 }
+	 .ob-center {
+		text-align: center;
+	}
+</style>
+<div id="modify_user_sidebar" class="m-quick-sidebar m-quick-sidebar--tabbed m-quick-sidebar--skin-light" appunwraptag="">
+	<div class="m-quick-sidebar__content m--hide">
+				<!-- check password -->
+				<!-- check password -->
+				<!-- check password -->
+				<!-- check password -->
+				<!-- check password -->	
+				<div [hidden]="hidePasswordComponent" id="modify_user_sidebar_tab_check_password">
+					<div class="modal-header">
+						<h5 class="modal-title">
+							비밀번호 확인
+						</h5>
+						<span id="modify_user_sidebar_close" class="m-quick-sidebar__close">
+							<i class="la la-close"></i>
+						</span>
+					</div>
+					<!-- m-form--label-align-right -->
+					<div class="modal-body">						
+						<div class="col-12">
+							<div class="form-group m-form__group row" style="padding-top:200px; height:600px">
+								<div class="col-12">
+									<label [for]="inputCheckPassword">
+										비밀번호 입력
+									</label>
+									<input
+										#inputCheckPassword
+										id="check_password"
+										name="check_password"
+										[(ngModel)]="checkPassword"
+										(keydown)="handleKeyDown($event,'PASSWORD_CHECK')"
+										class="form-control m-input m-input--air"
+										type="password"
+										required
+									/>	
+									<br>														
+									<div [hidden]="!passCheckAlert" class="m-alert m-alert--outline alert alert-danger alert-dismissible" role="alert">
+										<button type="button" class="close" (click)="passCheckAlert=false;"></button>
+										<span>{{passCheckText}}</span>
+									</div>
+								</div>			
+							</div>	
+						</div>	
+					</div>
+					<div class="modal-footer" style="display:block;">
+						<div style="float:right;">					
+							<button #btnCheckPassword type="button" (click)="checkPasswordClick()" class="btn btn-primary m-btn m-btn--air" title="확인">
+								확인
+							</button>
+							<button type="button" class="btn btn-secondary m-btn m-btn--air" title="취소" id="btn_modify_sidebar_cancle">
+								취소
+							</button>
+						</div>
+					</div>
+				</div>	
+				<!-- modify -->
+				<!-- modify -->
+				<!-- modify -->
+				<!-- modify -->
+				<!-- modify -->				
+				<form [hidden]="hideModifyUserComponent"  #modifyUserSidebarForm="ngForm">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">
+							관리자 수정
+						</h5>
+						<span id="modify_user_sidebar_close2" class="m-quick-sidebar__close">
+							<i class="la la-close"></i>
+						</span>
+					</div>
+					<!-- m-form--label-align-right -->
+					<div class="modal-body">
+						<ul id="modify_user_sidebar_tabs" class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+							<li class="nav-item m-tabs__item">
+								<a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_quick_sidebar_personal_info" role="tab">
+									개인정보수정
+								</a>
+							</li>
+							<li class="nav-item m-tabs__item">
+								<a class="nav-link m-tabs__link" data-toggle="tab" href="#m_quick_sidebar_change_password" role="tab">
+									비밀번호 변경
+								</a>
+							</li>
+							<li class="nav-item m-tabs__item">
+								<a class="nav-link m-tabs__link" data-toggle="tab" href="#m_quick_sidebar_ip_setting" role="tab">
+									IP 설정
+								</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active m-scrollable min-height-500" id="m_quick_sidebar_personal_info" role="tabpanel">							
+								<span style="font-size:15px; color:#36a3f7;">기본정보</span>
+								<div class="col-12" style="margin-top:10px; margin-bottom:20px; ">
+									<div class="form-group m-form__group row">
+										<div class="col-12">
+											<label [for]="inputAdminId">
+												관리자ID
+											</label>
+											<input
+												#inputAdminId
+												id="id"
+												name="id"
+												[(ngModel)]="id"
+												[readonly]="true"
+												class="form-control m-input m-input--air"
+												type="text"
+												required
+											/>
+										</div>
+									</div>
+									<div class="form-group m-form__group row">
+										<div class="col-12">	
+											<label [for]="dropdownAuthority">
+											사용권한
+											</label>				
+											<kendo-dropdownlist
+												#dropdownAuthority
+												id="authority"
+												name="authority"
+												class="form-control"
+												title="사용권한"
+												[data]="authListItems"
+												[(ngModel)]="selectedAuthMode"
+												[valueField]="'value'"
+												[textField]="'text'"
+												[disabled]="true">
+											</kendo-dropdownlist>
+										</div>
+									</div>
+									<div class="form-group m-form__group row">
+										<div class="col-12">
+											<label [for]="inputEmail" style="display:block">
+												전자우편
+											</label>
+											<input
+												#inputEmail
+												id="email"
+												name="email"
+												[(ngModel)]="email"
+												[placeholder]="'example@wins21.co.kr'"
+												(ngModelChange)="changeEmail()"
+												class="form-control m-input m-input--air"
+												type="text"
+												style="display: inline-block; width: 75%"
+											/>
+											<button class="btn btn-info m-btn m-btn--air" title="테스트" [disabled]="!emailVerified" style="float: right">
+												테스트
+											</button>
+										</div>
+									</div>
+								</div>
+								<h6 style="font-size:15px; color:#36a3f7;">부가정보</h6>
+								<div class="col-12" style="margin-top:10px">
+									<div class="form-group m-form__group row">
+										<div class="col-12">
+											<label [for]="inputPasswordLimit">
+												유효기간
+											</label>
+											<kendo-numerictextbox
+												#inputPasswordLimit
+												id="password_limit"
+												name="password_limit"
+												class="form-control"
+												title="유효기간(일)"
+												[value]="passwordLimit"
+												[(ngModel)]="passwordLimit"
+												[min]="1"
+												[max]="99"
+												[autoCorrect]="true"
+												[format]="'n0'"
+											>
+											</kendo-numerictextbox>
+											<span class="m-form__help">
+												1 ~ 99 (일)
+											</span>
+										</div>
+									</div>
+									<div class="form-group m-form__group row">
+										<!-- m--margin-top-20 -->
+										<div class="col-12">
+											<label for="inputPhone">
+												전화번호
+											</label>
+											<input
+												#inputPhone
+												id="phone"
+												name="phone"
+												[(ngModel)]="phone"
+												[textMask]="{mask: phoneMask(), guide: false}"
+												[placeholder]="'010-1234-5678'"
+												class="form-control m-input m-input--air"
+												title="전화번호"        
+												type="text"          
+											/>
+										</div>
+									</div>
+									<div class="form-group m-form__group row">
+										<!-- m--margin-top-20 -->
+										<div class="col-12">
+											<label for="inputExtension">
+											비고
+											</label>
+											<input
+												#inputExtension
+												id="extension"
+												name="extension"
+												[(ngModel)]="extension"
+												type="text"
+												class="form-control m-input m-input--air"
+												title="비고"   
+												type="text"               
+											/>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane  m-scrollable  min-height-500" id="m_quick_sidebar_change_password" role="tabpanel">
+								<div class="col-12"  style="padding-top:50px;">
+									<div class="form-group m-form__group row">
+										<div class="col-12">
+											<label [for]="inputPassword1">
+											새 비밀번호
+											</label>
+											<input
+												#inputPassword1
+												id="password1"
+												name="password1"
+												[(ngModel)]="password1"
+												class="form-control m-input m-input--air"
+												type="password"
+											/>
+											<span class="m-form__help">
+											9~12 자리 / 영문 + 숫자 + 특수문자
+											</span>
+										</div>
+									</div>
+									<div class="form-group m-form__group row">
+										<div class="col-12">
+											<label [for]="inputPassword2">
+											새 비밀번호 확인
+											</label>
+											<input
+												#inputPassword2
+												id="password2"
+												name="password2"
+												[(ngModel)]="password2"
+												class="form-control m-input m-input--air"
+												type="password"
+											/>	
+											<div [hidden]="password2.length == 0">											
+												<span class="m-form__help" style="color: #E91E63;" [hidden]="password1 == password2">
+												비밀번호 일치하지 않음
+												</span>														
+												<span class="m-form__help" style="color: #00c5dc;"  [hidden]="password1 != password2">
+												비밀번호 일치
+												</span>
+											</div>
+										</div>
+									</div>	
+								</div>
+							</div>
+							<div class="tab-pane  m-scrollable  min-height-500" id="m_quick_sidebar_ip_setting" role="tabpanel">
+								<div class="col-12">
+									<div class="form-group m-form__group row">
+										<div class="col-12">
+											<label [for]="inputIP" style="display:block">
+												IP 설정
+											</label>
+											<input
+												#inputIP
+												id="ip"
+												name="ip"
+												[(ngModel)]="accessIp"
+												(ngModelChange)="changeAccessIp()"
+												(keydown)="handleKeyDown($event,'ACCESS_IP_ADD')"
+												class="form-control m-input m-input--air"
+												type="text"
+												style="display: inline-block; width: 75%"
+											/>
+											<button class="btn btn-info m-btn m-btn--air" title="추가" [disabled]="!accessIpVerified" (click)="addUserAccessIp()" style="float: right">
+												추가
+											</button>
+										</div>
+									</div>						
+									<div class="form-group m-form__group row">
+										<div class="col-12">
+											<kendo-grid 
+												#accessIpGrid
+												[data]="accessIpGridView"
+												[pageable]="false"
+												[selectable]="true"
+												(selectionChange) = "gridSelectionChanged(accessIpGrid, $event)"
+												[height]="400">
+												<kendo-grid-column field="ip" title="IP" width="220">
+												</kendo-grid-column>
+												<kendo-grid-column title="삭제" width="80" >
+													<ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+														<div class='ob-center'>
+															<button class="btn btn-sm btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air m-nav__link m-dropdown__toggle" 
+																(click)="deleteUserAccessIp(dataItem.ip)"
+																title="삭제">
+																<i class="fa fa-minus"></i>
+															</button>
+														</div>
+													</ng-template>
+												</kendo-grid-column>
+											</kendo-grid>
+										</div>
+									</div>
+								</div>
+							</div>							
+						</div>
+					</div>
+					
+					<div class="modal-footer" style="display:block;">							
+						<div [hidden]="!verifyAlert" class="m-alert m-alert--outline alert alert-danger alert-dismissible" role="alert">
+							<button type="button" class="close" (click)="verifyAlert=false"></button>
+							<span>{{verifyText}}</span>
+						</div>				
+						<div style="float:right">								
+							<button type="submit" class="btn btn-primary m-btn m-btn--air" (click)="updateData()" title="확인">
+								확인
+							</button>
+							<button type="button" #btnModifySidebarCancel id="btn_modify_sidebar_cancle2" class="btn btn-secondary m-btn m-btn--air" title="취소">
+								취소
+							</button>
+						</div>
+					</div>		
+				</form>	
+	</div>
+</div>
+<!--end::Modal-->

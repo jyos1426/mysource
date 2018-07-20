@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_cal_people"
+android:orientation="horizontal" android:layout_width="match_parent"
+android:layout_height="55dp"
+android:gravity="center_vertical"
+android:background="@color/white">
+<ImageView
+    android:layout_width="55dp"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:src="@drawable/defaultprofile"
+    android:id="@+id/img_cal_profile"
+    />
+
+    <TextView
+        android:id="@+id/tv_cal_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="NickName"
+        android:textSize="17sp" />
+
+    <RatingBar
+    android:id="@+id/rating_cal_score"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:numStars="5"
+    android:stepSize="1.0"
+    android:isIndicator="false"
+    style="?android:attr/ratingBarStyleSmall"/>
+
+    <LinearLayout
+        android:id="@+id/layout_cal_block"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:clickable="true"
+        android:padding="7dp"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_block_red_24dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorRed"
+            android:textSize="10sp"
+            android:text="차단"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,33 @@
+.category-area .ui-widget-content {
+  background-color: transparent;
+  border: 0px;
+  font-family: 'Noto Sans', 'NanumGothic';
+}
+
+// .ag-row-editing {
+//   background-color: #5bc0de !important;
+// }
+
+.ag-cell-changed {
+  background-color: #FFCBA4 !important;
+}
+.ag-cell-state-changed {
+  background-color: #69BD34 !important;
+}
+.ag-cell-state-added {
+  background-color: #1895FF !important;
+}
+.ag-cell-state-removed {
+  background-color: #FF305C !important;
+}
+
+.ag-row-changed {
+  // background-color: #FFD8D5 !important;
+  background-color: #BFE67C !important;
+}
+.ag-row-added {
+  background-color: #1895FF !important;
+}
+.ag-row-removed {
+  background-color: #FEB1BB !important;
+}

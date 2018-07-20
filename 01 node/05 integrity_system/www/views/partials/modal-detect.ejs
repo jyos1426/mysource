@@ -1,0 +1,1458 @@
+<style>
+    .modal-body .alert .fa {
+        width: 15px;
+    }
+    .pattern > .th-inner{
+        width: 600px;
+    }
+    .table-width-250 > .th-inner{
+        width: 250px;
+    }
+    .table-width-200 > .th-inner{
+        width: 200px;
+    }
+
+    /* 모달창을 띄울 때 스크롤이 생기는 현상 때문에 hover시에만 보이도록 함 */
+    .modal .fixed-table-body{
+        height:500px;
+    }
+    .fixed-table-body{
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+    .fixed-table-body:hover{
+        overflow-x: auto;
+        overflow-y: auto;
+    }
+
+    /* detail view 아이콘 지우기위함 */
+    #tblRuleList thead > tr > th.detail,
+    #tblRuleList tbody > tr:not(.detail-view) > td:first-of-type {
+        display:none;
+        }
+    #loading {
+      border-radius: 30px;
+      padding: 10px;
+      background-color: white;
+      position:absolute;
+      top:15px;
+      left:40%;
+      z-index: 100;
+      box-shadow:3px 3px 10px 1px silver;
+    }
+</style>
+
+<div class="modal modal-center fade" id="modal_detect" tabindex="-1" role="dialog" aria-labelledby="my80sizeCenterModalLabel">
+    <div class="modal-dialog modal-lg modal-center" role="document">
+        <div class="modal-content modal-80size">
+            <div class="modal-body">
+                <div class="alert alert-warning alert-dismissible" id="modalTopDetect">
+                    <button type="button" onClick="modalClose();" class="close" data-dismiss="modal" aria-label="Close"
+                     data-toggle="tooltip" data-placement="bottom" title="창을 종료해도 테스트는 계속 진행됩니다.">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong><i class="fa fa-clipboard margin-r-5"></i> 테스트 수행번호 : </strong><span name="testcode"></span><br/>
+                    <strong><i class="fa fa-code-fork margin-r-5"></i> DB 경로 : </strong><span name="dbpath"></span><br/>
+                    <strong><i class="fa fa-desktop margin-r-5"></i> 카테고리 : </strong><span name="category"></span>
+                    <span style="margin-left:15px"><strong><i class="fa fa-clock-o margin-r-5"></i> 측정 시간 : </strong><span name="time"></span></span>
+                    <span style="margin-left:15px"><strong><i class="fa fa-tags margin-r-5"></i> 검증 유형 : </strong><span name="type"></span></span><br/>
+                    <strong><i class="fa fa-location-arrow margin-r-5"></i> 백 트래픽 : </strong><span name="backtraffic"></span><br/>
+                </div>
+
+                <section class="content">
+                    <div class="row">
+                        <div class="publish_step">
+                            <div class="publsh_step_wrap">
+                                <div class="col-lg-3 col-xs-6 select_step">
+                                    <div class="tabselect_wrap">
+                                        <div class="tabselect"><img src = "/img/step_1.png"></div>
+                                        <div class="tabselect_text zoomIn animated">정책 추가</div>
+                                    </div>
+                                    <!-- ./tabselect_wrap -->
+                                    <div class="mg_l_10">
+                                        <div class="step_num margin-auto">1</div>
+                                        <div class="circle2 margin-auto"></div>
+                                    </div>
+                                    <!-- ./mg -->
+                                    <div class="step_text">정책 추가</div>
+                                </div>
+                                <!-- ./select_step -->
+
+                                <div class="col-lg-3 col-xs-6 select_step">
+                                    <div class="tabselect_wrap">
+                                        <div class="tabselect"><img src="/img/step_1.png"></div>
+                                        <div class="tabselect_text zoomIn animated">정책 선택</div>
+                                    </div>
+                                    <!-- ./tabselect_wrap -->
+                                    <div class="mg_l_10">
+                                        <div class="step_num margin-auto">2</div>
+                                        <div class="circle2 margin-auto">
+                                            <svg viewBox="0 0 32 32" class="step_circle"><circle r="16" cx="16" cy="16" class="num2" /></svg>
+                                        </div>
+                                    </div>
+                                    <!-- ./mg -->
+                                    <div class="step_text">정책 선택</div>
+                                </div>
+                                <!-- ./select_step -->
+
+                                <div class="col-lg-3 col-xs-6 select_step">
+                                    <div class="tabselect_wrap">
+                                        <div class="tabselect"><img src="/img/step_2.png"></div>
+                                        <div class="tabselect_text zoomIn animated">테스트 실행</div>
+                                    </div>
+                                    <!-- ./tabselect_wrap -->
+                                    <div class="mg_l_10">
+                                        <div class="step_num margin-auto">3</div>
+                                        <div class="circle2 margin-auto">
+                                            <svg viewBox="0 0 32 32" class="step_circle"><circle r="16" cx="16" cy="16" class="num3" /></svg>
+                                        </div>
+                                    </div>
+                                    <!-- ./mg -->
+                                    <div class="step_text">테스트 실행</div>
+                                </div>
+                                <!-- ./select_step -->
+
+                                <div class="col-lg-3 col-xs-6 select_step">
+                                    <div class="tabselect_wrap">
+                                        <div class="tabselect"><img src="/img/step_3.png"></div>
+                                        <div class="tabselect_text zoomIn animated">테스트 결과</div>
+                                    </div>
+                                    <!-- ./tabselect_wrap -->
+                                    <div class="mg_l_10">
+                                        <div class="step_num margin-auto">4</div>
+                                        <div class="circle2 margin-auto">
+                                            <svg viewBox="0 0 32 32" class="step_circle"><circle r="16" cx="16" cy="16" class="num4" /></svg>
+                                        </div>
+                                    </div>
+                                    <!-- ./mg -->
+                                    <div class="step_text hidden-xs">테스트 결과</div>
+                                </div>
+                                <!-- ./select_step -->
+
+                            </div>
+                            <!-- ./publsh_step_wrap -->
+                            <hr class="step_line hidden-xs hidden-sm hidden-md" />
+                        </div>
+                        <!-- ./publish_step -->
+                    </div>
+                    <!-- ./row -->
+
+                    <div class="row">
+                        <div class="tab_contents">
+                            <!-- TAB0 -->
+                            <div class="step_content">
+                                <form>
+                                    <div class="form-group has-success" style="padding: 15px 0px 0px 0px;">
+                                         <div class="col-md-12 box"  style="border:none; box-shadow: none;">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <button type="button" class="btn btn-success btn-sm" onclick="$('#file').click();" title="정책 불러오기" data-toggle="tooltip" data-container="body"><i class="fa fa-folder-open"> 파일 불러오기</i></button>
+                                                    <form action="" method="post" enctype="multipart/form-data"  id="uploadform">
+                                                        <input type="file" id="file" name="file" onchange="setRuleset();" style="display:none;" accept=".rules"/>
+                                                    </form>
+                                                </div>
+                                                <!-- /.btn-group -->
+                                                <p class="help-block" style="color:#444" id="spanTmpRuleInfo"></p>
+                                                <table class="table table_1 table-hover table-striped  modal-table"
+                                                    id="tblTmpRules"
+                                                    data-width="100%"
+                                                    data-toggle="table"
+                                                    data-escape="true"
+                                                    data-striped="true"
+                                                    data-maintain-selected="true"
+                                                    data-locale="ko-KR"
+                                                    data-show-columns="false"
+                                                    data-search="false"
+                                                    data-show-refresh="false"
+                                                    data-show-toggle="false"
+                                                    data-show-export="false"
+                                                    data-smart-display="false"
+                                                    data-resizable="true"
+                                                    data-click-to-select="true">
+                                                    <thead>
+                                                        <tr>
+                                                            <th data-field="state"
+                                                                data-checkbox="true"
+                                                                data-valign="middle"
+                                                                data-width="40"></th>
+                                                            <th data-field="ncscrule"
+                                                                data-align="left"
+                                                                data-valign="middle" >정책</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                            <div class="overlay" id="overlay-index0" style="display:none;">
+                                                <i class="fa fa-spinner fa-spin"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- ./form-group -->
+                                </form>
+                                <!-- ./form -->
+                            </div>
+                            <!-- ./step_content-->
+                            <!-- 센서정보 입력 -->
+                            <div class="step_content">
+                                <form>
+                                    <div class="form-group has-success" style="padding: 15px 0px 0px 0px;">
+                                        <div class="col-md-12 box"  style="border:none; box-shadow: none;">
+                                            <div class="row" id="row-rule">
+                                                <div class="form-group">
+                                                    <button id="btnPcap" type="button" class="btn btn-success btn-sm" onclick="pcapAutoMatching();"> Pcap경로 자동매칭</button>
+                                                    <button id="btnPcapCancel" type="button" class="btn btn-danger btn-sm"onclick="pcapAutoMatchingCancel();"> 자동매칭 전체해제</button>
+                                                    <p  style="color:black" class="pull-right help-block"> <input id="chkShowRule" type="checkbox" onclick="checkShowRule(this);"> 정책 보기</p>
+                                                </div>
+                                                <!-- /.btn-group -->
+                                                <p class="help-block" style="color:#444" id="spanRuleInfo"></p>
+                                                <table class="table table_1 table-hover table-striped modal-table"
+                                                    id="tblRuleList"
+                                                    data-width="100%"
+                                                    data-toggle="table"
+                                                    data-striped="true"
+                                                    data-escape="true"
+                                                    data-maintain-selected="true"
+                                                    data-locale="ko-KR"
+                                                    data-show-columns="false"
+                                                    data-search="false"
+                                                    data-show-refresh="false"
+                                                    data-show-toggle="false"
+                                                    data-show-export="false"
+                                                    data-smart-display="false"
+                                                    data-detail-view="true"
+                                                    data-detail-formatter="ruleDetailFormatter">
+                                                    <thead>
+                                                        <tr>
+                                                            <th
+                                                                data-field="selected"
+                                                                data-formatter="commboFormatter"
+                                                                data-align="center"
+                                                                data-valign="middle"
+                                                                data-width="10">
+                                                                <select id="selectHeader" onchange="onselectChangeAll(this);" class="selDetect btn btn-danger btn-xs dropdown-toggle selectpicker">
+                                                                    <option value="0">None</option>
+                                                                    <option value="1">Base</option>
+                                                                    <option value="2">Select</option>
+                                                                </select></th>
+                                                            <th data-field="select_value"
+                                                                data-align="center"
+                                                                data-valign="middle"
+                                                                data-visible="false"
+                                                                data-formatter="fPositionConverter"
+                                                                data-width="40">상태</th>
+                                                            <th data-field="code"
+                                                                data-align="center"
+                                                                data-valign="middle"
+                                                                data-width="40">코드</th>
+                                                            <th data-field="name"
+                                                                data-align="left"
+                                                                data-valign="middle"
+                                                                data-width="80"
+                                                                class="table-width-250 "
+                                                                data-formatter="fDetailRuleLink">정책명</th>
+                                                            <th data-field="ncscrule"
+                                                                data-align="left"
+                                                                data-valign="middle"
+                                                                data-visible="false"
+                                                                class="pattern" >정책</th>
+                                                            <th data-field="automake"
+                                                                data-align="center"
+                                                                data-valign="middle"
+                                                                data-visible="false"
+                                                                data-width="20">automake</th>
+                                                            <th data-field="pcap"
+                                                                data-align="left"
+                                                                data-valign="middle"
+                                                                data-width="40">pcap</th>
+                                                            <th data-field="selectpcap"
+                                                                data-align="center"
+                                                                data-valign="middle"
+                                                                data-formatter="fPcapSelect"
+                                                                data-width="20">pcap 선택</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                            <div class="overlay" id="overlay-index1" style="display:none;">
+                                                <i class="fa fa-spinner fa-spin"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- ./form-group -->
+                                </form>
+                                <!-- ./form -->
+                            </div>
+                            <!-- ./step_content-->
+
+                            <!-- CSR 생성결과 -->
+                            <div class="step_content box no-border no-shadow">
+                                <div class="form-group has-success" style="padding: 15px 0px 0px 0px;">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div id="loading" style="display:none;"><i class="fa fa-spinner fa-spin"></i> 테스트 중 입니다... </div>
+                                            <table class="table table_1 table-hover table-striped modal-table"
+                                                id="tblTestList"
+                                                data-width="100%"
+                                                data-toggle="table"
+                                                data-striped="false"
+                                                data-escape="true"
+                                                data-locale="ko-KR"
+                                                data-show-columns="false"
+                                                data-search="false"
+                                                data-show-refresh="false"
+                                                data-show-toggle="false"
+                                                data-show-export="false"
+                                                data-smart-display="false"
+                                                data-sort-name="date"
+                                                data-sort-order="desc" >
+                                                <thead>
+                                                    <tr>
+                                                        <th data-field="detect"
+                                                            data-align="center"
+                                                            data-valign="middle"
+                                                            data-width="200"
+                                                            data-formatter="fTestIsDetected_ing"
+                                                            >탐지</th>
+                                                        <th data-field="detect_code"
+                                                            data-align="center"
+                                                            data-valign="middle"
+                                                            data-formatter="fDetectCode"
+                                                            data-width="40">탐지 코드</th>
+                                                        <th data-field="include"
+                                                            data-align="center"
+                                                            data-width="200"
+                                                            data-formatter="fLogInclude_1"
+                                                            data-valign="middle"  >포함</th>
+                                                        <th data-field="code"
+                                                            data-align="center"
+                                                            data-valign="middle"
+                                                            data-width="40"  >코드</th>
+                                                        <th data-field="name"
+                                                            data-align="left"
+                                                            data-valign="middle"
+                                                            data-width="80"
+                                                            class="table-width-250 ">정책명</th>
+                                                        <th data-field="ncscrule"
+                                                            data-align="left"
+                                                            data-valign="middle"
+                                                            class="pattern">정책</th>
+                                                        <th data-field="pcap"
+                                                            data-align="center"
+                                                            data-valign="middle"
+                                                            data-width="40">pcap</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    <!-- ./col -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ./step_content-->
+
+                            <!-- 인증서 발급 결과 -->
+                            <div class="step_content">
+                                <div class="form-group has-success" style="padding: 15px 0px 0px 0px;">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <p class="help-block" style="color:#444" id="spanTestResult"></p>
+                                            <table class="table table_1 table-hover table-striped  modal-table"
+                                                id="tblTestResult"
+                                                data-width="100%"
+                                                data-toggle="table"
+                                                data-striped="false"
+                                                data-escape="true"
+                                                data-locale="ko-KR"
+                                                data-show-columns="false"
+                                                data-search="false"
+                                                data-show-refresh="false"
+                                                data-show-toggle="false"
+                                                data-show-export="false"
+                                                data-smart-display="false"
+                                                data-sort-name="name"
+                                                data-sort-order="desc">
+                                                <thead>
+                                                    <tr>
+                                                        <th data-field="detect"
+                                                            data-align="center"
+                                                            data-valign="middle"
+                                                            data-formatter="fTestIsDetected_result"
+                                                            data-width="200">탐지</th>
+                                                        <th data-field="detect_code"
+                                                            data-align="center"
+                                                            data-valign="middle"
+                                                            data-formatter="fDetectCode"
+                                                            data-width="40">탐지 코드</th>
+                                                        <th data-field="include"
+                                                            data-align="center"
+                                                            data-width="200"
+                                                            data-formatter="fLogInclude_1"
+                                                            data-valign="middle">포함</th>
+                                                        <th data-field="code"
+                                                            data-align="center"
+                                                            data-valign="middle"
+                                                            data-width="40" >코드</th>
+                                                        <th data-field="name"
+                                                            data-align="left"
+                                                            data-valign="middle"
+                                                            data-width="80"
+                                                            class="table-width-250 ">정책명</th>
+                                                        <th data-field="ncscrule"
+                                                            data-align="left"
+                                                            data-width="200"
+                                                            data-valign="middle"
+                                                            class="pattern">정책</th>
+                                                        <th data-field="pcap"
+                                                            data-align="center"
+                                                            data-valign="middle"
+                                                            data-width="40">pcap</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ./step_content-->
+                        </div>
+                        <!-- ./tab_contents -->
+
+                        <div class="tab_contents" style="border:0px red solid; margin-top:30px;">
+                            <div class="pull-left">
+                                <button id="forceEnd" type="button" onClick="stopTest();" class="btn btn-danger" style="display:none">
+                                    <span class="hidden-xs"> 테스트 강제종료</span>
+                                </button>
+                                <button id="clear" type="button" onClick="stopTest();" class="btn btn-warning" style="display:none"
+                                    data-toggle="tooltip" data-placement="bottom" title="테스트 설정이 초기화 됩니다.">
+                                    <span class="hidden-xs"> 테스트 초기화</span>
+                                </button>
+                            </div>
+                            <div class="pull-right">
+                                <%#<button id="prev" type="button" class="btn btn-default" style="display:none">
+                                    <i class="glyphicon glyphicon-chevron-left"></i>
+                                    <span class="hidden-xs">이전</span>
+                                </button>%>
+                                <button id="upload" type="button" class="btn btn-default" style="display:none">
+                                    <span class="hidden-xs">정책 업로드 </span> <i class="glyphicon glyphicon-chevron-right"></i>
+                                </button>
+                                <button id="update" type="button" class="btn btn-default" style="display:none">
+                                    <span class="hidden-xs">정책 적용 </span>
+                                </button>
+                                <button id="run" type="button" class="btn btn-default" style="display:none">
+                                    <span class="hidden-xs">테스트 실행</span> <i class="glyphicon glyphicon-chevron-right"></i>
+                                </button>
+                                <button id="result" type="button" class="btn btn-default" style="display:none">
+                                    <span class="hidden-xs">결과</span> <i class="glyphicon glyphicon-chevron-right"></i>
+                                </button>
+                                <button id="finish" type="button" onclick="stopTest();" class="btn btn-success" style="display:none">
+                                    <span class="hidden-xs">완료 </span> <i class="glyphicon glyphicon-ok-sign"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- ./tab_contents -->
+                    </div>
+                    <!-- ./row -->
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var index = 0;
+
+    var $tabmenu = $(".select_step");
+    var $tabmenuSelect = $(".tabselect_wrap");
+    var $tabPanels = $(".step_content");
+    var $tabName = $(".step_text");
+    var $tabNum = $(".step_num");
+    var $tabCircle = $(".circle2");
+
+    var $tabNames = null;
+    var $tabNums = null;
+    var $tabCircles = null;
+    var $selectMenuItem = null;
+    var $selectPanel = null;
+    var $tabmenuSelects = null;
+
+    var testInterval;
+
+    //이 모달창을 include 하는 곳에서 공통으로 사용하는 변수
+    var testingData = {
+        ip: '',
+        port: '',
+        category: '',
+        type: '',
+        interval: '',
+        pcap_dir: '',
+        pcap_id: '',
+        testcode: '미정',
+        dbpath: '',
+        dbname: '미정',
+        retest: false,
+    };
+
+
+    $('.step_content:eq(0) input:eq(0)').focus();
+
+    $("#upload").click(function() {
+        $("#upload").prop('disabled',true);
+        ivsSetting();
+        testInterval = setInterval(function() {
+                if (index == 0 && $('.modal').hasClass('in')) {
+                    ivsRunCheck();
+                }
+            }, 1000);
+    });
+    $("#update").click(function() {
+        ivsUpdateRuleList();
+    });
+    $("#run").click(function() {
+        ivsRun();
+    });
+
+
+    /*************************************************************************************************************
+     *************************************************************************************************************
+
+            탐지검증테스트 순서
+
+            1. [테스트 시작] 버튼클릭 : startModal()
+            2. (Modal 1) 임시 정책 불러오기 : setRuleset()
+            3. (Modal 1-2) 임시 정책 선택 및 [업로드] 버튼 : ivsSetting() (getDBPath) -> ivsRuleSetUpload() -> getRuleList()
+            4. (Modal 2) 정책 선택 및 [적용] 버튼 : ivsUpdateRuleList()
+            5. (Modal 2-1) [테스트 실행] 버튼 : -> ivsRun() -> ivsRunCheck()/getTestList() 반복
+            5. (Modal 4) TestStatus가 TEST_END일 때 : getTestResult()
+
+    *************************************************************************************************************
+    *************************************************************************************************************/
+
+
+    // Modal 1 page
+    function setRuleset(){
+        var form = $('#uploadform')[0];
+        var formData = new FormData(form);
+        formData.append("file", $("#file")[0].files[0]);
+
+        var thumbext = $('#file').val();
+        thumbext = thumbext.slice(thumbext.indexOf(".") + 1).toLowerCase();
+
+        if(thumbext == ""){ //그냥 취소 눌렀을 때
+            return;
+        }else if(thumbext != "rules"){ //확장자 확인
+            alert('.rules 파일만 추가할 수 있습니다.');
+            return;
+	    }else{
+            $.ajax({
+                url: '/api/detects/detect/set_tmp_ruleset',
+                processData: false,
+                contentType: false,
+                data: formData,
+                type: 'POST',
+                async: false,
+                beforeSend: function(){
+                    $('#overlay-index0').css('display','inline-block');
+                    $('#tblTmpRules').bootstrapTable("showLoading");
+                },
+                success: function(json) {
+                    if(json.length > 0){
+                        $('#overlay-index0').css('display','none');
+                        $('#spanTmpRuleInfo').html('<i class="fa fa-tag" style="font-size:17px"></i> 전체 '+ json.length+'개의 정책을 불러왔습니다.');
+                        $('#tblTmpRules').bootstrapTable("load", json);
+                        $('#tblTmpRules').bootstrapTable("hideLoading");
+                    }else{
+                    }
+                },
+                error: function(request, status, error) {
+                    var msg = "파일을 불러오는 중에 오류가 발생하였습니다.";
+                    if (typeof swal !== 'undefined') {
+                        swal("Error", msg, "error");
+                    } else {
+                        alert(msg);
+                    }
+                    msg = null;
+                },
+            });
+
+        }
+    }
+
+    // Modal 1-2 page
+    function ivsSetting() {
+        var param = {
+            test: '1',              //탐지검증 : 1, 부하검증:2, 트래픽 생성:3
+            category: testingData.category,
+            interval:  testingData.interval,
+            pcap_index:  testingData.pcap_id,
+            type: testingData.type  // 1: 그룹 테스트, 2: 유닛 테스트
+        };
+
+        $.ajax({
+            url: '/api/detects/detect/ivs_setting',
+            method: 'get',
+            data: param,
+            dataType: 'json',
+            beforeSend: function(xhr) {
+                $('#overlay-index0').css('display','inline-block');
+                $('#tblRuleList').bootstrapTable("showLoading");
+            },
+            success: function(json) {
+                if(json == 'err'){
+                    var msg = "테스트를 세팅하는 중 오류가 발생하였습니다.";
+                    swal("Error", msg, "error").then(function(){
+                        modalClose();
+                    });
+
+                }else{                
+                    testingData.testcode = json.testcode;
+                    testingData.dbpath = json.dbpath;
+                    testingData.dbname = json.dbname;
+
+                    $('span[name=dbpath]').text(testingData.dbpath+'/'+testingData.dbname);
+                    $('span[name=testcode]').text(testingData.testcode);
+                    ivsRuleSetUpload();
+                }
+            },
+            error: function(request, status, error) {
+                var msg = "테스트를 세팅하는 중 오류가 발생하였습니다.";
+                swal("Error", msg, "error").then(function(){
+                        modalClose();
+                    });
+            },
+        });
+    }
+
+    // Modal 1-2 page
+    function ivsRuleSetUpload(){
+        var selections = $('#tblTmpRules').bootstrapTable('getSelections');
+        var strTmpRules = '';
+        for( var i = 0; i < selections.length; i++){
+            strTmpRules += selections[i].ncscrule + '\n';
+        }
+        var param = {
+            ruleset : strTmpRules,
+            testcode : testingData.testcode,
+        }
+        $.ajax({
+            url: '/api/detects/detect/ivs_ruleset_upload',
+            method: 'post',
+            data: param,
+            dataType: 'json',
+            success: function(json) {
+                getRuleList();
+            },
+            error: function(request, status, error) {
+                var msg = "정책 업로드 중 오류가 발생하였습니다.";
+                if (typeof swal !== 'undefined') {
+                    swal("Error", msg, "error");
+                } else {
+                    alert(msg);
+                }
+                msg = null;
+            },
+        });
+    }
+
+    // Modal 1-2 page
+    function getRuleList() {
+        var param = {
+            dbpath : testingData.dbpath,
+            dbname : testingData.dbname,
+            testcode : testingData.testcode,
+            retest : testingData.retest,
+        }
+        $.ajax({
+            url: '/api/detects/detect/get_rule_list',
+            method: 'get',
+            data: param,
+            dataType: 'json',
+            beforeSend: function(xhr) {
+                $('#overlay-index1').css('display','inline-block');
+            },
+            success: function(json) {                
+                if( json.length > 0 ){
+                    var data = json[0].datas;
+                    for( var i =0; i< data.length; i++ ){
+                        if( testingData.retest != true ){
+                            data[i].select_value = '';
+                            data[i].pcap = '';
+                            data[i].pcapindex = '';
+                            data[i].automake = 1;
+                        }else{                         
+                            data[i].automake = 0;
+                        }
+                    }                    
+                    $('#spanRuleInfo').html('<i class="fa fa-tag" style="font-size:17px"></i> 전체 '+ data.length+'개의 정책이 있습니다.');
+                    $('#tblRuleList').bootstrapTable("load", data);
+                    $('#tblRuleList').bootstrapTable("hideLoading");                    
+                }
+                $('#tblRuleList').bootstrapTable("hideLoading");
+                $('#overlay-index1').css('display','none');
+            },
+            error: function(request, status, error) {
+                var msg = "정책을 불러오는 중에 오류가 발생하였습니다.";
+                if (typeof swal !== 'undefined') {
+                    swal("Error", msg, "error");
+                } else {
+                    alert(msg);
+                }
+                msg = null;
+            },
+        });
+    }
+
+    // Modal 2-3 page
+    function ivsUpdateRuleList() {
+        var data = $('#tblRuleList').bootstrapTable('getData');
+        var selectedRules = [];
+        var selectionsCnt = 0;
+
+        // 선택(select, base)된 정책들만 selectedRules 리스트로 복사
+        // 및 정책 1개 이상 유효성 체크
+        for( var i = 0 ; i <  data.length; i++){
+            if(data[i].select_value == "1"){
+                selectedRules.push(data[i]);
+            }else if ( data[i].select_value == "2" ){
+                selectedRules.push(data[i]);
+                selectionsCnt++;
+            }
+        }
+        if( selectionsCnt > 0 ){
+
+            $("#update").prop('disabled',true);
+            testInterval = setInterval(function() {
+                if (index == 1 && $('.modal').hasClass('in')) {
+                    ivsRunCheck();
+                }
+            }, 1000);
+
+            var  strSam = '';
+            for( var i = 0; i < selectedRules.length; i++){
+                // var pcapPath = '<%=session.root%>'+selectedRules[i].pcap.substring(1);
+
+                strSam += '|'+selectedRules[i].select_value+'|' + testingData.category + '|' + selectedRules[i].code + '|' + selectedRules[i].automake +'|'+ selectedRules[i].pcap +'|\n';
+            }   // |(none: 0 / base: 1 /select: 2)|category|code|automake|pcap_path|
+
+            var param = {
+                sam : strSam,
+                testcode : testingData.testcode,
+            }
+
+            $.ajax({
+                url: '/api/detects/detect/ivs_update_rulelist',
+                method: 'post',
+                data: param,
+                dataType: 'json',
+                beforeSend: function(xhr) {
+                    $('#overlay-index1').css('display','inline-block');
+                },
+                success: function(json) {
+                    var result = json.message;
+                    if (result == 'SUCCESS_  2000') {
+                        ivsRunCheck();
+                    } else {
+                        // var msg = "정책을 적용하는 중에 오류가 발생하였습니다.";
+                        // swal("Error", msg, "error").
+                        // then(function(){
+                        //     ivsClear();
+                        // });
+                    }
+                },
+                error: function(request, status, error) {
+                    var msg = "정책을 적용하는 중에 오류가 발생하였습니다.";
+                    if (typeof swal !== 'undefined') {
+                        swal("Error", msg, "error");
+                    } else {
+                        alert(msg);
+                    }
+                    msg = null;
+                },
+            });
+        }else{
+            swal("경고","정책을 한 개 이상 선택(select)해야 합니다.", "warning");
+        }
+    }
+
+
+    function getSelectedRuleList() {
+        var param = {
+            testcode : testingData.testcode,
+            dbpath : testingData.dbpath,
+            dbname : testingData.dbname
+        }
+
+        $.ajax({
+            url: '/api/detects/detect/get_test_list',
+            method: 'get',
+            data: param,
+            dataType: 'json',
+            beforeSend: function(){
+                $('#tblRuleList').bootstrapTable("showLoading");
+            },
+            success: function(json) {
+                if( json.length > 0 ){
+                    var data = json[0].datas;
+                    $('#spanRuleInfo').html('<i class="fa fa-tag" style="font-size:17px"></i> 전체 '+ data.length+'개의 정책이 있습니다.');
+                    $('#tblRuleList').bootstrapTable("load", data);
+                    $('#tblRuleList').bootstrapTable("hideLoading");
+                }
+            },
+            error: function(request, status, error) {
+                var msg = "테스트를 불러오는 중에 오류가 발생하였습니다.";
+                if (typeof swal !== 'undefined') {
+                    swal("Error", msg, "error");
+                } else {
+                    alert(msg);
+                }
+                msg = null;
+            },
+        });
+    }
+
+    // Modal 2-3 page
+    function ivsRun(){
+        testStatus = 'TEST_RUN';
+        var param = {
+            testcode : testingData.testcode,
+        }
+        $.ajax({
+            url: '/api/detects/detect/ivs_run',
+            method: 'get',
+            data: param,
+            dataType: 'json',
+            success: function(json) {
+                getTestList();
+                MovePage(2);
+            },
+            error: function(request, status, error) {
+                var msg = "테스트를 시작하는 중에 오류가 발생하였습니다.";
+                if (typeof swal !== 'undefined') {
+                    swal("Error", msg, "error");
+                } else {
+                    alert(msg);
+                }
+                msg = null;
+            },
+        });
+    }
+
+    //나중에 함수이름 바꾸기...
+    function getTestList() {
+        var param = {
+            testcode : testingData.testcode,
+            dbpath : testingData.dbpath,
+            dbname : testingData.dbname
+        }
+
+        $.ajax({
+            url: '/api/detects/detect/get_test_list',
+            method: 'get',
+            data: param,
+            dataType: 'json',
+            beforeSend: function(){
+                $('#loading').css('display','inline-block');
+                $('#tblTestResult').bootstrapTable("showLoading");
+            },
+            success: function(json) {
+                if( json.length > 0 ){
+                    var data = json[0].datas;
+                    $('#tblTestList').bootstrapTable("load", data);
+                    $('#tblTestList').bootstrapTable("hideLoading");
+                }
+            },
+            error: function(request, status, error) {
+                var msg = "테스트를 불러오는 중에 오류가 발생하였습니다.";
+                if (typeof swal !== 'undefined') {
+                    swal("Error", msg, "error");
+                } else {
+                    alert(msg);
+                }
+                msg = null;
+            },
+        });
+    }
+
+    function ivsRunCheck() {
+        var param = {
+            testcode : testingData.testcode,
+        }
+        $.ajax({
+            url: '/api/detects/detect/ivs_run_check',
+            method: 'get',
+            data: param,
+            dataType: 'json',
+            success: function(json) {
+                var status = json[0].datas[0].test_status;
+                testStatus = status;
+                switch (status) {
+                    case 'NO_TEST':
+                        clearTimeout(testInterval);
+                        MovePage(0);
+                    break;
+                    case 'TEST_UPDATE':             // 사용자 추가 정책 업로드 중
+                    break;
+                    case 'TEST_UPDATE_DONE':        // 사용자 추가 정책 업로드 완료
+                        clearTimeout(testInterval);
+                        MovePage(1);
+                    break;
+                    case 'TEST_UPLOAD':             // 추가+기본 정책 적용 중
+                    break;
+                    case 'TEST_UPLOAD_DONE':        // 추가+기본 정책 적용 완료
+                        $('#overlay-index1').css('display','none');
+                        clearTimeout(testInterval);
+                        MovePage(1);
+                    break;
+                    case 'TEST_RUN':
+                    break;
+                    case 'TEST_END':
+                        clearTimeout(testInterval);
+                        MovePage(3);
+                    break;
+                    default:
+                        clearTimeout(testInterval);
+                        var msg = "테스트를 확인하는 중에 오류가 발생하였습니다.";
+                        swal("Error", msg, "error");
+                    break;
+                }
+            },
+            error: function(request, status, error) {
+            },
+        });
+    }
+
+    function getTestResult() {
+        var param = {
+            testcode : testingData.testcode,
+            dbpath : testingData.dbpath,
+            dbname : testingData.dbname
+        }
+
+        $.ajax({
+            url: '/api/detects/detect/get_test_list',
+            method: 'get',
+            data: param,
+            dataType: 'json',
+            before: function(){
+                $('#tblTestResult').bootstrapTable("showLoading");
+            },
+            success: function(json) {
+                if( json.length > 0 ){
+                    var success = 0;
+                    var fail = 0;
+                    var none = 0;
+                    var data = json[0].datas;
+                    for(var i=0; i<data.length; i++){
+                        var sf = parseInt(data[i].detect);
+                        var sfc = "";
+
+                        if (sf == 0) {
+                            fail ++;
+                        }else if (sf > 0) {
+                            success ++;
+                        }else{
+                            none ++;
+                        }
+                    }
+                    $('#spanTestResult').html('<i class="fa fa-tag" style="font-size:17px"></i> 전체 '+ data.length+'건 | 탐지 '+ success +'건 | 미탐지 '+ fail +'건 | 베이스 '+ none +'건');
+                    $('#tblTestResult').bootstrapTable("load", data);
+                    $('#tblTestResult').bootstrapTable("hideLoading");
+                }
+            },
+            error: function(request, status, error) {
+                var msg = "테스트 결과를 불러오는 중에 오류가 발생하였습니다.";
+                if (typeof swal !== 'undefined') {
+                    swal("Error", msg, "error");
+                } else {
+                    alert(msg);
+                }
+                msg = null;
+            },
+        });
+    }
+
+    function ivsClear() {
+        var step = 9;
+        if( testStatus == 'TEST_SET'){
+            step = 1;
+        }else if( testStatus == 'TEST_UPDATE' || testStatus == 'TEST_UPDATE_DONE'){
+            step = 2;
+        }else if( testStatus == 'TEST_UPLOAD' || testStatus == 'TEST_UPLOAD_DONE'){
+            step = 3;
+        }
+
+        var parm = {
+            step : step,
+        }
+        $.ajax({
+            url: '/api/detects/detect/ivs_clear',
+            method: 'get',
+            data: parm,
+            dataType: 'json',
+            success: function(json) {
+                window.location.reload();
+            },
+            error: function(request, status, error) {
+                var msg = "테스트를 초기화 하는 중에 오류가 발생하였습니다.";
+                if (typeof swal !== 'undefined') {
+                    swal("Error", msg, "error");
+                } else {
+                    alert(msg);
+                }
+                msg = null;
+            },
+        });
+    }
+
+    function ivsTestSave(del,comment) {
+        var parm = {
+            test_code: testingData.testcode,
+            delete : del ,      // 0: 저장 / 1: 저장하지 않음
+            comment: comment
+        }
+        $.ajax({
+            url: '/api/detects/detect/ivs_test_save',
+            method: 'post',
+            dataType: 'json',
+            data: parm,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            success: function(json) {
+                window.location.reload();
+            },
+            error: function(request, status, error) {
+                var msg = "테스트를 저장하는 중에 오류가 발생하였습니다.";
+                if (typeof swal !== 'undefined') {
+                    swal("Error", msg, "error");
+                } else {
+                    alert(msg);
+                }
+                msg = null;
+            },
+        });
+    }
+
+    /*******************************************************
+                 Pcap
+    ********************************************************/
+
+    function pcapAutoMatching() {
+            $.ajax({
+                url: '/api/settings/pcap',
+                method: 'get',
+                dataType: 'json',
+
+                beforeSend: function (xhr) {
+                    $('#tblRuleList').bootstrapTable("showLoading");
+                },
+                success: function (json) {
+                    if (json.length > 0) {
+                        var pcapResult = json[0].datas;
+                        var data = $('#tblRuleList').bootstrapTable('getData');
+                        for( var i= 0; i< data.length; i++ ){
+                            for(var j = 0; j< pcapResult.length ; j++ ){
+                                if (data[i].code == pcapResult[j].code){ 
+                                    if(data[i].select_value == 2){
+                                        data[i].automake = 0;
+                                        data[i].pcap = pcapResult[j].filename;
+                                        data[i].pcapindex = pcapResult[j].code;
+                                        break;
+                                    }else{
+                                        data[i].automake = 1;
+                                        data[i].pcap = '';
+                                        data[i].pcapindex = '';
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        $('#tblRuleList').bootstrapTable("load",data);
+                        $('#tblRuleList').bootstrapTable("hideLoading");
+                    } else {
+                        swal("Error", json.code, "error");
+                    }
+                },
+                error: function (request, status, error) {
+                    var msg = "code:" + request.status + "\n" + "error:" + error + "\n" + request.responseText;
+
+                    swal("Error", msg, "error");
+                }
+            });
+        }
+
+        function pcapAutoMatchingCancel(){
+            var data = $('#tblRuleList').bootstrapTable('getData');
+            for( var i= 0; i< data.length; i++ ){
+                data[i].automake = 1;
+                data[i].pcap = '';
+                data[i].pcapindex = 0;
+            }
+            $('#tblRuleList').bootstrapTable("load",data);
+        }
+
+    /*******************************************************
+                 Modal View 관련 Method들
+    ********************************************************/
+
+
+
+    function startModal() {        
+        if(testStatus == 'NO_TEST'){
+            MovePage();
+        }else if( testStatus == 'TEST_SET' || testStatus =="TEST_UPDATE" || testStatus =="TEST_UPDATE_DONE" || testStatus =="TEST_UPLOAD" || testStatus =="TEST_UPLOAD_DONE"){
+            MovePage(1);
+        }else if( testStatus == 'TEST_RUN'){
+            MovePage(2);
+        }else if( testStatus == 'TEST_END'){
+            MovePage(3);
+        }
+        SetTopInfo();
+        $('#modal_detect').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+    }
+
+    function MovePage(mode) {
+        if(mode == '' || mode == undefined){
+            mode = 0;
+        }
+        index = mode;
+        setSelectView(index);
+        loadPageData(index);
+    }
+
+    function setSelectView(step) {
+        if ($selectMenuItem) {
+            $tabmenuSelects.removeClass("select");
+            $selectPanel.removeClass("select");
+            $tabNames.show();
+            $tabCircles.show();
+            $tabNums.show();
+        }
+        $selectMenuItem = $tabmenu.eq(step);
+        $selectPanel = $tabPanels.eq(step);
+        $tabmenuSelects = $tabmenuSelect.eq(step);
+        $tabNames = $tabName.eq(step);
+        $tabNums = $tabNum.eq(step);
+        $tabCircles = $tabCircle.eq(step);
+
+        $selectPanel.addClass("select");
+        $tabmenuSelects.addClass("select");
+        $tabNames.hide();
+        $tabCircles.hide();
+        $tabNums.hide();
+
+        $("#upload").css('display', 'none');
+        $("#update").css('display', 'none');
+        $("#run").css('display', 'none');
+        $("#forceEnd").css('display', 'none');
+
+        // state-check
+        if (step == 0 ){
+            $("#upload").css('display', 'inline-block');
+            if (testStatus =="NO_TEST") {
+                $('#overlay-index0').css('display','none');
+                $("#upload").prop('disabled', false);
+            }
+        }else if (step == 1) {
+            $("#update").css('display', 'inline-block');
+            $("#run").css('display', 'inline-block');
+            $("#row-rule").css('display','block');
+            $("#clear").css('display', 'block');
+
+            if (testStatus =="TEST_UPLOAD") {
+                $("#tblRuleList").bootstrapTable('hideColumn', 'selected');
+                $("#update").prop('disabled', true);
+                $("#btnPcap").prop('disabled', true);
+                $("#btnPcapCancel").prop('disabled', true);
+                $("#run").prop('disabled', true);
+
+            }else if (testStatus =="TEST_UPLOAD_DONE") {
+                $("#tblRuleList").bootstrapTable('hideColumn', 'selected');
+                $("#tblRuleList").bootstrapTable('hideColumn', 'selectpcap');
+                $("#tblRuleList").bootstrapTable('showColumn', 'select_value');
+                $("#btnPcap").prop('disabled', true);
+                $("#btnPcapCancel").prop('disabled', true);
+                $("#update").prop('disabled', true);
+                $("#run").prop('disabled', false);
+
+            }else if (testStatus =="TEST_UPDATE") {
+                ruleProgressBar();
+                $("#update").css('display', 'none');
+                $("#run").css('display', 'none');
+
+            }else{  //TEST_UPDATE_DONE
+                $("#update").prop('disabled', false);
+                $("#run").prop('disabled', true);
+            }
+
+        }else if (step == 2) {
+            $("#forceEnd").css('display', 'inline-block');
+            $("#result").css('display', 'inline-block');
+            $("#result").prop('disabled', true);
+            $("#clear").css('display', 'none');
+
+        }else if (step == 3) {
+            $("#forceEnd").css('display', 'none');
+            $("#result").css('display', 'none');
+            $("#finish").css('display', 'inline-block');
+            $("#clear").css('display', 'none');
+        }else{
+            alert("테스트를 다시 시작해주세요");
+        }
+    }
+
+    function loadPageData(step) {
+        switch (step) {
+            case 0:
+                break;
+            case 1:
+                if (testStatus == 'TEST_UPDATE') {
+                    testInterval = setInterval(function() {
+                        if (index == 1 && $('.modal').hasClass('in')) {
+                            ivsRunCheck();
+                        }
+                    }, 1000);
+                } else if (testStatus == 'TEST_UPLOAD') {
+                    getSelectedRuleList();
+                    testInterval = setInterval(function() {
+                        if (index == 1 && $('.modal').hasClass('in')) {
+                            ivsRunCheck();
+                        }
+                    }, 1000);
+                } else if(testStatus == 'TEST_UPLOAD_DONE'){
+                    getSelectedRuleList();
+                } else{
+                    getRuleList();
+                }
+                break;
+            case 2:
+                if (testStatus == 'TEST_RUN') { //모달창 중간 진입
+                    getTestList();
+                    testInterval = setInterval(function() {
+                        if ( index == 2 && $('.modal').hasClass('in') ) {
+                            getTestList();
+                            ivsRunCheck();
+                        }
+                    }, 1000);
+                }
+                break;
+            case 3:
+                getTestResult();
+                break;
+            default:
+                var msg = "잘못된 방식으로 페이지가 실행되었습니다."
+                if (typeof swal !== 'undefined') {
+                    swal("Error", msg, "error");
+                } else {
+                    alert(msg);
+                }
+                return;
+                break;
+        }
+    }
+
+
+    function SetTopInfo() {
+        var strCategory = '';
+        var strType = '';
+        switch (testingData.category) {
+            case '1100':
+                strCategory = '패턴블럭';
+                break;
+            case '1300':
+                strCategory = 'Web CGI';
+                break;
+            case '1301':
+                strCategory = 'WEBCGI (사용자정의)';
+                break;
+            case '1500':
+                strCategory = '패턴블럭 (사용자정의)';
+                break;
+            case '2400':
+                strCategory = 'RegEx';
+                break;
+            case '2401':
+                trCategory = 'RegEx (사용자정의)';
+            break;
+            case '2402':
+                strCategory = 'RegEx (배포룰)';
+                break;
+            default:
+                strCategory = testingData.category;
+            break;
+        }
+        switch (testingData.type) {
+            case '1':
+                strType = '그룹 테스트';
+                break;
+            case '2':
+                strType = '유닛 테스트';
+                break;
+        }
+
+        if(testingData.pcap_dir == ''){
+            $('span[name=backtraffic]').text('미사용');
+        }else{
+            $('span[name=backtraffic]').text(testingData.pcap_dir);
+        }
+        $('span[name=category]').text(strCategory);
+        $('span[name=testcode]').text(testingData.testcode);
+        $('span[name=dbpath]').text(testingData.dbpath+'/'+testingData.dbname);
+        $('span[name=time]').text(testingData.interval + '초');
+        $('span[name=type]').text(strType);
+    }
+
+    function onselectChange(obj, index){
+        $(obj).removeClass('btn-primary');
+        $(obj).removeClass('btn-warning');
+        $(obj).removeClass('btn-danger');
+
+        switch(obj.value){
+            case '0':
+                $(obj).addClass('btn-danger');
+            break;
+            case '1':
+                $(obj).addClass('btn-warning');
+            break;
+            case '2':
+                $(obj).addClass('btn-primary');
+            break;
+        }
+
+        var data = $('#tblRuleList').bootstrapTable('getData');
+        data[index].select_value = obj.value;
+
+        //Base, None 일 때는 pcap 매칭 해제
+        if(data[index].automake == 0 && obj.value != 2){
+            data[index].automake = 1;
+            data[index].pcap = '';
+            data[index].pcapindex = '';
+        }
+
+        $('#tblRuleList').bootstrapTable('load', data);
+    }
+
+    function onselectChangeAll(obj){
+        $('.selDetect').removeClass('btn-primary');
+        $('.selDetect').removeClass('btn-warning');
+        $('.selDetect').removeClass('btn-danger');
+        switch(obj.value){
+            case '0':
+                $('.selDetect').addClass('btn-danger');
+            break;
+            case '1':
+                $('.selDetect').addClass('btn-warning');
+            break;
+            case '2':
+                $('.selDetect').addClass('btn-primary');
+            break;
+        }
+
+        var data = $('#tblRuleList').bootstrapTable('getData');
+        for(var i=0; i< data.length ; i++){
+            data[i].select_value = obj.value;
+
+            if( obj.value != 2 && data[i].automake == 0){
+                data[i].automake = 1;
+                data[i].pcap = '';
+                data[i].pcapindex = '';
+            }
+        }      
+
+        $('#tblRuleList').bootstrapTable('load', data);
+    }
+
+
+    // 모달창 X자버튼으로 닫기 : 모달창만 닫힘
+    // 테스트 중이 아닐 때는 모달창만 닫히게
+    function modalClose() {
+        if(testStatus == 'NO_TEST'){
+            $('#modal_detect').modal('hide');
+        }else{
+            clearTimeout(testInterval);
+            window.location.reload();
+        }
+    }
+
+    function stopTest(){
+        if(testStatus == 'TEST_RUN' || testStatus =='TEST_END'){
+            swal({
+                title: '테스트 종료',
+                text: '테스트를 종료합니다.',
+                type: "question",
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "저장 후 종료",
+                showCancelButton: true,
+                cancelButtonText: '저장하지 않고 종료',
+            }).then(function () {
+                $('#modal_detect').modal('hide');
+                swal({
+                    title: '테스트 저장',
+                    text: '테스트를 저장합니다.',
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "저장",
+                    showCancelButton: true,
+                    cancelButtonText: '취소',
+                    input: 'text',
+                    inputPlaceholder: '함께 저장할 코멘트를 입력해 주세요.'
+                }).then(function (input) {
+                    modalClose();
+                    ivsTestSave(0,input);
+                }, function (dismiss,esc) {
+                    if (dismiss === 'cancel') {
+                    }
+                });
+            }, function (dismiss,esc) {
+                if (dismiss === 'cancel') {
+                    modalClose();
+                    ivsTestSave(1,null);
+                }
+            });
+        }else{
+            swal({
+            title: '초기화',
+            text: '테스트 셋팅을 초기화합니다.',
+            type: 'question',
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "초기화",
+            showCancelButton: true,
+            cancelButtonText: '취소'
+        }).then(function () {
+            ivsClear();
+            }, function (dismiss) {
+                if (dismiss === 'cancel') {}
+            });
+        }
+    }
+    function checkShowRule(object){
+        if(object.checked == true){
+            $('#tblRuleList').bootstrapTable('showColumn','ncscrule');
+        }else{
+            $('#tblRuleList').bootstrapTable('hideColumn','ncscrule');
+        }
+    }
+
+    function detailRuleInfo(index){
+        $('#tblRuleList tr[data-index='+index+']').find('>td>.detail-icon').trigger('click');
+    }
+
+    function ruleDetailFormatter(index, row) {
+        var html = [];
+        $.each(row, function (key, value) {
+            switch(key){
+                case 'ncscrule' :
+                    key = '정책 패턴';
+                    html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+                break;
+
+                // case 'code' :
+                //     key = '정책 코드';
+                //     html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+                // break;
+            }
+        });
+        return html.join('');
+    }
+
+
+</script>

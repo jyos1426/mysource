@@ -1,0 +1,129 @@
+<style>  
+    .table-width-200 > .th-inner{
+          width: 200px;
+      } 
+    .table-width-150 > .th-inner{
+        width: 150px;
+    } 
+  </style>
+  
+  <div class="modal modal-center fade" id="modal_dash_pcap" tabindex="-1" role="dialog" aria-labelledby="my80sizeCenterModalLabel">
+    <div class="modal-dialog modal-lg modal-center" role="document">
+      <div class="modal-content modal-80size">
+        <div class="modal-body">
+          <div class="small-box bg-yellow alert alert-dismissible">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span></button>
+            <h3 id="pcapCount"> 0<sup style="font-size: 20px">개</sup></h3> pcap을 확인하였습니다.<br/>
+            <div class="icon">
+              <i class="ion ion-soup-can"></i>
+            </div>
+          </div>
+            
+          <div class="box" style="border:none;">
+          <div class="" id="toolbar-pcap">
+            </div>  
+            <!-- /.btn-group -->
+  
+            <table class="table table_1 table-hover table-striped"
+            id="tblDashPcapLog"
+            data-width="100%"
+            data-toggle="table"
+            data-striped="true"
+            data-pagination ="true"
+            data-page-size="100"
+            data-page-list="[10, 20, 30, 50, 100, 500, 1000]"
+            data-locale="ko-KR"
+            data-search="true"
+            data-filter-control="true" 
+            data-filter-show-clear="true"
+            data-show-refresh="true"
+            data-show-toggle="true"
+            data-show-columns="true"
+            data-show-export="true"
+            data-escape="false"
+            data-search-align="left"
+            data-buttons-align="left">
+            <thead>
+                <tr>
+                    <th data-field="code" data-align="center" data-width="80">코드</th>
+                    <th data-field="category" data-align="center" data-width="150" data-formatter="fConvertCategory">카테고리</th>
+                    <th data-field="filename" data-align="left">파일명</th>
+                    <th data-field="comment" data-align="left">설명</th>
+                    <th data-align="center" data-width="80" data-formatter="fPcapDownload">다운로드</th>
+                </tr>
+            </thead>
+        </table>
+        
+        <div class="overlay" id="overlay-dash-pcap">
+            <i class="fa fa-spinner fa-spin"></i>
+        </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <%- include('../partials/foot') -%>
+    <script>
+      var pcapCount = 0;
+
+      // ============================================================================
+      function ivsGetPcapList() {
+  
+        $.ajax({
+            url: '/api/settings/pcap',           
+            method: 'get',
+            dataType: 'json',
+  
+            beforeSend: function (xhr) {
+              $('#overlay-dash-pcap').show();
+              $('#tblDashPcapLog').bootstrapTable("showLoading");
+            },
+            success: function (json) {
+              if (json.length > 0) {
+                  var result = json[0].datas;        
+                  pcapCount = result.length;                
+                  $('#pcap-box').html('\
+                      <h3>'+ pcapCount +'<sup style="font-size: 20px">개</sup></h3>\
+                      <p>Pcap 관리</p>\
+                      ');      
+                  $('#pcapCount').html( pcapCount+'<sup style="font-size: 20px">개</sup>' );  
+                  $('#tblDashPcapLog').bootstrapTable("load", result);
+              }else{                       
+                $('#pcap-box').html('\
+                            <h3><sup style="font-size: 15px">pcap 확인 중 오류가 발생했습니다.</sup></h3>\
+                            <p>Pcap 관리</p>\
+                            ');   
+              }
+                  $('#tblDashPcapLog').bootstrapTable("hideLoading");
+                  $('#overlay-dash-pcap').hide();
+            },
+            error: function (request, status, error) {     
+                $('#pcap-box').html('\
+                    <h3><sup style="font-size: 15px">pcap 확인 중 오류가 발생했습니다.</sup></h3>\
+                    <p>Pcap 관리</p>\
+                    ');   
+            }
+        });
+    }
+
+    
+    function PcapDownload(filepath){  
+        $.ajax({
+            url: '/api/settings/pcap/check_pcap_exist?filepath=' + encodeURIComponent(filepath),
+            method: 'get',
+            dataType: 'json',
+            success: function(json) {
+                if(json == 'success'){
+                    window.location = '/api/settings/pcap/pcap_download?filepath=' + encodeURIComponent(filepath);
+                }else{
+                    swal("Error", "pcap이 경로에 존재하지 않습니다.", "error");
+                }
+            },
+            error: function(request, status, error) {
+                swal("Error", "pcap 다운로드 중에 오류가 발생했습니다.", "error");
+            },
+        });
+    }
+    </script>

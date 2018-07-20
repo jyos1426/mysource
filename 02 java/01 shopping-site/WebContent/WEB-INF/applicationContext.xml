@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+		
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:XE"/>
+		<property name="username" value="test1"/>
+		<property name="password" value="test1"/>
+	</bean> 
+	
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- 마이바티스설정연결 -->
+	<bean id="sqlSessionFactory" 
+	      class="org.mybatis.spring.SqlSessionFactoryBean">
+	        <property name="dataSource" ref="dataSource" /> 
+	        <property name="configLocation" value="classpath:mybatis-config.xml" />
+	 </bean>
+	  
+	 <bean id="sqlSession" 
+	      class="org.mybatis.spring.SqlSessionTemplate">
+	 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
+	 </bean>
+	 
+	 <bean id="messageSource"
+		  class="org.springframework.context.support.ResourceBundleMessageSource">
+		  <property name="basenames">
+		  <list>
+		     <value>message</value>
+		     <value>error</value>
+		   </list>
+		  </property>
+	</bean>
+
+	<context:annotation-config></context:annotation-config>
+	<context:component-scan base-package="com.my.dao"></context:component-scan>
+	<context:component-scan base-package="com.my.sevice"></context:component-scan>
+</beans>
+
+
+
+
+

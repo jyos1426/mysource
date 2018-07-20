@@ -1,0 +1,84 @@
+<!-- begin::Quick Sidebar -->
+<div id="m_detail_sidebar4" class="m-quick-sidebar m-quick-sidebar--tabbed m-quick-sidebar--skin-light" appunwraptag="">
+	<div class="m-quick-sidebar__content m--hide">
+		<span id="m_detail_sidebar_close4" class="m-quick-sidebar__close" #btnDetailSidebarClose>
+      <i class="la la-close"></i>
+    </span>
+    
+  	<ul id="m_detail_sidebar_tabs4" class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+      <li class="nav-item m-tabs__item">
+        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_detail_sidebar_tabs_backup" role="tab" #tabIPPoolBackup>
+          IPPool 백업
+        </a>
+      </li>      
+    </ul>
+  	<div class="tab-content">
+    	<div class="m-alert m-alert--icon alert alert-danger" role="alert" *ngIf="error_msg != ''">
+				<div class="m-alert__icon">
+					<i class="la la-warning"></i>
+				</div>
+				<div class="m-alert__text">
+					{{error_msg}}<br>
+					<small>{{error_detail}}</small>
+				</div>
+			</div>			
+  		
+  		<div class="tab-pane active m-scrollable" id="m_detail_sidebar_tabs_backup" role="tabpanel">
+  			<form class="m-form m-form--fit m-form--label-align-right m-form--group-seperator" (ngSubmit)="onSubmitIPPoolBakcup()" #ippoolBackupForm="ngForm" novalidate>
+  				<div class="m-portlet__body">
+  					<span class="m-form__help">
+							IPPool 그룹/객체/네트워크 정보를 백업합니다.
+						</span>
+						<div class="m-form__section m-form__section--first">
+							<div class="form-group m-form__group" style="padding-left: 0; padding-right: 0;">
+								<label>
+									백업 파일명
+								</label>
+								<div [ngClass]="getColClass()">
+									<input class="form-control" type="text" [disabled]="stateLoading" placeholder="*.ipp" [(ngModel)]="inputFilename" name="input-filename" required #filename>
+									<span class="input-group-btn" [hidden]="stateLoading">
+										<button class="btn btn-primary" type="submit">
+											백업시작
+										</button>
+									</span>
+								</div>
+							</div> 
+						</div>
+					</div>
+				</form>
+				<kendo-grid
+				  [data]="gridView"
+					[pageable]="true" 
+					[skip]="skip" 
+					[pageSize]="pageSize"
+					[scrollable]="'none'"
+					(pageChange)="pageChange($event)">
+
+					<kendo-grid-column field="date" title="백업날짜" [width]="60" [headerStyle]="{'text-align': 'center'}" [style]="{'font-size': '0.9em'}">
+					</kendo-grid-column>
+
+					<kendo-grid-column field="filename" title="백업 파일명" [width]="150" [headerStyle]="{'text-align': 'center'}"></kendo-grid-column>
+
+					<kendo-grid-column field="size" title="크기" [width]="60" [headerStyle]="{'text-align': 'center'}"></kendo-grid-column>
+
+					<kendo-grid-column field="manage" title="관리" [width]="60" [headerStyle]="{'text-align': 'center'}">
+						<ng-template kendoGridCellTemplate let-dataItem>
+							<!-- <a *ngIf="dataItem.id != 65535" href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill" title="다운로드"> -->
+							<a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill" title="다운로드" (click)="saveFile(dataItem.filename)">
+								<i class="fa fa-download"></i>
+							</a>
+						</ng-template>
+					</kendo-grid-column>
+				</kendo-grid>
+  		</div>
+
+  		<br>
+
+  		<div id="m_detail_sidebar_footer4" class="modal-footer">
+      	<button type="button" class="btn btn-primary m-btn m-btn--air" title="닫기" (click)="closePopup($event)">
+          닫기
+        </button>
+      </div>			
+  	</div>
+	</div>
+</div>

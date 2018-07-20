@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_sub_boardlist"
+            android:title="내 합승 기록"/>
+        <item
+            android:id="@+id/nav_sub_blocklist"
+            android:title="차단 목록"/>
+    </group>
+
+    <item android:title="기타">
+        <menu>
+            <item android:title="서비스 약관" />
+            <item android:title="위치기반서비스 이용약관" />
+            <item android:title="개인정보 처리방침" />
+            <item android:title="오픈소스 라이센스" />
+        </menu>
+    </item>
+
+</menu>

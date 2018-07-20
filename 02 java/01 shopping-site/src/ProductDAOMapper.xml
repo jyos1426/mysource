@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="ProductDAOMapper">
+	
+	<resultMap id="prodResultMap" type="Product">
+	  <id property="no" column="prod_no"/>
+	  <result property="name" column="prod_name"/>
+	  <result property="price" column="prod_price"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="Product">
+		INSERT INTO product 
+		VALUES(#{no},#{name},#{price})
+	</insert>		
+	<select id="selectAll" resultType="hashmap" resultMap="prodResultMap">
+		SELECT * 
+		FROM product 
+		ORDER BY prod_no DESC
+	</select>	
+	<select id="selectByNo" parameterType="string" resultType="Product" resultMap="prodResultMap">
+		SELECT * 
+		FROM product 
+		WHERE prod_no=#{no}
+	</select>
+	<select id="selectByName" parameterType="string" resultType="Product" resultMap="prodResultMap">
+		SELECT * 
+		FROM product 
+		WHERE prod_name LIKE '%${value}%' 
+		ORDER BY prod_no DESC
+	</select>
+</mapper>

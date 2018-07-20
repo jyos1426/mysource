@@ -1,0 +1,14 @@
+<!-- #ddlSelect tabindex="0" (keydown)="onKeyDown($event)" -->
+<div class="cell-editor-wrapper">
+  <kendo-dropdownlist
+    #ddlSelect
+    class="form-control"
+    [title]="title"
+    [data]="items"
+    [(ngModel)]="selectedItem"
+    [valueField]="'value'"
+    [textField]="'text'"
+    (keydown)="onKeyDown($event)"
+  >
+  </kendo-dropdownlist>
+</div>

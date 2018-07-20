@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/boardview"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="100sp"
+    android:background="#ffffff">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_marginTop="20sp"
+        android:text="title"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="5sp">
+        <ImageView
+            android:id="@+id/levelimage"
+            android:layout_width="15sp"
+            android:layout_height="15sp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginRight="5sp"/>
+        <TextView
+            android:id="@+id/info"
+            android:text="id  |  00:00  |  조회 0000"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="5sp">
+        <ImageView
+            android:layout_width="16sp"
+            android:layout_height="16sp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginRight="5sp"/>
+        <TextView
+            android:id="@+id/repcount"
+            android:text="0"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:layout_gravity="bottom"
+            android:background="#33000000"
+            android:layout_marginRight="20sp"
+            android:layout_marginLeft="20sp"/>
+    </LinearLayout>
+</LinearLayout>

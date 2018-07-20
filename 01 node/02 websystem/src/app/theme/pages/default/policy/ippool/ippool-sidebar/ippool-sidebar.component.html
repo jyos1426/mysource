@@ -1,0 +1,165 @@
+<!-- begin::Quick Sidebar -->
+<div id="m_detail_sidebar" class="m-quick-sidebar m-quick-sidebar--tabbed m-quick-sidebar--skin-light" appunwraptag="">
+	<div class="m-quick-sidebar__content m--hide">
+		<span id="m_detail_sidebar_close" class="m-quick-sidebar__close" #btnDetailSidebarClose>
+      <i class="la la-close"></i>
+    </span>
+    
+  	<ul id="m_detail_sidebar_tabs" class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+      <li class="nav-item m-tabs__item">
+        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_detail_sidebar_tabs_group" role="tab" #tabGroupAdd>
+          그룹
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+    	<div class="m-alert m-alert--icon alert alert-danger" role="alert" *ngIf="error_msg != ''">
+				<div class="m-alert__icon">
+					<i class="la la-warning"></i>
+				</div>
+				<div class="m-alert__text">
+					{{error_msg}}<br>
+					<small>{{error_detail}}</small>
+				</div>
+				<div class="m-alert__close">
+					<button aria-label="Close" class="close" data-close="alert" type="button"></button>
+				</div>
+			</div>
+
+    	<div class="tab-pane active m-scrollable" id="m_detail_sidebar_tabs_group" role="tabpanel">
+    		<form class="m-form m-form--fit" (ngSubmit)="onSubmit()" #groupAddForm="ngForm" novalidate>
+      	 	<div class="m-portlet__body">
+						<div class="m-form__section m-form__section--first">
+							<div class="form-group m-form__group">
+								<label>
+									그룹ID
+								</label>
+								<input class="form-control m-input" placeholder="Enter group id" type="number" name="group-id" [(ngModel)]="groupData.g_id" required [min]="'1'" [max]="'9900'" #groupID [disabled]="sidebarMode == 'group-mod'">
+								<span class="m-form__help">
+									유효범위 1 ~ 9900 
+								</span>
+							</div>
+							<div class="form-group m-form__group">
+								<label>
+									그룹명
+								</label>
+								<input class="form-control m-input" placeholder="Enter group name" type="text" name="group-name" [(ngModel)]="groupData.g_name" required #groupName>
+							</div>
+						</div>
+					</div>
+
+					<!-- <ul>
+    				<li *ngFor="let err of errors">{{err | json}}</li>
+    			</ul> -->
+   
+					<br>
+
+					<div id="m_detail_sidebar_footer" class="modal-footer">
+		      	<button type="submit" *ngIf="sidebarMode == 'group-add'" class="btn btn-primary m-btn m-btn--air" title="추가">
+		          추가
+		        </button>
+		        <button type="submit" *ngIf="sidebarMode == 'group-mod'" class="btn btn-warning m-btn m-btn--air" title="수정">
+		          수정
+		        </button>
+		        <button type="button" class="btn btn-secondary m-btn m-btn--air" title="취소" (click)="closePopup($event)">
+		          취소
+		        </button>
+		      </div>
+				</form>
+    	 </div>
+
+    	<!-- <div class="tab-pane m-scrollable" id="m_detail_sidebar_tabs_object" role="tabpanel">
+    		<form class="m-form m-form--fit" (ngSubmit)="onSubmitObjectAdd()" #objectAddForm="ngForm" novalidate>
+      		<div class="m-portlet__body">
+						<div class="m-form__section m-form__section--first">
+							<div class="form-group m-form__group">
+								<label>
+									선택된 그룹
+								</label>
+								<select class="form-control m-input" disabled>
+									<option *ngFor="let group of groupDatas" [selected]="group.g_id == objectData.g_id">
+										{{group.g_name}}({{group.g_id}})
+									</option>
+								</select>
+							</div>
+							<div class="form-group m-form__group">
+								<label>
+									객체ID
+								</label>
+								<input class="form-control m-input" placeholder="Enter object id" type="number" name="object-id" [(ngModel)]="objectData.o_id" required [min]="'1'" [max]="'9999'" #objectID>
+								<span class="m-form__help">
+									유효범위 1 ~ 9999 
+								</span>
+							</div>
+							<div class="form-group m-form__group">
+								<label>
+									객체명
+								</label>
+								<input class="form-control m-input" placeholder="Enter object name" type="text" name="object-name" [(ngModel)]="objectData.o_name" required #objectName>
+							</div>
+
+							<div class="form-group m-form__group">
+								<label>
+									Inbound 정책 템플릿
+								</label>
+								<select class="form-control m-input" #inboundTemplate>
+									<option *ngFor="let template of getInboundTemplateData()" [value]="template.template_id" [selected]="template.template_id == objectData.template_inbound">
+										{{template.template_name}}
+									</option>
+								</select>
+							</div>
+							<div class="form-group m-form__group">
+								<label>
+									Outbound 정책 템플릿
+								</label>
+								<select class="form-control m-input" #outboundTemplate>
+									<option *ngFor="let template of getOutboundTemplateData()" [value]="template.template_id" [selected]="template.template_id == objectData.template_outbound">
+										{{template.template_name}}
+									</option>
+								</select>
+							</div>
+							<div class="form-group m-form__group">
+								<label>
+									엔진설정
+								</label>
+								<div id="noc-check-all">
+									<input type="checkbox" name="noc-all" (click)="selectNOCAll($this)" [(ngModel)]="toggleSelectNOC">
+									전체
+									<span></span>
+								</div>
+								<div class="example-wrapper">
+									<kendo-multiselect
+										#nocSelect 
+										id="noc-items" 
+										name="noc-items" 
+										class="form-control m-input" 
+										placeholder="Select engine" 
+										[data]="nocItems" 
+										[textField]="'text'" 
+										[valueField]="'value'" 
+										[(ngModel)]="selectedNOC">
+										<ng-template kendoMultiSelectTagTemplate let-dataItem>
+	        						{{ dataItem.text }}
+	      						</ng-template>
+									</kendo-multiselect>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<br>
+
+					<div id="m_detail_sidebar_footer" class="modal-footer">
+		      	<button type="submit" class="btn btn-primary m-btn m-btn--air" title="추가">
+		          추가
+		        </button>
+		        <button type="button" class="btn btn-secondary m-btn m-btn--air" title="취소" (click)="closePopup($event)">
+		          취소
+		        </button>
+		      </div>
+				</form>
+    	</div> -->
+
+    </div>
+	</div>
+</div>

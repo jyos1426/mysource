@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_map_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/fragment_map_textview"/>
+    <TextView
+        android:id="@+id/fragment_map_no_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/main_tab"
+        android:paddingLeft="16dp"
+        android:gravity="center"
+        android:text="내 위치 탐색을 눌러 위치로 검색해주세요!"
+        android:textSize="18dp"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fragment_fab"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_create"
+        android:scaleType="center"
+        app:backgroundTint="@color/poomAtMain"/>
+</RelativeLayout>

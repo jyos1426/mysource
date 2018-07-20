@@ -1,0 +1,258 @@
+<!--begin::Modal-->
+<div class="modal fade" id="modal_block_monitor_add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          차단 등록
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">
+            &times;
+          </span>
+        </button>
+      </div>
+      <form class="m-form m-form--fit" #blockMonitorModalForm="ngForm">
+        <!-- m-form--label-align-right -->
+        <div class="modal-body">
+          <div class="form-group m-form__group row">
+            <!-- m--margin-top-20 -->
+            <div class="col-12">
+              <label for="ddlBlockMode">
+                차단방법
+              </label>
+              <!-- <select class="form-control btn btn-select m-btn--air" id="input_block_mode" title="차단방법" (change)="changeBlockMode($event.target.value)">
+                <option value="1" selected>SN_SRC_IP</option>
+                <option value="2">SN_DST_IP</option>
+                <option value="8">SN_AND_IP</option>
+                <option value="256">SN_SRC_SERV</option>
+                <option value="512">SN_DST_SERV</option>
+              </select> -->
+              <kendo-dropdownlist
+                #ddlBlockMode
+                id="method"
+                name="method"
+                class="form-control"
+                title="차단방법"
+                [data]="blockModeListItems"
+                [(ngModel)]="selectedBlockMode"
+                [valueField]="'value'"
+                [textField]="'text'"
+                (valueChange)="changeBlockMode($event)"
+                required
+              >
+              </kendo-dropdownlist>
+            </div>
+          </div>
+          <div class="form-group m-form__group row">
+            <div class="col-12">
+              <label for="tbLimitTime">
+                제한시간(초)
+              </label>
+              <kendo-numerictextbox
+                #tbLimitTime
+                id="limit_time"
+                name="limit_time"
+                class="form-control"
+                title="제한시간(초)"
+                [value]="limitTime"
+                [min]="1"
+                [max]="31536000"
+                [autoCorrect]="true"
+                [format]="'n0'"
+                required
+              >
+              </kendo-numerictextbox>
+              <span class="m-form__help">
+                1초 ~ 31,536,000초 사이의 수를 입력하세요.
+              </span>
+            </div>
+          </div>
+          <div class="form-group m-form__group row" *ngIf="activeHackerIP">
+            <div class="col-12">
+              <label for="tbHackerIp">
+                공격자
+              </label>
+              <input
+                #tbHackerIp
+                id="hip"
+                name="hip"
+                class="form-control m-input m-input--air"
+                type="text"
+                title="공격자IP"
+                placeholder="IP 주소"
+                [(ngModel)]="hip"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group m-form__group row" *ngIf="activeVictimIP">
+            <div class="col-12">
+              <label for="tbVictimIp">
+                대상자
+              </label>
+              <input
+                #tbVictimIp
+                id="vip"
+                name="vip"
+                class="form-control m-input m-input--air"
+                title="대상자IP"
+                placeholder="IP 주소"
+                type="text"
+                [(ngModel)]="vip"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group m-form__group row" *ngIf="activeProtocol">
+            <div class="col-12">
+              <label for="ddlProtocol">
+                프로토콜
+              </label>
+              <!-- <select class="form-control btn btn-select m-btn--air" id="input_protocol" title="프로토콜" (change)="changeProtocol($event.target.value)">
+                <option *ngFor="let protocol of protocols" [value]="protocol.code">{{protocol.name}} [{{protocol.code}}]</option>
+              </select> -->
+              <kendo-dropdownlist
+                #ddlProtocol
+                id="protocol"
+                name="protocol"
+                class="form-control"
+                title="프로토콜"
+                [data]="protocolListItems"
+                [(ngModel)]="selectedProtocol"
+                [valueField]="'value'"
+                [textField]="'text'"
+                (valueChange)="changeProtocol($event)"
+                required
+              >
+                <ng-template kendoComboBoxItemTemplate let-protocol>
+                  {{ protocol.text }}&nbsp;<small>[{{ protocol.value }}]</small>
+                </ng-template>
+              </kendo-dropdownlist>
+              <!-- <kendo-combobox
+                #ddlProtocol2
+                name="protocol2"
+                class="form-control"
+                title="프로토콜"
+                [data]="protocolListItems"
+                [(ngModel)]="selectedProtocol"
+                [valueField]="'value'"
+                [textField]="'text'"
+                [filterable]="true"
+                [clearButton]="false"
+                (valueChange)="changeProtocol($event)"
+                (filterChange)="filterProtocol($event)"
+                (selectionChange)="checkEmptyProtocol($event)"
+                (blur)="testCheckEmptyProtocol()"
+                (open)="openProtocol()"
+                (close)="closeProtocol()"
+              >
+                <ng-template kendoComboBoxItemTemplate let-dataItem>
+                  {{ dataItem.text }}&nbsp;<small>[{{ dataItem.value }}]</small>
+                </ng-template>
+              </kendo-combobox> -->
+            </div>
+          </div>
+          <div class="form-group m-form__group row" *ngIf="activeIcmp && activeProtocol">
+            <div class="col-12">
+              <label for="ddlIcmpType">
+                Type
+              </label>
+              <!-- <select class="form-control btn btn-select m-btn--air" id="input_icmp_type" title="ICMP 타입" (change)="changeICMPType($event.target.value)">
+                <option *ngFor="let icmp of icmpTypesData" [value]="icmp.code">{{icmp.code}}: {{icmp.name}}</option>
+              </select> -->
+              <kendo-dropdownlist
+                #ddlIcmpType
+                id="icmp_type"
+                name="icmp_type"
+                class="form-control"
+                title="ICMP 타입"
+                [data]="icmpTypeListItems"
+                [(ngModel)]="selectedICMPType"
+                [valueField]="'value'"
+                [textField]="'text'"
+                (valueChange)="changeICMPType($event);getICMPResultNumber($event)"
+                required
+              >
+                <ng-template kendoComboBoxItemTemplate let-type>
+                  {{ type.value }}:&nbsp;{{ type.text }}
+                </ng-template>
+              </kendo-dropdownlist>
+            </div>
+          </div>
+          <div class="form-group m-form__group row" *ngIf="activeIcmp && activeProtocol">
+            <div class="col-12">
+              <label for="ddlIcmpCode">
+                Code
+              </label>
+              <!-- <select class="form-control btn btn-select m-btn--air" id="input_icmp_code" title="ICMP 코드" (change)="changeICMPCode($event.target.value)">
+                <option *ngFor="let icmp of icmpCodesData" [value]="icmp.code">{{icmp.code}}: {{icmp.name}}</option>
+              </select> -->
+              <kendo-dropdownlist
+                #ddlIcmpCode
+                id="icmp_code"
+                name="icmp_code"
+                class="form-control"
+                title="ICMP 코드"
+                [data]="icmpCodeListItems"
+                [(ngModel)]="selectedICMPCode"
+                [valueField]="'value'"
+                [textField]="'text'"
+                (valueChange)="getICMPResultNumber($event)"
+                required
+              >
+                <ng-template kendoComboBoxItemTemplate let-code>
+                  {{ code.value }}:&nbsp;{{ code.text }}
+                </ng-template>
+              </kendo-dropdownlist>
+            </div>
+          </div>
+          <div class="form-group m-form__group row" *ngIf="activeIcmp && activeProtocol">
+            <div class="col-2">
+              <label>
+                결과
+              </label>
+            </div>
+            <div class="col-10">
+              <p class="form-control-static" title="결과">
+                ({{icmpResult}})
+              </p>
+            </div>
+          </div>
+          <div class="form-group m-form__group row" *ngIf="activePort && activeProtocol">
+            <!-- m--margin-bottom-20 -->
+            <div class="col-12">
+              <label [for]="tbPort">
+                포트
+              </label>
+              <kendo-numerictextbox
+                #tbPort
+                id="port"
+                name="port"
+                class="form-control"
+                title="포트"
+                placeholder="포트"
+                [value]="port"
+                [min]="0"
+                [max]="65535"
+                [autoCorrect]="true"
+                [format]="'n0'"
+                required
+              >
+              </kendo-numerictextbox>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary m-btn m-btn--air" (click)="addBlockPolicy()" title="확인">
+            확인
+          </button>
+          <button type="button" #btnModalClose class="btn btn-secondary m-btn m-btn--air" data-dismiss="modal" title="취소">
+            취소
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--end::Modal-->

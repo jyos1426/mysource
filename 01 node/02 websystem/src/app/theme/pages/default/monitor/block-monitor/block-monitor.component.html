@@ -1,0 +1,301 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title m-subheader__title--separator">
+        차단
+      </h3>
+      <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+          <a href="#" class="m-nav__link m-nav__link--icon">
+            <i class="m-nav__link-icon la la-home"></i>
+          </a>
+        </li>
+        <li class="m-nav__separator">
+          -
+        </li>
+        <li class="m-nav__item">
+          <a href="" class="m-nav__link">
+            <span class="m-nav__link-text">
+              모니터
+            </span>
+          </a>
+        </li>
+        <li class="m-nav__separator">
+          -
+        </li>
+        <li class="m-nav__item">
+          <a href="" class="m-nav__link">
+            <span class="m-nav__link-text">
+              차단
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- END: Subheader -->
+<div class="m-content">
+  <div class="row">
+    <div class="col-lg-12">
+      <!--begin::Portlet-->
+      <div class="m-portlet m-portlet--tabs">
+        <div class="m-portlet__head">
+          <div class="m-portlet__head-caption">
+            <a class="btn btn-sm btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" href="#" title="{{playButtonTitle}}" (click)="togglePlayer( $event.target )">
+              <i class="fa fa-{{playState}}"></i>
+            </a>
+            |
+            <kendo-dropdownlist
+            #ddlReplayTimer
+              title="갱신주기"
+              [data]="replayTimerListItems"
+              [valueField]="'value'"
+              [textField]="'text'"
+              [(ngModel)]="selectedReplayTime"
+              (valueChange)="changeReplayTime($event)"
+            >
+            </kendo-dropdownlist>
+            |
+            <a class="btn btn-sm btn-accent m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" href="#" title="필터" id="m_detail_sidebar_toggle" (click)="clickShowFilter($event)">
+              <i class="fa fa-filter"></i>
+            </a>
+            |
+            <a
+              class="btn btn-sm btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air"
+              href="#"
+              title="차단추가"
+              data-toggle="modal"
+              data-target="#modal_block_monitor_add"
+              (click)="showAddBlockModal($event)"
+            >
+              <i class="fa fa-plus"></i>
+            </a>
+            <button
+              #btnBlockPolicyDelete 
+              type="button"
+              class="btn btn-sm btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air"
+              title="삭제"
+              data-toggle="modal"
+              data-target="#modal_block_monitor_delete"
+              (click)="showDeleteBlockModal($event)"
+              [disabled]="(selectedRowKeys.length > 0) ? false : true"
+            >
+            <!-- (click)="deleteBlockPolicy($event)" -->
+              <i class="fa fa-minus"></i>
+            </button>
+            <!-- <a class="btn btn-sm btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" href="#" title="전체삭제">
+              <i class="fa fa-remove"></i>
+            </a> -->
+            |
+            <label>통신방향:</label>
+            <kendo-dropdownlist
+              title="통신방향"
+              [data]="flowListItems"
+              [valueField]="'value'"
+              [textField]="'text'"
+              [(ngModel)]="selectedFlow"
+              (valueChange)="filterFlow( $event )"
+            >
+            </kendo-dropdownlist>
+            &nbsp;
+            <label>차단목록:</label>
+            <span>{{viewCount}}/{{allCount}}개</span>
+            |
+            <a class="btn btn-sm btn-info m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#" title="엑셀저장" (click)="exportBlockMonitorData(blockMonitorGrid)">
+              <span>
+                <i class="fa fa-file-excel-o"></i>
+                <span>
+                  Excel
+                </span>
+              </span>
+            </a>
+          </div>
+          <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs-line m-tabs-line--brand m-tabs-line--2x m-tabs-line--right" role="tablist">
+              <li class="nav-item m-tabs__item">
+                <a class="nav-link m-tabs__link active" data-toggle="tab" href="javascript:;" role="tab" (click)="filterIpv(4)">
+                  IPv4
+                </a>
+              </li>
+              <li class="nav-item m-tabs__item">
+                <a class="nav-link m-tabs__link" data-toggle="tab" href="javascript:;" role="tab" (click)="filterIpv(6)">
+                  IPv6
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="m-portlet__body">
+          <div class="row">
+            <!--begin: Filter list-->
+            <div class="col-md-9 col-lg-9 col-xs-12 col-sm-12">
+              <div class="filter-list row col-12" >
+                <span class="filter-item filter-danger filter-item--air filter-icon-only" title="필터전체삭제" (click)="removeAllFilter($event)" *ngIf="applyFilterItems?.length > 0">
+                  <span class="filter-icon">
+                    <i class="fa fa-trash-o"></i>
+                  </span>
+                </span>
+                <span class="filter-item filter-default filter-item--air" *ngFor="let item of applyFilterItems">
+                  <span class="filter-type filter-type-success">
+                    {{item.typeText}}
+                  </span>
+                  <span class="filter-value" *ngFor="let detailItem of item.values">
+                    <span *ngIf="!detailItem.type">{{detailItem}}</span>
+                    <span *ngIf="detailItem.type">
+                      <span class="filter-type">{{detailItem.text}}</span> {{detailItem.value}}
+                    </span>
+                  </span>
+                  <span class="filter-icon" title="필터삭제" (click)="removeFilter($event, item.targets)">
+                    <i class="fa fa-times"></i>
+                  </span>
+                </span>
+              </div>
+            </div>
+            <!--end: Filter list-->
+            <!--begin: Last Updated Ticker-->
+            <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12">
+              <div class="update-ticker pull-right">
+                <span>
+                  <div *ngIf="loadData" class="m-loader m-loader--brand"></div>
+                </span>
+                <span title="{{updatedTimeTitle}}">
+                  Last Updated: {{updatedTime}}
+                </span>
+              </div>
+            </div>
+            <!--end: Last Updated Ticker-->
+          </div>
+          <!--begin: KendoUI Grid-->
+          <kendo-grid
+            #blockMonitorGrid
+            [kendoGridGroupBinding]="gridData"
+            [pageSize]="20"
+            [height]="463"
+            [resizable]="true"
+            [selectable]="{
+              checkboxOnly: false,
+              mode: 'multiple'
+            }"
+            [rowClass]="setRowStyle"
+            scrollable="virtual"
+            [kendoGridSelectBy]="'idx'"
+            [selectedKeys]="selectedRowKeys"
+            (selectedKeysChange)="onSelectKeyChange($event)"
+            (cellClick)="sniffingSelectedContextMenu($event)"
+          >
+          <!-- (contextmenu)="onClickGrid($event)" -->
+          <!-- (selectionChange)="onSelectedRow($event)" -->
+          <!-- ,'text-overflow': 'ellipsis', 'white-space': 'nowrap' -->
+            <kendo-grid-checkbox-column width="40" showSelectAll="true" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}"></kendo-grid-checkbox-column>
+            <kendo-grid-column field="idx" title="번호" width="40" [filterable]="false" [hidden]="true" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="reg_time" title="등록일시" width="180" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="exp_time" title="만료일시" width="180" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="method_message" title="차단방법" width="120" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="reason_meassage" title="차단사유" width="120" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="policy_info_category_name" title="공격유형" width="120" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="policy_info_attack_code" title="공격코드" width="100" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="policy_info_attack_name" title="공격명" width="230" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="hacker_country_code" title="국가(공격자)" width="120" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div [ngSwitch]="dataItem.hacker_country_code">
+                  <div *ngSwitchCase="'n/a'">
+                    <div title="Unknown"><span class="flag-icon flag-icon-no-flag"></span></div>
+                  </div>
+                  <div *ngSwitchDefault>
+                    <div title="{{dataItem.hacker_country_name}}"><span class="flag-icon flag-icon-{{dataItem.hacker_country_code | lowercase}}"></span> {{dataItem.hacker_country_code}}</div>
+                  </div>
+                </div>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="hacker_ip" title="공격자" width="150" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="victim_country_code" title="국가(대상자)" width="120" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div [ngSwitch]="dataItem.victim_country_code">
+                  <div *ngSwitchCase="'n/a'">
+                    <div title="Unknown"><span class="flag-icon flag-icon-no-flag"></span></div>
+                  </div>
+                  <div *ngSwitchDefault>
+                    <div title="{{dataItem.victim_country_name}}"><span class="flag-icon flag-icon-{{dataItem.victim_country_code | lowercase}}"></span> {{dataItem.victim_country_code}}</div>
+                  </div>
+                </div>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="victim_ip" title="대상자" width="150" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="victim_protocol" title="프로토콜" width="100" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="victim_port" title="포트" width="80" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="packet" title="패킷수" width="80" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'right', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="size" title="통신량" width="80" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'right', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="etc_info" title="부가정보" width="250" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+            </kendo-grid-column>
+            <kendo-grid-column field="flow_message" title="통신방향" width="120" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'left', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  <div [ngSwitch]="dataItem.flow_message">
+                      <div *ngSwitchCase="'Inbound'" ><span class="m-badge m-badge--warning m-badge--wide m-badge--dot"></span> InBound</div>
+                      <div *ngSwitchCase="'Outbound'"><span class="m-badge m-badge--success m-badge--wide m-badge--dot"></span> OutBound</div>
+                  </div>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-messages
+              groupPanelEmpty="Drag here to group"
+              noRecords="데이터가 없습니다.">
+            </kendo-grid-messages>
+            <kendo-grid-excel fileName="{{blockMonitorExcelFileName}}"></kendo-grid-excel>
+          </kendo-grid>
+          <grid-context-menu
+            [for]="blockMonitorGrid"
+            [menuItems]="popupMenuItems"
+            (select)="popupMenuItemSelect($event)"
+          >
+          </grid-context-menu>
+          <!--end: KendoUI Grid-->
+
+          <!-- <kendo-popup *ngIf="popupShow" [offset]="popupOffset">
+            <ul class="menu">
+              <li *ngFor="let item of popupMenuItems" (click)="popupMenuItemSelected(item)">
+                <ng-template *ngIf="popupMenuItemTemplate" [ngTemplateOutlet]="popupMenuItemTemplate"
+                    [ngOutletContext]="{ item: item }">
+                </ng-template>
+                <ng-container *ngIf="!popupMenuItemTemplate">
+                    {{ item }}
+                </ng-container>
+              </li>
+            </ul>
+          </kendo-popup> -->
+          <!--begin: Modal-->
+          <app-add-block-modal
+            #addBlockModal
+            [ipv]="ipv"
+          >
+          </app-add-block-modal>
+          <app-delete-block-modal
+            #deleteBlockModal
+            [ipv]="ipv"
+            [totalCount]="gridData.length"
+            [selectedRows]="selectedRows"
+            (complete)="deleteComplete($event)"
+          >
+          </app-delete-block-modal>
+          <!--end: Modal-->
+        </div>
+      </div>
+      <!--end::Portlet-->
+    </div>
+  </div>
+</div>
+<app-block-monitor-sidebar #blockMonitorSidebar [ipv]="ipv" (changeFilter)="applyFilter($event)"></app-block-monitor-sidebar>

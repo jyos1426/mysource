@@ -1,0 +1,37 @@
+<div #container></div>
+<!-- <button (click)="seriesStack(!stackState)">{{stackState ? 'unStack' : 'stack'}}</button> -->
+
+<kendo-grid [data]="gridData" 												
+			[scrollable]="'scrollable'"
+			[height]="300">
+    <kendo-grid-column field="byItem" title="" [width]="100" [hidden]="chartID == 'by-protocol' || chartID == 'by-protocol-link'" [style]="{'text-align': 'center'}">
+    </kendo-grid-column>	 
+
+    <kendo-grid-column field="slotId" title="슬롯번호" [width]="100" [hidden]="chartID != 'by-interface'" [style]="{'text-align': 'center'}" [headerStyle]="{'vertical-align': 'middle', 'text-align': 'center'}">
+    </kendo-grid-column> 
+
+    <kendo-grid-column field="portType" title="유형" [width]="100" [hidden]="chartID != 'by-interface'" [style]="{'text-align': 'center'}" [headerStyle]="{'vertical-align': 'middle', 'text-align': 'center'}">
+    </kendo-grid-column> 
+
+    <kendo-grid-column field="protocol" title="프로토콜" [width]="100" [hidden]="chartID == 'by-interface'" [headerStyle]="{'vertical-align': 'middle', 'text-align': 'center'}" [style]="{'text-align': 'center'}">
+    </kendo-grid-column>
+
+    <kendo-grid-column-group title="입력" [locked]="false" [width]="300" [headerStyle]="{'text-align': 'center'}">
+        <kendo-grid-column field="cur_in" [title]="dataUnit == 'bps' ? '현재(Kbps)' : '현재(pps)'" [width]="150" [locked]="false" [style]="{'text-align': 'right'}" [headerStyle]="{'text-align': 'right'}">
+        </kendo-grid-column>
+        <kendo-grid-column field="tot_in" [title]="dataUnit == 'bps' ? '누적(KBytes)' : '누적(pps)'" [width]="150" [locked]="false" [style]="{'text-align': 'right'}" [headerStyle]="{'text-align': 'right'}">            
+        </kendo-grid-column>
+    </kendo-grid-column-group>
+    <kendo-grid-column-group title="출력" [locked]="false" [width]="300" [headerStyle]="{'text-align': 'center'}">
+        <kendo-grid-column field="cur_out" [title]="dataUnit == 'bps' ? '현재(Kbps)' : '현재(pps)'" [width]="150" [locked]="false" [style]="{'text-align': 'right'}" [headerStyle]="{'text-align': 'right'}">            
+        </kendo-grid-column>
+        <kendo-grid-column field="tot_out" [title]="dataUnit == 'bps' ? '누적(KBytes)' : '누적(pps)'" [width]="150" [locked]="false" [style]="{'text-align': 'right'}" [headerStyle]="{'text-align': 'right'}">            
+        </kendo-grid-column>
+    </kendo-grid-column-group>
+    <kendo-grid-column-group title="차단" [locked]="false" [width]="300" [headerStyle]="{'text-align': 'center'}">
+        <kendo-grid-column field="cur_drop" [title]="dataUnit == 'bps' ? '현재(Kbps)' : '현재(pps)'" [width]="150" [locked]="false" [style]="{'text-align': 'right'}" [headerStyle]="{'text-align': 'right'}">            
+        </kendo-grid-column>
+        <kendo-grid-column field="tot_drop" [title]="dataUnit == 'bps' ? '누적(KBytes)' : '누적(pps)'" [width]="150" [locked]="false" [style]="{'text-align': 'right'}" [headerStyle]="{'text-align': 'right'}">            
+        </kendo-grid-column>
+    </kendo-grid-column-group>
+</kendo-grid>

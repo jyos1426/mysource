@@ -1,0 +1,46 @@
+<div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-grid--tablet-and-mobile m-grid--hor-tablet-and-mobile 		m-login m-login--1 m-login--singin" id="m_login">
+	<div class="m-grid__item m-grid__item--order-tablet-and-mobile-2 m-login__aside">
+		<div class="m-stack m-stack--hor m-stack--desktop">
+			<div class="m-stack__item m-stack__item--fluid">
+				<div class="m-login__wrapper">
+					<div class="m-login__logo">
+						<a href="#">
+							<img src="./assets/app/media/img/logos/logo-2.png">
+						</a>
+					</div>
+					<div class="m-login__signin">
+						<form (ngSubmit)="f.form.valid && signin()" #f="ngForm" class="m-login__form m-form" action="">
+							<ng-template #alertSignin></ng-template>
+							<div class="form-group m-form__group">
+								<input class="form-control m-input" type="text" placeholder="ID" name="userid" [(ngModel)]="model.userid" #email="ngModel" autocomplete="off" maxlength="12" >
+							</div>
+							<div class="form-group m-form__group">
+								<input class="form-control m-input m-login__form-input--last" type="password" placeholder="Password" name="password" [(ngModel)]="model.password" #password="ngModel" maxlength="12">
+							</div>
+							<div class="m-login__form-action">
+								<button [disabled]="loading" [ngClass]="{'m-loader m-loader--right m-loader--light': loading}" id="m_login_signin_submit" class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air">
+									Login
+								</button>
+							</div>
+						</form>
+						<p>
+							콘솔 UI를 사용하시겠습니까? <a class="m-link m--font-boldest" href="/launcher">SniperLauncher</a>를 다운로드하십시오.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
+	<div class="m-grid__item m-grid__item--fluid m-grid m-grid--center m-grid--hor m-grid__item--order-tablet-and-mobile-1	m-login__content" style="background-image: url(./assets/app/media/img/bg/bg-5.jpg)">
+		<div class="m-grid__item m-grid__item--middle">
+			<h3 class="m-login__welcome">
+				Sniper Web Framework
+			</h3>
+			<p class="m-login__msg">
+				Welcome to the SWF page. SWF means Sniper Web Framework. Web middleware for Sniper products.
+				<br>
+                It is a framework provided for monitoring, policy setting and management of products through the UI.
+			</p>
+		</div>
+	</div>
+</div>

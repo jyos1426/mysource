@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">PoomAt</string>
+    <string name="action_settings">Settings</string>
+    <!--<string name="kakao_app_key">911bd43216a88909c0bd9bd3a473dcbc</string>-->
+   <!-- <string name="google_maps_key">AIzaSyBv1oi4rfNxqgL27LsCCaToZNuqEWCZKQs</string> -->
+    <string name="google_maps_key">AIzaSyDHVVvilxwj1nYP4j-57jak7s5O4Z-Dujo</string>
+    <string name="kakao_app_key"> 2ff7bac44fc9e2fb32c796294407f1dd</string>
+    <string name="big_cate">Choose BigCate</string>
+    <string-array name="bigSpinner">
+        <item>(식재료 유형 선택)</item>
+        <item>곡물 가공품</item>
+        <item>정육,난류</item>
+        <item>수산 가공품</item>
+        <item>낙농,축산 가공품</item>
+        <item>조미료,장류,식용류</item>
+        <item>채소</item>
+        <item>과자,빙과류</item>
+        <item>음료</item>
+        <item>의약외품</item>
+        <item>기타</item>
+    </string-array>
+</resources>

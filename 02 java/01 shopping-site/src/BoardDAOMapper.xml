@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="BoardDAOMapper">
+	<select id="selectAll" resultType="RepBoard">
+		SELECT level, rownum, a.* FROM repboard a 
+		START WITH parent_no = 0 CONNECT BY prior no = parent_no ORDER siblings by no desc 
+	</select>	 
+	
+	<select id="selectByNo" parameterType="int" resultType="RepBoard">
+	<![CDATA[
+			SELECT level, rownum, a.* FROM repboard a
+			WHERE level <= 2
+			START WITH no = #{no}
+			CONNECT BY prior no = parent_no
+			ORDER siblings BY no DESC
+	]]>
+	</select>	
+	
+	<select id="selectByCont" parameterType="string" resultType="RepBoard">
+		SELECT b.* FROM 
+			(SELECT level, rownum, a.* FROM repboard a 
+			START WITH parent_no = 0 
+			CONNECT BY prior no = parent_no 
+			ORDER siblings BY no DESC)b 
+			WHERE subject LIKE '%${value}%' 
+	</select>
+	
+	<select id="selectParents" resultType="RepBoard">
+		SELECT * FROM repboard WHERE parent_no = 0 ORDER BY no DESC
+	</select>
+	
+	<delete id="delete" parameterType="int" >
+		DELETE FROM repboard WHERE no = #{no}
+	</delete>	
+	
+	<insert id="insert" parameterType="RepBoard">
+		INSERT INTO repboard (no, parent_no, subject, content, password)
+		VALUES (repboard_seq.NEXTVAL,#{parent_no},#{subject},#{content},#{password})	
+	</insert>
+	
+	<select id="chkpassword" parameterType="map" resultType="RepBoard" >
+		SELECT * FROM repboard WHERE no=#{no} AND password=#{password}
+	</select>
+	
+	<update id="update" parameterType="RepBoard">
+		UPDATE repboard 
+		<set>
+		<if test="subject != null">	subject = #{subject},	</if>
+		<if test="content != null">	content = #{content},	</if>	
+		<if test="password != null"> password = #{password}	</if>	
+		</set>
+		WHERE no = #{no}
+	</update>
+</mapper>

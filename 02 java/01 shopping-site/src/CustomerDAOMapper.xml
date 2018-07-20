@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="CustomerDAOMapper">
+	<insert id="insert" parameterType="Customer">
+		INSERT INTO customer VALUES(#{id},#{password},#{name})
+	</insert>		
+	<select id="selectAll" resultType="hashmap">
+	SELECT * FROM customer ORDER BY id DESC
+	</select>	
+	<select id="selectById" parameterType="string" resultType="Customer">
+		SELECT * FROM customer WHERE id=#{id}
+	</select>	
+	<select id="selectByName" parameterType="string" resultType="Customer">
+		SELECT * FROM customer WHERE name=#{name} ORDER BY id DESC
+	</select>
+	<update id="delete" parameterType="string">
+		UPDATE customer SET status='d' WHERE id=#{id}
+	</update>
+	<update id="update" parameterType="Customer" >
+		UPDATE customer SET name=#{name}, password=#{password} WHERE id=#{id}
+	</update>
+</mapper>

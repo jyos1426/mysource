@@ -1,0 +1,245 @@
+body {
+	font-family: "Lato", "Lucida Grande", "Tahoma, sans-serif";
+}
+
+.aside {
+	font-size: 1.2em;
+}
+
+.aside ul {
+	list-style: none;
+	padding-left: 5px;
+}
+
+.aside li {
+	margin-top: 10px;
+}
+
+.aside a {
+	color: #ccc;
+}
+
+.aside a:hover, a:focus {
+	color: #fff;	
+	text-decoration: none;
+}
+
+.content {	
+	height: 100%;
+}
+
+.section {
+	margin-left: 270px;
+	padding: 0.2em;
+	overflow-y: hidden;
+	overflow-x: hidden;
+}
+
+.data-title {	
+	margin-bottom: 5px;
+	margin-right: 10px;
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+.data-added-version {
+	font-size: 0.8em;	
+	margin-top: 0px;
+	margin-bottom: 0px;
+	display: inline-block;
+}
+
+.data-history {
+	font-size: 0.8em;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-style: italic;
+}
+
+.data-history button {
+	border: none; 
+	background-color: rgba(255, 255, 255, 0);
+	text-align: left;
+	margin-left: 0px;
+	padding-left: 0px;
+	margin-bottom: 5px;
+}
+
+.data-history button:hover, button.focus {
+	color: green;
+} 
+
+.value-method-get {
+	background-color: #21BF62;
+	color: white;
+	font-weight: bold;	
+	padding-left: 3px;
+	padding-right: 3px;
+	border-radius: 5px;
+}
+
+.value-method-post {
+	background-color: #327CCA;
+	color: white;
+	font-weight: bold;	
+	padding-left: 3px;
+	padding-right: 3px;
+	border-radius: 5px;
+}
+
+.value-method-patch {
+	background-color: #9932CC;
+	color: white;
+	font-weight: bold;	
+	padding-left: 3px;
+	padding-right: 3px;
+	border-radius: 5px;
+}
+
+
+.value-method-delete {
+	background-color: #F05928;
+	color: white;
+	font-weight: bold;	
+	padding-left: 3px;
+	padding-right: 3px;
+	border-radius: 5px;
+}
+
+
+.aside {
+	margin: 0px;
+	padding: 10px;
+	color: white;
+	width: 200px;
+	height: 100%;
+	background-color: #333;
+	position: fixed;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+.col-header {
+	width: 200px;
+	font-weight: bold;
+	vertical-align: text-top;	
+	color: #333;
+}
+
+.col-value {
+	vertical-align: text-top;
+	padding: 3px;
+}
+
+.col-value ul {
+	margin: 0px;
+	padding: 0px;
+}
+
+.col-value li {
+	list-style: none;
+}
+
+.data-box {
+	display: inline-block;
+	width: 100%;
+	margin: 0px 10px 20px 10px;
+	/*background-color: #f2f2f2;*/
+	padding: 20px;
+	border-radius: 10px;
+}
+
+.data-box tr {
+	height: 30px;
+}
+
+.data-box .data-empty-row {
+	height: 0px;
+}
+
+.history-box {
+	margin-left: 10px;
+	margin-top: 0px;
+	margin-bottom: 5px;
+	border-collapse: collapse;
+	border: 1px solid #bbb;
+}
+
+.history-box thead {
+	background-color: #dddddd;	
+}
+
+.history-box tr {
+	height: 20px;
+}
+
+.history-box td {
+	border: 1px solid #bbb;
+	text-align: left;
+	padding: 3px;	
+	font-size: 0.8em;
+}
+
+.param-box {
+	border-collapse: collapse;
+	border: 1px solid #bbb;
+}
+
+.param-box thead {
+	background-color: #dddddd;
+	font-weight: bold;
+}
+
+.param-box td {
+	border: 1px solid #bbb;
+	text-align: left;
+	padding: 5px;
+	font-size: 0.9em;
+}
+
+.dependencies-box td {
+	padding: 0px 5px 0px 5px;
+}
+
+.key-required {
+	background-color: red;
+	color: white;
+	font-weight: bold;
+	font-style: italic;	
+	padding-left: 3px;
+	padding-right: 3px;
+	margin-right: 5px;
+	border-radius: 5px;
+}
+
+.col-restapi {
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #2a6eb7;
+}
+
+.help-parameter {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    cursor: help;
+}
+
+.help-parameter .tooltiptext {
+    visibility: hidden;
+    width: 220px;
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 5px;
+    margin-top: 5px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.help-parameter:hover .tooltiptext {
+    visibility: visible;
+}

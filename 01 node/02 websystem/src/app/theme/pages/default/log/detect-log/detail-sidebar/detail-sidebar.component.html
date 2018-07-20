@@ -1,0 +1,381 @@
+<!-- begin::Quick Sidebar -->
+<div id="m_detail_sidebar" class="m-quick-sidebar m-quick-sidebar--tabbed m-quick-sidebar--skin-light" appunwraptag="">
+  <div class="m-quick-sidebar__content m--hide">
+    <span id="m_detail_sidebar_close" class="m-quick-sidebar__close" #btnDetailSidebarClose>
+      <i class="la la-close"></i>
+    </span>
+    <form class="m-form m-form--fit" #blockLogFilterForm="ngForm">
+      <ul id="m_detail_sidebar_tabs" class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+        <li class="nav-item m-tabs__item">
+          <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_detail_sidebar_tabs_blocklog_filter" role="tab">
+            탐지로그 필터
+          </a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active m-scrollable" id="m_detail_sidebar_tabs_blocklog_filter" role="tabpanel">
+          <div class="m-list-settings">
+            <div class="m-list-settings__group">
+              <div class="m-list-settings__heading">
+                <span class="m-list-settings__heading-label">
+                  기간
+                </span>
+                <span class="m-list-settings__heading-control">
+                  <span class="m-switch m-switch--outline m-switch--icon-check m-switch--success">
+                    <label>
+                      <input type="checkbox" [checked]="activePeriod" name="" (click)="toggleActivate($event, 'activePeriod')">
+                      <span></span>
+                    </label>
+                  </span>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activePeriod">
+                <span class="m-list-settings__item-label">
+                  시작
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-datepicker #dpFromData id="fromDate" name="fromDate" #dpFrom="ngModel" [format]="'yyyy/MM/dd'" [(ngModel)]="fromDate"
+                    [(value)]="fromDate" [max]="toDateMax"></kendo-datepicker>
+                  <kendo-timepicker #tpFromTime id="fromTime" name="fromTime" [format]="'HH:mm:ss'" [(ngModel)]="fromTime" [(value)]="fromTime"></kendo-timepicker>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activePeriod">
+                <span class="m-list-settings__item-label">
+                  종료
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-datepicker #dpToData id="toDate" name="toDate" #dpFrom="ngModel" [format]="'yyyy/MM/dd'" [(ngModel)]="toDate" [(value)]="toDate"
+                    [max]="toDateMax"></kendo-datepicker>
+                  <kendo-timepicker #tpToTime id="toTime" name="toTime" [format]="'HH:mm:ss'" [(ngModel)]="toTime" [(value)]="toTime"></kendo-timepicker>
+                </span>
+              </div>
+            </div>
+            <div class="m-list-settings__group">
+              <div class="m-list-settings__heading">
+                <span class="m-list-settings__heading-label">
+                  방향
+                </span>
+                <span class="m-list-settings__heading-control">
+                  <span class="m-switch m-switch--outline m-switch--icon-check m-switch--success">
+                    <label>
+                      <input type="checkbox" [checked]="activeDirection" name="" (click)="toggleActivate($event, 'activeDirection')">
+                      <span></span>
+                    </label>
+                  </span>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activeDirection">
+                <span class="m-list-settings__item-label">
+                  통신방향
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-dropdownlist #ddlFlow id="flow" name="flow" class="form-control" title="통신방향" [data]="flowListItems" [(ngModel)]="selectedFlow"
+                    [valueField]="'value'" [textField]="'text'">
+                  </kendo-dropdownlist>
+                </span>
+              </div>
+            </div>
+            <div class="m-list-settings__group">
+              <div class="m-list-settings__heading">
+                <span class="m-list-settings__heading-label">
+                  정책
+                </span>
+                <span class="m-list-settings__heading-control">
+                  <span class="m-switch m-switch--outline m-switch--icon-check m-switch--success">
+                    <label>
+                      <input type="checkbox" [checked]="activePolicy" name="" (click)="toggleActivate($event, 'activePolicy')">
+                      <span></span>
+                    </label>
+                  </span>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activePolicy">
+                <span class="m-list-settings__item-label">
+                  공격유형
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-dropdownlist #ddlCategory id="category" name="category" class="form-control" title="공격유형" [data]="categoryItems" [(ngModel)]="selectedCategory"
+                    [valueField]="'value'" [textField]="'text'">
+                    <!-- <ng-template kendoComboBoxItemTemplate let-category>
+                        {{ category.text }}&nbsp;<small>[{{ category.value }}]</small>
+                      </ng-template> -->
+                  </kendo-dropdownlist>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activePolicy">
+                <span class="m-list-settings__item-label">
+                  공격코드
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-numerictextbox #tbSignitureCode id="signature_code" name="signature_code" class="form-control" title="공격코드" placeholder="공격코드"
+                    [(ngModel)]="signatureCode" [value]="signatureCode" [min]="0" [max]="59999" [autoCorrect]="true" [format]="'n0'">
+                  </kendo-numerictextbox>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activePolicy">
+                <span class="m-list-settings__item-label">
+                  공격명
+                </span>
+                <span class="m-list-settings__item-control">
+                  <input #tbSignatureName id="signature_name" name="signature_name" class="form-control m-input m-input--air" type="text" title="공격명"
+                    placeholder="공격명" [(ngModel)]="signatureName" />
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activePolicy">
+                <span class="m-list-settings__item-label">
+                  위험도
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-dropdownlist #ddlRisk id="risk" name="risk" class="form-control" title="위험도" [data]="riskListData" [(ngModel)]="selectedRisk"
+                  [valueField]="'value'" [textField]="'text'">
+                  </kendo-dropdownlist>
+                </span>
+              </div>
+            </div>
+            <div class="m-list-settings__group">
+              <div class="m-list-settings__heading">
+                <span class="m-list-settings__heading-label">
+                  공격자/대상자
+                </span>
+                <span class="m-list-settings__heading-control">
+                  <span class="m-switch m-switch--outline m-switch--icon-check m-switch--success">
+                    <label>
+                      <input type="checkbox" [checked]="activeIP" name="" (click)="toggleActivate($event, 'activeIP')">
+                      <span></span>
+                    </label>
+                  </span>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activeIP">
+                <span class="m-list-settings__item-label">
+                  공격자
+                </span>
+                <span class="m-list-settings__item-control">
+                  <input #tbHackerIp id="hip" name="hip" class="form-control m-input m-input--air" type="text" title="공격자 IP" placeholder="IP Address"
+                    [(ngModel)]="hip" />
+                  <kendo-numerictextbox #tbhprefix id="hprefix" name="hprefix" class="form-control" title="공격자 Prefix" placeholder="Prefix"
+                    [(ngModel)]="hprefix" [value]="hprefix" [min]="0" [max]="maxPrefix" [autoCorrect]="true" [format]="'n0'">
+                  </kendo-numerictextbox>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activeIP">
+                <span class="m-list-settings__item-label">
+                  대상자
+                </span>
+                <span class="m-list-settings__item-control">
+                  <input #tbVictimIp id="vip" name="vip" class="form-control m-input m-input--air" title="대상자IP" placeholder="IP Address" type="text"
+                    [(ngModel)]="vip" />
+                  <kendo-numerictextbox #tbvprefix id="vprefix" name="vprefix" class="form-control" title="대상자 Prefix" placeholder="Prefix"
+                    [(ngModel)]="vprefix" [value]="vprefix" [min]="0" [max]="maxPrefix" [autoCorrect]="true" [format]="'n0'">
+                  </kendo-numerictextbox>
+                </span>
+              </div>
+            </div>
+            <div class="m-list-settings__group">
+              <div class="m-list-settings__heading">
+                <span class="m-list-settings__heading-label">
+                  포트정보(공격자)
+                </span>
+                <span class="m-list-settings__heading-control">
+                  <span class="m-switch m-switch--outline m-switch--icon-check m-switch--success">
+                    <label>
+                      <input type="checkbox" [checked]="activePortSource" name="" (click)="toggleActivate($event, 'activePortSource')">
+                      <span></span>
+                    </label>
+                  </span>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activePortSource">
+                <span class="m-list-settings__item-label">
+                  시작
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-numerictextbox #tbStartPort id="hport_f" name="hport_f" class="form-control" title="시작포트" [(ngModel)]="sourcestartPort"
+                    [value]="sourcestartPort" [min]="0" [max]="65535" [autoCorrect]="true" [format]="'n0'">
+                  </kendo-numerictextbox>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activePortSource">
+                <span class="m-list-settings__item-label">
+                  종료
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-numerictextbox #tbEndPort id="hport_t" name="hport_t" class="form-control" title="종료포트" [(ngModel)]="sourceendPort" [value]="sourceendPort"
+                    [min]="0" [max]="65535" [autoCorrect]="true" [format]="'n0'">
+                  </kendo-numerictextbox>
+                </span>
+              </div>
+            </div>
+            <div class="m-list-settings__group">
+              <div class="m-list-settings__heading">
+                <span class="m-list-settings__heading-label">
+                  포트정보(대상자)
+                </span>
+                <span class="m-list-settings__heading-control">
+                  <span class="m-switch m-switch--outline m-switch--icon-check m-switch--success">
+                    <label>
+                      <input type="checkbox" [checked]="activePortDestination" name="" (click)="toggleActivate($event, 'activePortDestination')">
+                      <span></span>
+                    </label>
+                  </span>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activePortDestination">
+                <span class="m-list-settings__item-label">
+                  시작
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-numerictextbox #tbStartPort id="vport_f" name="vport_f" class="form-control" title="시작포트" [(ngModel)]="startPort"
+                    [value]="startPort" [min]="0" [max]="65535" [autoCorrect]="true" [format]="'n0'">
+                  </kendo-numerictextbox>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activePortDestination">
+                <span class="m-list-settings__item-label">
+                  종료
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-numerictextbox #tbEndPort id="vport_t" name="vport_t" class="form-control" title="종료포트" [(ngModel)]="endPort" [value]="endPort"
+                    [min]="0" [max]="65535" [autoCorrect]="true" [format]="'n0'">
+                  </kendo-numerictextbox>
+                </span>
+              </div>
+            </div>
+            <div class="m-list-settings__group">
+              <div class="m-list-settings__heading">
+                <span class="m-list-settings__heading-label">
+                  IP Pool
+                </span>
+                <span class="m-list-settings__heading-control">
+                  <span class="m-switch m-switch--outline m-switch--icon-check m-switch--success">
+                    <label>
+                      <input type="checkbox" [checked]="activeIPPool" name="" (click)="toggleActivate($event, 'activeIPPool')">
+                      <span></span>
+                    </label>
+                  </span>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activeIPPool">
+                <span class="m-list-settings__item-label">
+                  그룹
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-dropdownlist #ddlGroup id="g_id" name="g_id" class="form-control" title="그룹" [data]="groupListItems" [(ngModel)]="selectedGroup"
+                    [valueField]="'value'" [textField]="'text'">
+                  </kendo-dropdownlist>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activeIPPool">
+                <span class="m-list-settings__item-label">
+                  객체
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-dropdownlist #ddlObject id="o_id" name="o_id" class="form-control" title="객체" [data]="objectListItems" [(ngModel)]="selectedObject"
+                    [valueField]="'value'" [textField]="'text'">
+                  </kendo-dropdownlist>
+                </span>
+              </div>
+            </div>
+            <div class="m-list-settings__group">
+              <div class="m-list-settings__heading">
+                <span class="m-list-settings__heading-label">
+                  기타
+                </span>
+                <span class="m-list-settings__heading-control">
+                  <span class="m-switch m-switch--outline m-switch--icon-check m-switch--success">
+                    <label>
+                      <input type="checkbox" [checked]="activeEtc" name="" (click)="toggleActivate($event, 'activeEtc')">
+                      <span></span>
+                    </label>
+                  </span>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activeEtc">
+                <span class="m-list-settings__item-label">
+                  차단
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-dropdownlist #ddlBlock id="block" name="block" class="form-control" title="객체" [data]="blockListItems" [(ngModel)]="selectedBlock"
+                    [valueField]="'value'" [textField]="'text'">
+                  </kendo-dropdownlist>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activeEtc">
+                <span class="m-list-settings__item-label">
+                  RAW
+                </span>
+                <span class="m-list-settings__item-control">
+                  <kendo-dropdownlist #ddlRaw id="raw" name="raw" class="form-control" title="RAW" [data]="rawListItems" [(ngModel)]="selectedRaw"
+                    [valueField]="'value'" [textField]="'text'">
+                  </kendo-dropdownlist>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activeEtc">
+                <span class="m-list-settings__item-label">
+                  공격자 자산
+                </span>
+                <span class="m-list-settings__item-control">
+                  <span class="m-switch m-switch--outline m-switch--icon-check m-switch--success">
+                    <label>
+                      <input type="checkbox" [checked]="h_asset" (click)="toggleActivate($event, 'h_asset')">
+                      <span></span>
+                    </label>
+                  </span>
+                </span>
+              </div>
+              <div class="m-list-settings__item" *ngIf="activeEtc">
+                <span class="m-list-settings__item-label">
+                  대상자 자산
+                </span>
+                <span class="m-list-settings__item-control">
+                  <span class="m-switch m-switch--outline m-switch--icon-check m-switch--success">
+                    <label>
+                      <input type="checkbox" [checked]="v_asset" (click)="toggleActivate($event, 'v_asset')">
+                      <span></span>
+                    </label>
+                  </span>
+                </span>
+              </div>
+              <div class="m-list-settings__group">
+                <div class="m-list-settings__heading">
+                  <span class="m-list-settings__heading-label">
+                    Application 정책
+                  </span>
+                  <span class="m-list-settings__heading-control">
+                    <span class="m-switch m-switch--outline m-switch--icon-check m-switch--success">
+                      <label>
+                        <input type="checkbox" [checked]="activeApplication" name="" (click)="toggleActivate($event, 'activeApplication')">
+                        <span></span>
+                      </label>
+                    </span>
+                  </span>
+                </div>                
+                <div class="m-list-settings__item" *ngIf="activeApplication">
+                  <span class="m-list-settings__item-label">
+                    Application ID
+                  </span>
+                  <span class="m-list-settings__item-control">
+                    <input #tbApplicationId id="a_id" name="a_id" class="form-control m-input m-input--air" type="text" title="Application_id"
+                      placeholder="ApplicationId" [(ngModel)]="a_id" />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="m_detail_sidebar_footer" class="modal-footer">
+        <button type="button" class="btn btn-danger m-btn m-btn--air" title="초기화" (click)="initFilterPopup($event)">
+          초기화
+        </button>
+        <button type="submit" class="btn btn-primary m-btn m-btn--air" title="확인" (click)="submitApplyFilter($event)">
+          확인
+        </button>
+        <button type="button" class="btn btn-secondary m-btn m-btn--air" title="취소" (click)="closeFilterPopup($event)">
+          취소
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- end::Quick Sidebar -->

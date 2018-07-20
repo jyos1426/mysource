@@ -1,0 +1,57 @@
+<!--begin::Modal-->
+<div class="modal fade" id="modal_block_monitor_delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          차단 삭제
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">
+            &times;
+          </span>
+        </button>
+      </div>
+      <form class="m-form m-form--fit" #blockMonitorModalForm="ngForm">
+        <!-- m-form--label-align-right -->
+        <div class="modal-body">
+            <div class="row col-12">
+              <p>{{message}}</p>
+            </div>
+            <div class="row col-12">
+              <kendo-grid
+                #blockMonitorDeleteGrid
+                [kendoGridGroupBinding]="selectedRows"
+                [pageSize]="20"
+                [height]="200"
+                [resizable]="true"
+                scrollable="virtual"
+              >
+                <kendo-grid-column field="method_message" title="차단방법" width="120" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="reason_meassage" title="차단사유" width="120" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="hacker_ip" title="공격자" width="150" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="victim_ip" title="대상자" width="150" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="victim_protocol" title="프로토콜" width="100" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="victim_port" title="포트" width="80" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+              </kendo-grid>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary m-btn m-btn--air" title="확인" (click)="deleteBlockPolicy($event)">
+            확인
+          </button>
+          <button type="button" #btnModalClose class="btn btn-secondary m-btn m-btn--air" data-dismiss="modal" title="취소">
+            취소
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--end::Modal-->

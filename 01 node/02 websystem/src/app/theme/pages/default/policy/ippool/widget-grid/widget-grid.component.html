@@ -1,0 +1,175 @@
+<!-- <div class="m-portlet m-portlet--mobile"> -->
+<div class="m-portlet m-portlet--head-sm">
+	<div class="m-portlet__head">	
+		<div class="m-portlet__head-caption">
+			<div class="m-portlet__head-title">				
+				<h3 class="m-portlet__head-text">
+					그룹 <strong>{{groupData.g_name}}
+					</strong>
+					<small>
+						{{groupData.g_id}}
+					</small>
+				</h3>
+			</div>
+		</div>
+		<div class="m-portlet__head-tools">
+			<ul class="m-portlet__nav">
+				<li class="m-portlet__nav-item" *ngIf="(groupData.g_id != 9900) && (groupData.g_id != 65535)">
+					<a class="m-portlet__nav-link btn btn-warning m-btn m-btn--icon m-btn--icon-only m-btn--pill" href="#" title="그룹수정" (click)="showSidebar('group-mod')">
+						<i class="fa fa-pencil"></i>
+					</a>
+				</li>
+				<li class="m-portlet__nav-item" *ngIf="(groupData.g_id != 9900) && (groupData.g_id != 65535)">
+					<a class="m-portlet__nav-link btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill" href="#" title="객체추가" (click)="showSidebar('object-add')">
+						<i class="fa fa-plus"></i>
+					</a>
+				</li>
+				<li class="m-portlet__nav-item" *ngIf="(groupData.g_id != 9900) && (groupData.g_id != 65535)">
+					<a class="m-portlet__nav-link btn btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill" href="#" title="그룹삭제" (click)="delGroup()" data-toggle="modal" data-target="#m_modal_del_group">
+						<i class="fa fa-trash"></i>
+					</a>
+				</li>
+			<!-- 	<li class="m-portlet__nav-item">
+					<a class="m-portlet__nav-link m-portlet__nav-link--icon" data-portlet-tool="fullscreen" href="#" title="" data-original-title="Fullscreen">
+						<i class="la la-expand"></i>
+					</a>
+				</li> -->
+				<li class="m-portlet__nav-item">
+					<a class="m-portlet__nav-link m-portlet__nav-link--icon" data-portlet-tool="toggle" href="" (click)="isHideSummary = !isHideSummary">											
+						<i [ngClass]="isHideSummary ? 'la la-angle-down' : 'la la-angle-up'"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="m-portlet__body m-portlet__body" [hidden]="isHideSummary">
+		<div class="row">
+			<div class="col-lg-12">
+				<span class="m-badge m-badge--metal m-badge--dot"></span> 전체 객체 수 <span class="m--font-boldest">{{viewData.length}}</span> 개 
+				<span class="m-badge m-badge--metal m-badge--dot"></span> 전체 네트워크 수(4/6) <span class="m--font-boldest">{{getTotalNetworkCount(4)}}/{{getTotalNetworkCount(6)}}</span> 개
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<kendo-grid
+				class="ippool-grid"
+		    [data]="gridData"
+		    [rowClass]="setRowStyle"
+				[resizable]="true">
+
+					<kendo-grid-column field="enable" title="활성화" [width]="65" [headerStyle]="{'vertical-align': 'middle', 'text-align': 'center'}" [style]="{'vertical-align':'top', 'text-align': 'center'}">
+						<ng-template kendoGridCellTemplate let-dataItem>
+							<!-- <span ngIf="dataItem.enable"><i class="fa fa-check m--font-success"></i></span> -->
+							<span *ngIf="dataItem.enable"><i class="fa fa-check m--font-success"></i></span>
+							<span *ngIf="!dataItem.enable"><i class="fa fa-close"></i></span>
+						</ng-template>
+					</kendo-grid-column>
+
+				  <kendo-grid-column field="o_id" title="객체ID" [width]="80" [headerStyle]="{'vertical-align': 'middle', 'text-align': 'center'}" [style]="{'vertical-align':'top'}"></kendo-grid-column>
+
+				  <kendo-grid-column field="o_name" title="객체명" [width]="200" [headerStyle]="{'vertical-align': 'middle', 'text-align': 'center'}" [style]="{'vertical-align':'top'}"></kendo-grid-column>
+
+				  <kendo-grid-column-group title="Network" [headerStyle]="{'text-align': 'center'}"  [hidden]="(groupData.g_id==9900) || (groupData.g_id==65535)" >
+				  	<kendo-grid-column field="networkV4" title="IPv4" [headerStyle]="{'text-align': 'center'}" [style]="{'vertical-align':'top'}" [width]="100">
+				  		<ng-template kendoGridCellTemplate let-dataItem>
+					  		<div *ngFor="let network of getTopNetwork(dataItem.networkV4, networkViewLimitCount)">
+					  			<small>{{network.network}} / {{network.prefix}}</small>
+					  		</div>
+					  		<div *ngIf="dataItem.networkV4.length > networkViewLimitCount">..</div>
+					  		<div *ngIf="dataItem.networkV4.length > 0">
+	            		<a class="m-link m--font-boldest" 
+					  				href="#"
+	            			(click)="showSidebar('network-mod', dataItem, {'ipver':4})">전체 {{dataItem.networkV4.length}}건</a>
+					  		</div>
+				  		</ng-template>
+				  	</kendo-grid-column>
+				  	<kendo-grid-column field="networkV6" title="IPv6" [headerStyle]="{'text-align': 'center'}" [style]="{'vertical-align':'top'}" [width]="100">
+				  		<ng-template kendoGridCellTemplate let-dataItem>
+					  		<div *ngFor="let network of getTopNetwork(dataItem.networkV6, networkViewLimitCount)">
+					  			<small>{{network.network}} / {{network.prefix}}</small>
+					  		</div>
+					  		<div *ngIf="dataItem.networkV6.length > networkViewLimitCount">..</div>
+					  		<div *ngIf="dataItem.networkV6.length > 0">
+              		<a class="m-link m--font-boldest" 
+					  				href="#"
+              			(click)="showSidebar('network-mod', dataItem, {'ipver':6})">전체 {{dataItem.networkV6.length}}건</a>
+					  		</div>
+				  		</ng-template>
+				  	</kendo-grid-column>
+					</kendo-grid-column-group>
+
+				  <kendo-grid-column-group title="탐지정책" [headerStyle]="{'text-align': 'center'}">
+				    <kendo-grid-column field="template_inbound" title="Inbound" [width]="120" [headerStyle]="{'text-align': 'center'}" [style]="{'vertical-align':'top', 'text-align': 'center'}">
+				    	<ng-template kendoGridCellTemplate let-dataItem>
+				    		<a class="m-link m-link--state m--font-boldest" [routerLink]="['/policy/pt-editor']" [queryParams]="{template_id: dataItem.template_inbound_id }" title="탐지정책설정 실행">{{dataItem.template_inbound}} 
+				    		</a>
+				    	</ng-template>
+				  	</kendo-grid-column>
+
+						<kendo-grid-column field="template_outbound" title="Outbound" [width]="120" [headerStyle]="{'text-align': 'center'}" [style]="{'vertical-align':'top', 'text-align': 'center'}">
+							<ng-template kendoGridCellTemplate let-dataItem>
+				    		<a class="m-link m-link--state m--font-boldest" [routerLink]="['/policy/pt-editor']" [queryParams]="{template_id: dataItem.template_outbound_id }" title="탐지정책설정 실행">
+				    			{{dataItem.template_outbound}}
+				    		</a> 
+				    	</ng-template>
+						</kendo-grid-column>
+					</kendo-grid-column-group>
+					
+				  <kendo-grid-column field="noc" title="엔진설정" [width]="100" [headerStyle]="{'vertical-align': 'middle', 'text-align': 'center'}" [style]="{'vertical-align':'top' }">
+				  	<ng-template kendoGridHeaderTemplate let-dataItem>
+				  		<div>
+	            	{{dataItem.title}}
+	          	</div>
+	            <div>
+	            	<a class="m-link m-link--state" href="#" style="float: right; vertical-align: bottom;" [title]="titleNOCDetail" (click)="toggleNOCDetailMode()">
+	              	<i class="fa fa-eye" *ngIf="!isNOCViewDetailMode"></i>
+	              	<i class="fa fa-eye-slash" *ngIf="isNOCViewDetailMode"></i>
+	            	</a>
+	          	</div>
+            </ng-template>
+				  	<ng-template kendoGridCellTemplate let-dataItem>
+				  		<span class="m-badge m-badge--rounded m-badge--primary" *ngIf="dataItem.noc.ips.fragment || dataItem.noc.ips.patternblock || dataItem.noc.ips.webcgi || dataItem.noc.ips.profile">IPS</span>
+				  		<span class="m-badge m-badge--rounded m-badge--info" *ngIf="isNOCViewDetailMode && dataItem.noc.ips.fragment">패킷 재조합</span>
+							<span class="m-badge m-badge--rounded m-badge--info" *ngIf="isNOCViewDetailMode && dataItem.noc.ips.patternblock">패턴블럭</span>
+							<span class="m-badge m-badge--rounded m-badge--info" *ngIf="isNOCViewDetailMode && dataItem.noc.ips.webcgi">Web CGI</span>
+							<span class="m-badge m-badge--rounded m-badge--info" *ngIf="isNOCViewDetailMode && dataItem.noc.ips.profile">프로파일</span>
+
+				  		<span class="m-badge m-badge--rounded m-badge--primary" *ngIf="dataItem.noc.dns">DNS</span>
+				  		<span class="m-badge m-badge--rounded m-badge--primary" *ngIf="dataItem.noc.voip">VoIP</span>
+				  		<span class="m-badge m-badge--rounded m-badge--primary" *ngIf="dataItem.noc.https">HTTPS</span>
+				  		<span class="m-badge m-badge--rounded m-badge--primary" *ngIf="dataItem.noc.regex">RegEx</span>
+				  		<span class="m-badge m-badge--rounded m-badge--primary" *ngIf="dataItem.noc.ratelimit.dynamic || dataItem.noc.ratelimit.static">RateLimit</span>
+				  		<span class="m-badge m-badge--rounded m-badge--info" *ngIf="isNOCViewDetailMode && dataItem.noc.ratelimit.dynamic">RateLimit(Dynamic)</span>
+							<span class="m-badge m-badge--rounded m-badge--info" *ngIf="isNOCViewDetailMode && dataItem.noc.ratelimit.static">RateLimit(Static)</span>
+
+				  		<span class="m-badge m-badge--rounded m-badge--primary" *ngIf="dataItem.noc.ddos.tcp || dataItem.noc.ddos.udp || dataItem.noc.ddos.auto_sign">DDoS</span>
+				  		<span class="m-badge m-badge--rounded m-badge--info" *ngIf="isNOCViewDetailMode && dataItem.noc.ddos.tcp">SSS엔진(TCP)</span>
+							<span class="m-badge m-badge--rounded m-badge--info" *ngIf="isNOCViewDetailMode && dataItem.noc.ddos.udp">SSS엔진(UDP)</span>
+							<span class="m-badge m-badge--rounded m-badge--info" *ngIf="isNOCViewDetailMode && dataItem.noc.ddos.auto_sign">패턴추출</span>
+
+				  		<span class="m-badge m-badge--rounded m-badge--primary" *ngIf="dataItem.noc.ar">Application</span>
+				  		<span class="m-badge m-badge--rounded m-badge--primary" *ngIf="dataItem.noc.ur">User</span>
+				  		<span class="m-badge m-badge--rounded m-badge--primary" *ngIf="dataItem.noc.mr">Malware</span>
+				  		<span class="m-badge m-badge--rounded m-badge--primary" *ngIf="dataItem.noc.reputation">Reputation</span>
+						</ng-template>
+					</kendo-grid-column>
+
+<!-- 				  <kendo-grid-column field="desc" title="비고" [width]="200" [headerStyle]="{'vertical-align': 'middle', 'text-align': 'center'}" [style]="{'vertical-align':'top'}"></kendo-grid-column> -->
+
+				  <kendo-grid-column field="manage" title="관리" [width]="100" [headerStyle]="{'vertical-align': 'middle', 'text-align': 'center'}" [style]="{'vertical-align':'top'}">
+				  	<ng-template kendoGridCellTemplate let-dataItem>
+				  		<a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-warning m-btn--icon m-btn--icon-only m-btn--pill" title="객체수정" (click)="showSidebar('object-mod', dataItem)">
+				  			<i class="fa fa-pencil"></i>
+				  		</a>
+				  		<a href="#" *ngIf="groupData.g_id != 9900 && groupData.g_id != 65535" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="객체삭제" data-toggle="modal" data-target="#m_modal_del_object" (click)="delObject(dataItem)">
+				  			<i class="fa fa-trash"></i>
+				  		</a>
+								
+				  	</ng-template>
+					</kendo-grid-column>
+				</kendo-grid>
+			</div>
+		</div>		
+	</div>
+</div>
+

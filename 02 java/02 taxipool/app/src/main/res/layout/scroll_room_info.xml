@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+   <!-- map -->
+    <fragment
+        android:id="@+id/view_info_map"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        class="com.google.android.gms.maps.SupportMapFragment" />
+    <!-- emd map -->
+    <!-- room info -->
+    <include layout="@layout/view_line"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightGray"
+        android:padding="5dp"
+        android:gravity="center"
+        android:text="합승경로 정보보기"/>
+    <include layout="@layout/view_line"/>
+    <include layout="@layout/view_room_info_distance"/>
+    <!-- end room info -->
+
+    <!-- people info -->
+    <include layout="@layout/view_line"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightGray"
+        android:padding="5dp"
+        android:gravity="center"
+        android:text="합승자 보기"/>
+    <include layout="@layout/view_line"/>
+
+ <android.support.v7.widget.RecyclerView
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     android:id="@+id/recyclerview_room_info"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:nestedScrollingEnabled="false"/>
+ <!-- end people info -->
+</LinearLayout>

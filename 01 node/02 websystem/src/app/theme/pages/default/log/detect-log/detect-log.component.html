@@ -1,0 +1,297 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader">
+	<div class="d-flex align-items-center">
+		<div class="mr-auto">
+			<h3 class="m-subheader__title m-subheader__title--separator">
+				탐지 로그
+			</h3>
+			<ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+				<li class="m-nav__item m-nav__item--home">
+					<a href="#" class="m-nav__link m-nav__link--icon">
+						<i class="m-nav__link-icon la la-home"></i>
+					</a>
+				</li>
+				<li class="m-nav__separator">
+					-
+				</li>
+				<li class="m-nav__item">
+					<a href="" class="m-nav__link">
+						<span class="m-nav__link-text">
+							로그
+						</span>
+					</a>
+				</li>
+				<li class="m-nav__separator">
+					-
+				</li>
+				<li class="m-nav__item">
+					<a href="" class="m-nav__link">
+						<span class="m-nav__link-text">
+							탐지 로그
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div>
+		</div>
+	</div>
+</div>
+<!-- END: Subheader -->
+<div class="m-content">
+	<div class="row">
+		<div class="col-lg-12">
+			<!--begin::Portlet-->
+			<div class="m-portlet m-portlet--tabs" #mPortlet>
+				<div class="m-portlet__head">
+          <div class="m-portlet__head-caption">
+            <button #btnSearch name="btnSearch" class="btn btn-sm btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air"
+              href="#" title="검색" (click)="clickSearch($event)" [disabled]="stateSearching">
+              <i class="fa fa-search" *ngIf="!stateSearching"></i>
+              <i class="m-loader m-loader--light" *ngIf="stateSearching"></i>
+            </button>
+            |
+            <kendo-datepicker #tbFromDate name="tbFromDate" #dpFrom="ngModel" [(ngModel)]="fromDate" [format]="'yyyy/MM/dd'" [(value)]="fromDate"
+              [max]="toDateMax" (focus)="focusFromDatepicker($event)" (blur)="changeFromDatepicker($event)" [disabled]="stateSearching || hasPeriodFilter"></kendo-datepicker>
+            <button #btnPrevDate name="btnPrevDate" class="btn btn-sm btn-gray m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--air"
+              href="#" title="-1 day" [disabled]="stateSearching || hasPeriodFilter" (click)="filterPrevDate($event)">
+              <i class="fa fa-caret-left"></i>
+            </button>
+            <button #btnNextDate name="btnNextDate" class="btn btn-sm btn-gray m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--air"
+              href="#" title="+1 day" [disabled]="stateSearching || isDateMax || hasPeriodFilter" (click)="filterNextDate($event)">
+              <i class="fa fa-caret-right"></i>
+            </button>
+            |
+            <button #btnFilter name="btnFilter" class="btn btn-sm btn-accent m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air"
+              href="#" title="필터" id="m_detail_sidebar_toggle" [disabled]="stateSearching" (click)="clickShowFilter($event)">
+              <i class="fa fa-filter"></i>
+            </button>
+            |
+            <button #btnExportExcel name="btnExportExcel" class="btn btn-sm btn-info m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air"
+              href="#" title="엑셀저장" (click)="exportDetectLogData($event, DetectLogGrid)" [disabled]="stateSearching">
+              <span>
+                <i class="fa fa-file-excel-o"></i>
+                <span>
+                  Excel
+                </span>
+              </span>
+            </button>
+          </div>
+          <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs-line m-tabs-line--brand m-tabs-line--2x m-tabs-line--right" role="tablist">
+              <li class="nav-item m-tabs__item">
+                <a class="nav-link m-tabs__link active" data-toggle="tab" href="javascript:;" role="tab" (click)="filterIpv($event, 4)">
+                  IPv4
+                </a>
+              </li>
+              <li class="nav-item m-tabs__item">
+                <a class="nav-link m-tabs__link" data-toggle="tab" href="javascript:;" role="tab" (click)="filterIpv($event, 6)">
+                  IPv6
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+				<div class="m-portlet__body">
+          <div class="filter-list row col-12" >
+            <span class="filter-item filter-danger filter-item--air filter-icon-only" title="필터전체삭제" (click)="removeAllFilter($event)" *ngIf="applyFilterItems?.length > 0">
+              <span class="filter-icon">
+                <i class="fa fa-trash-o"></i>
+              </span>
+            </span>
+            <span class="filter-item filter-default filter-item--air" *ngFor="let item of applyFilterItems">
+              <span class="filter-type filter-type-success">
+                {{item.typeText}}
+              </span>
+              <span class="filter-value" *ngFor="let detailItem of item.values">
+                <span *ngIf="!detailItem.type">{{detailItem}}</span>
+                <span *ngIf="detailItem.type">
+                  <span class="filter-type">{{detailItem.text}}</span> {{detailItem.value}}
+                </span>
+              </span>
+              <span class="filter-icon" title="필터삭제" (click)="removeFilter($event, item.targets)">
+                <i class="fa fa-times"></i>
+              </span>
+            </span>
+          </div>
+          <div class="row">
+            <div class="col-12">
+                <kendo-grid 
+                #DetectLogGrid 
+                [resizable]="true" 
+                [selectable]="{ 
+                  checkboxOnly: false,
+                  mode: 'multiple' 
+                }" 
+                [rowClass]="setRowStyle"
+                scrollable="'none'" 
+                [kendoGridSelectBy]="'idx'" 
+                [selectedKeys]="selectedRowKeys" 
+                (selectedKeysChange)="onSelectKeyChange($event)"
+                [data]="gridView" 
+                [pageSize]="pageSize"
+                [skip]="skip" 
+                [pageable]="{ 
+                  buttonCount: 10, 
+                  info: true, 
+                  type: 'numeric', 
+                  pageSizes: [10, 25, 30], 
+                  previousNext: true 
+                }"
+                [sortable]="{ 
+                  allowUnsort: true, 
+                  mode: 'single' 
+                }" 
+                [sort]="sort" 
+                (sortChange)="sortChange($event)" 
+                (pageChange)="pageChange($event)"
+                [height]="463" 
+                style="min-height: 463px;"
+                >
+      
+                <kendo-grid-column field="period" title="기간" width="160" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'left'}" >
+                </kendo-grid-column>
+                <kendo-grid-column field="policy_info_category_name" title="공격유형" width="120" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}" >
+                </kendo-grid-column>
+                <kendo-grid-column field="policy_info_attack_code" title="공격코드" width="80" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}" >
+                </kendo-grid-column>
+                <kendo-grid-column field="policy_info_attack_name" title="공격명" width="120" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center', 'overflow': 'hidden','text-overflow': 'ellipsis', 'white-space': 'nowrap'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="group_id" title="그룹ID" width="100" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="group_name" title="그룹명" width="100" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="object_id" title="객체ID" width="100" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="object_name" title="객체명" width="100" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="hacker_country_code" title="국가(공격자)" width="100" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div *ngIf="dataItem.hacker_country_code != 'n/a'">
+                      <div title="{{dataItem.hacker_country_name}}"><span class="flag-icon flag-icon-{{dataItem.hacker_country_code | lowercase}}"></span> {{dataItem.hacker_country_code}}</div>
+                    </div>
+                    <div *ngIf="dataItem.hacker_country_code == 'n/a'">
+                      <div title="{{dataItem.hacker_country_name}}"><span class="flag-icon flag-icon-no-flag"></span></div>
+                    </div>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="hacker_ip" title="공격자" width="180" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'left'}" >
+                </kendo-grid-column>
+                <kendo-grid-column field="victim_country_code" title="국가(대상자)" width="100" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <div *ngIf="dataItem.hacker_country_code != 'n/a'">
+                          <div title="{{dataItem.hacker_country_name}}"><span class="flag-icon flag-icon-{{dataItem.hacker_country_code | lowercase}}"></span> {{dataItem.hacker_country_code}}</div>
+                        </div>
+                        <div *ngIf="dataItem.hacker_country_code == 'n/a'">
+                          <div title="{{dataItem.hacker_country_name}}"><span class="flag-icon flag-icon-no-flag"></span></div>
+                        </div>
+                      </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="victim_ip" title="대상자" width="180" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'left'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="protocol" title="프로토콜" width="80" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">               
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div [ngSwitch]="dataItem.protocol">
+                      <div *ngSwitchCase="'6'"> <div title="TCP">TCP</div></div>
+                      <div *ngSwitchCase="'17'"><div title="UDP">UDP</div></div>
+                      <div *ngSwitchCase="'1'"><div title="ICMP">ICMP</div></div>
+                      <div *ngSwitchDefault><div tile=""></div></div>
+                    </div>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="detect_risk" title="위험도" width="120" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'left'}">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div [ngSwitch]="dataItem.detect_risk">
+                      <div *ngSwitchCase="'low'"><div title="Low">
+                          <span class="m-badge m-badge--primary m-badge--rounded">L</span>
+                          낮음
+                        </div>
+                      </div>
+                      <div *ngSwitchCase="'medium'">
+                        <div title="Low">
+                          <span class="m-badge m-badge--warning m-badge--rounded">M</span>
+                          보통
+                        </div>
+                      </div>
+                      <div *ngSwitchCase="'high'">
+                        <div title="High">
+                          <span class="m-badge m-badge--danger m-badge--rounded">H</span>
+                          높음
+                        </div>
+                      </div>
+                      <div *ngSwitchDefault>
+                          <div tile="">
+                          </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="asset_risk" title="자산영향도" width="100" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+
+                <kendo-grid-column field="block" title="차단" width="80" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                      <div [ngSwitch]="dataItem.block">
+                        <div *ngSwitchCase="'block'"><i class="fa fa-times-circle-o m--font-danger"></i></div>
+                        <div *ngSwitchDefault><div tile=""></div></div>
+                      </div>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="detect_attempts" title="시도횟수" width="80" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                  </kendo-grid-column>
+                <kendo-grid-column field="detect_Traffic" title="통신량" width="80" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="ttl" title="TTL" width="80" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="raw" title="Raw" width="80" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div [ngSwitch]="dataItem.raw">
+                      <div *ngSwitchCase="'single'"><i class="fa fa-check m--font-success"></i></div>
+                      <div *ngSwitchCase="'multi'"><i class="fa fa-check m--font-secondary"></i></div>
+                      <div *ngSwitchDefault><div tile=""></div></div>
+                    </div>          
+                  </ng-template>
+                </kendo-grid-column>
+                                
+                <kendo-grid-column field="Additional_Information" title="부가정보" width="500" [headerStyle]="{'text-align':'left'}" [style]="{'text-align':'left'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="nic_port" title="NIC포트" width="80" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                </kendo-grid-column>
+                <kendo-grid-column field="direction" title="통신방향" width="150" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'left'}">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                  <div [ngSwitch]="dataItem.direction">
+                      <div *ngSwitchCase="'Inbound'" ><span class="m-badge m-badge--warning m-badge--wide m-badge--dot"></span> InBound</div>
+                      <div *ngSwitchCase="'Outbound'"><span class="m-badge m-badge--success m-badge--wide m-badge--dot"></span> OutBound</div>
+                  </div>
+                </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="application_name" title="Application 명" width="200" [headerStyle]="{'text-align':'center'}" [style]="{'text-align':'center'}">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div *ngIf="dataItem.application_name != undefined">
+                      <div title="{{dataItem.application_name}}" > <img src="assets/app/media/img/application/{{dataItem.application_name}}.png">  {{dataItem.application_name}}</div>
+                    </div>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-messages groupPanelEmpty="Drag here to group" noRecords="데이터가 없습니다."></kendo-grid-messages>
+                <kendo-grid-excel fileName="{{detectLogExcelFileName}}"></kendo-grid-excel>
+              </kendo-grid> 
+            </div>
+          </div>
+        </div>
+        <div #detectSearching>
+          <div class="block-overlay" *ngIf="stateSearching"></div>
+          <div class="block-contents" *ngIf="stateSearching">
+            <div class="m-blockui ">
+              <span>데이터를 로드중입니다.</span>
+              <span>
+                <div class="m-loader  m-loader--success "></div>
+              </span>
+            </div>
+          </div>
+        </div>
+			</div>
+			<!--end::Portlet-->
+		</div>
+	</div>
+</div>
+<app-detail-sidebar #detailSidebar [selectedFromDate]="fromDate" [toDateMax]="toDateMax" [ipv]="ipv" (changeFilter)="applyFilter($event)"></app-detail-sidebar>

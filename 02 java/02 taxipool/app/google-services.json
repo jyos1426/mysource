@@ -1,0 +1,159 @@
+{
+  "project_info": {
+    "project_number": "582712323175",
+    "firebase_url": "https://taxikitri-1495966509456.firebaseio.com",
+    "project_id": "taxikitri-1495966509456",
+    "storage_bucket": "taxikitri-1495966509456.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582712323175:android:5bf17680ed26b5f6",
+        "android_client_info": {
+          "package_name": "my.hyeon.taxikitri"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "582712323175-vpjn9a6j5hn1nf2ul3d19ttffgobusc0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "my.hyeon.taxikitri",
+            "certificate_hash": "874b9bf7a990c6277c339894e931a9ee24201bee"
+          }
+        },
+        {
+          "client_id": "582712323175-74fek6esqt4r44oa9f6i3vadujqnlbpq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8r14eAEjO_jMvfUOaTrPoA7RAenXGKy0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "582712323175-74fek6esqt4r44oa9f6i3vadujqnlbpq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582712323175:android:e7ccd20ee7844ed1",
+        "android_client_info": {
+          "package_name": "com.androidchatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "582712323175-94qpaql3bjl2qvcovb20torn5qrftvth.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.androidchatapp",
+            "certificate_hash": "874b9bf7a990c6277c339894e931a9ee24201bee"
+          }
+        },
+        {
+          "client_id": "582712323175-74fek6esqt4r44oa9f6i3vadujqnlbpq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8r14eAEjO_jMvfUOaTrPoA7RAenXGKy0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "582712323175-74fek6esqt4r44oa9f6i3vadujqnlbpq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582712323175:android:43c82f5f353d4eb6",
+        "android_client_info": {
+          "package_name": "com.my.taxipool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "582712323175-kkdvbv2otfa811t59dr256gsj060ubbg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.my.taxipool",
+            "certificate_hash": "cfdd769c3ef418b0218ef38e5c993d12c9e577ef"
+          }
+        },
+        {
+          "client_id": "582712323175-hl0r9o7u1aa534b0j2ej3fu6irljkh2m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.my.taxipool",
+            "certificate_hash": "95f4c34262ae93bb895d8260c06a6ed84ee6e9e8"
+          }
+        },
+        {
+          "client_id": "582712323175-ijmvv4p43tddp9r79lsuh43rm88fuslb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.my.taxipool",
+            "certificate_hash": "874b9bf7a990c6277c339894e931a9ee24201bee"
+          }
+        },
+        {
+          "client_id": "582712323175-74fek6esqt4r44oa9f6i3vadujqnlbpq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8r14eAEjO_jMvfUOaTrPoA7RAenXGKy0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "582712323175-74fek6esqt4r44oa9f6i3vadujqnlbpq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

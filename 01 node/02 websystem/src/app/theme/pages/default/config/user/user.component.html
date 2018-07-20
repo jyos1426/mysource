@@ -1,0 +1,172 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader">
+		<div class="d-flex align-items-center">
+			<div class="mr-auto">
+				<h3 class="m-subheader__title m-subheader__title--separator">
+					계정 관리
+				</h3>
+				<ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+					<li class="m-nav__item m-nav__item--home">
+						<a href="#" class="m-nav__link m-nav__link--icon">
+							<i class="m-nav__link-icon la la-home"></i>
+						</a>
+					</li>
+					<li class="m-nav__separator">
+						-
+					</li>
+					<li class="m-nav__item">
+						<a href="" class="m-nav__link">
+							<span class="m-nav__link-text">
+								관리
+							</span>
+						</a>
+					</li>
+					<li class="m-nav__separator">
+						-
+					</li>
+					<li class="m-nav__item">
+						<a href="" class="m-nav__link">
+							<span class="m-nav__link-text">
+								계정 관리
+							</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- END: Subheader -->
+	<div class="m-content">
+		<div class="row">
+			<div class="col-lg-12">
+				<!--begin::Portlet-->
+				<div class="m-portlet m-portlet--mobile">
+					<div class="m-portlet__head">
+						<div class="m-portlet__head-caption">
+							<a class="btn btn-sm btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" 
+								href="#" 
+								title="추가"						
+								(click)="openAddSidebar()">
+								<i class="fa fa-plus"></i>
+							</a>
+							|
+							<a class="btn btn-sm btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" 
+								href="#" 
+								(click)="renderUserGrid()"
+								title="새로고침">
+								<i class="fa fa-refresh"></i>
+							</a>
+							|
+							<a class="btn btn-sm btn-info m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" 
+								href="#" 
+								(click)="exportToExcel(userGrid)"
+								title="엑셀저장">
+								<span>
+								<i class="fa fa-file-excel-o"></i>
+								<span>
+									Excel
+								</span>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="m-portlet__body">		
+	
+						<kendo-grid
+							#userGrid
+							[data]="userGridView"
+							[pageSize]="pageSize"
+							[skip]="skip"
+							[pageable]="true"
+							[height]="500"
+							(pageChange)="pageChange($event)">
+							<kendo-grid-column field="id" title="관리자 ID" width="120">
+							</kendo-grid-column>
+							<kendo-grid-column field="authority" title="사용권한" width="100">
+								<ng-template kendoGridCellTemplate let-dataItem>									
+									<div [ngSwitch]="dataItem.authority">
+										<span *ngSwitchCase="'1'">전체 관리자</span>
+										<span *ngSwitchCase="'2'">일반 관리자</span>
+									</div>
+								</ng-template>
+							</kendo-grid-column>
+							<kendo-grid-column field="password_limit" title="유효기간" width="100">
+							</kendo-grid-column>
+							<kendo-grid-column field="access_address" title="접속가능IP주소수" width="120">
+							</kendo-grid-column>
+							<kendo-grid-column field="phone" title="전화번호" width="120">
+							</kendo-grid-column>
+							<kendo-grid-column field="email" title="전자우편" width="150">
+							</kendo-grid-column>
+							<kendo-grid-column field="extension" title="비고" width="150">
+							</kendo-grid-column>
+							<kendo-grid-column field="id" title="관리" width="150">
+								<ng-template kendoGridCellTemplate let-dataItem>
+									<button class="btn btn-sm btn-accent m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" 
+										(click)="openModifySidebar(dataItem.id)" 
+										title="수정"		
+										>
+									<i class="fa fa-pencil"></i>
+									</button>
+									<button class="btn btn-sm btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air m-nav__link"
+										(click)="openCheckDeleteModal(dataItem.id)" 
+										[disabled]="dataItem.authority==1"
+										title="삭제">
+									<i class="fa fa-minus"></i>
+									</button>
+								</ng-template>
+							</kendo-grid-column>
+							<kendo-grid-excel fileName="{{userExcelFileName}}"></kendo-grid-excel>
+						</kendo-grid>
+						<!--end: Datatable -->					 
+						<button 
+							#btnOpenAddSidebar 
+							id="add_user_sidebar_toggle" 
+							[hidden]="true">
+						</button>	
+						<button 
+							#btnOpenModifySidebar 
+							id="modify_user_sidebar_toggle" 
+							[hidden]="true">
+						</button>	
+						<button 
+							#btnOpenDelteModal 
+							data-toggle="modal"
+							data-target="#modal_check_delete" 
+							[hidden]="true">
+						</button>	
+
+						<app-modify-user-sidebar	
+						#modifyUserSidebar
+						(modifyComplete)="renderUserGrid()"
+						>
+						</app-modify-user-sidebar>
+						<app-add-user-sidebar	
+						#addUserSidebar
+						(addComplete)="renderUserGrid()"
+						>							
+						</app-add-user-sidebar>		
+						<app-check-delete-modal
+						#checkDeleteModal
+						(deleteConfirm)="deleteUser()"
+						>							
+						</app-check-delete-modal>		
+					</div>
+					
+					<div #blockSearching>
+						<div class="block-contents">
+							<div class="m-blockui ">
+								<span>데이터를 로드중입니다.</span>
+								<span>
+									<div class="m-loader  m-loader--success "></div>
+								</span>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!--end::Portlet-->
+			</div>
+		</div>
+	</div>
+	

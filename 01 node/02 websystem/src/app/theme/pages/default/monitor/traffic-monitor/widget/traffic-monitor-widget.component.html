@@ -1,0 +1,21 @@
+<div class="m-portlet m-portlet--full-height">
+	<div class="m-portlet__head" style="height: 3rem;">
+		<div class="m-portlet__head-caption">
+			<div class="m-portlet__head-title">
+				<h3 class="m-portlet__head-text">
+					<a class="m-link m--font-boldest" href="#" (click)="selectWidget()">{{interfaceName}}</a>
+				</h3>
+			</div>			
+		</div>
+		<div class="m-portlet__head-tools">				
+			<span>
+				{{bandwidth}}%
+			</span>			
+		</div>		
+	</div>
+	<div class="m-portlet__body" style="padding: 0.5rem;">
+		<div class="m-widget2">			
+			<div #container></div>			
+		</div>		
+	</div>
+</div>

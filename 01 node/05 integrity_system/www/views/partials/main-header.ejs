@@ -1,0 +1,203 @@
+<style>
+    .navbar-nav>.notifications-menu>.dropdown-menu>li .menu,
+    .navbar-nav>.messages-menu>.dropdown-menu>li .menu,
+    .navbar-nav>.tasks-menu>.dropdown-menu>li .menu {
+        max-height: 100px;
+    }
+    a.disabled {
+        pointer-events: none;
+        cursor: default;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 180px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        right: 0px;
+        padding: 4px 4px 15px 4px;
+    }
+    .dropdown-content ul {
+        color: black;
+        padding: 0px 12px;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 10px;
+    }
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    #header_connect_status, #header_test_status {
+        top: 15px;
+        padding: 5px;
+        font-size: 11px;     
+    }
+    a .label-success {
+        background-color :#38b44a
+      }
+  @media (min-width: 992px) {
+    .modal-lg {
+      width: 70%;
+    }
+  }
+</style>
+<script>
+
+  var testStatus = '';
+  $(function() {
+      checkIVSStatus_header();
+      showTime();
+  });
+
+  function showTime() {
+    var date = new Date();
+    var str = ' ' +
+      leadingZeros(date.getFullYear(), 4) + '-' +
+      leadingZeros(date.getMonth() + 1, 2) + '-' +
+      leadingZeros(date.getDate(), 2) + ' ' +
+
+      leadingZeros(date.getHours(), 2) + ':' +
+      leadingZeros(date.getMinutes(), 2) + ':' +
+      leadingZeros(date.getSeconds(), 2);
+
+    $("#header_time").text(str);
+  }
+
+  function leadingZeros(n, digits) {
+    var zero = '';
+    n = n.toString();
+    if (n.length < digits) {
+      for (i = 0; i < digits - n.length; i++) {
+        zero += '0';
+      }
+    }
+    return zero + n;
+  }
+
+    function checkIVSStatus_header() {
+        $.ajax({
+            url: '/api/dashboards/dashboard/ivs_testing_check',
+            method: 'get',
+            dataType: 'json',
+            success: function(json) {
+                if(json.length > 0){
+
+                  testStatus = json[0].datas[0].test_status;            
+
+                  var strHTML = '<i class="fa fa-none">';   
+                  if( testStatus != 'NO_TEST'){
+                    var test =  json[2].datas[0].test;  
+                    switch (test){  
+                      case '1' :
+                        strHTML += '탐지 테스트 ';
+                      break;  
+                      case '2':
+                        strHTML += '부하 테스트 ';
+                      break;  
+                      case '4':
+                        strHTML += '정합성 검증 ';
+                      break;
+                    }
+
+                    switch (testStatus){  
+                      case 'TEST_SET' :
+                        strHTML += '설정 중';
+                      break;  
+                      case 'TEST_UPDATE':
+                        strHTML += '정책 업로드 중';
+                      break;   
+                      case 'TEST_UPDATE_DONE':
+                        strHTML += '정책 업로드 완료';
+                      break;
+                      case 'TEST_UPLOAD':
+                        strHTML += '정책 적용 중';
+                      break;   
+                      case 'TEST_UPLOAD_DONE':
+                        strHTML += '정책 적용 완료';
+                      break;   
+                      case 'TEST_RUN' :
+                        strHTML += '진행 중';
+                      break; 
+                      case 'TEST_END':
+                        strHTML += '완료';
+                      break; 
+                      case 'TEST_RULE_CHECK':
+                        strHTML += '진행 중';
+                      break; 
+                      case 'TEST_RULE_CHECK_DONE':
+                        strHTML += '완료';
+                      break; 
+                    }
+                    strHTML += '</i>';
+
+                    $('#header_test_status').html(strHTML);
+                    $('#header_test_status').css('display','block');
+                    $('#header_connect_status').css('display','block');
+                  }
+                }else{   
+                      swal("Error", '엔진과 연결이 끊겼습니다. \n에러코드:'+json.code, "error");
+                }
+              },
+              error: function(request, status, error) {
+              }
+        });
+    }
+
+  setInterval("showTime()", 1000);
+</script>
+<header class="main-header">
+  <!-- Logo -->
+  <a href="/dashboards/dashboard" class="logo">
+    <!-- mini logo for sidebar mini 50x50 pixels -->
+    <span class="logo-mini"><b>IVS</b></span>
+    <!-- logo for regular state and mobile devices -->
+    <span class="logo-lg">SNIPER <b>IVS</b></span>
+  </a>
+  <!-- Header Navbar: style can be found in header.less -->
+  <nav class="navbar navbar-static-top">
+    <!-- Sidebar toggle button-->
+    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+    <div class="navbar-custom-menu">
+      <ul class="nav navbar-nav">
+        <li style="width:70px;" class="dropdown messages-menu">
+            <a href="#" class="dropdown disabled">
+              <span class="label label-warning" id="header_test_status"></span>
+            </a>
+        </li>
+        <li style="width:70px;" class="dropdown messages-menu">
+          <a href="#" class="dropdown disabled">            
+              <% if(session.isConnected != true){%>
+                <span class="label label-danger" id="header_connect_status"><i class="fa fa-none">연결안됨</i></span>
+              <% } else{ %>
+                <span class="label label-success" id="header_connect_status"><i class="fa fa-none">연결성공</i></span>
+              <% } %>
+            <!-- <i class="fa fa-plug" style="color:#00a65a" name="if_link"> <label>연결성공</label></i> -->
+          </a>
+        </li>
+        <li class="dropdown notifications-menu">
+          <a href="#" class="dropdown disabled">
+            <i class="fa fa-clock-o" id="header_time"></i>
+          </a>
+        </li>
+        <li class="dropdown messages-menu">
+          <a href="mailto:sniper@wins21.co.kr" class="dropdown-toggle" data-placement="bottom" data-container="body" data-toggle="tooltip" title="관리자에게 메일보내기">
+            <i class="fa fa-envelope-o"></i>
+          </a>
+        </li>
+        <li class="dropdown messages-menu">
+          <a href="/api/dashboards/dashboard/ivs_manual" target="_blank" class="dropdown-toggle" data-placement="bottom" data-container="body" data-toggle="tooltip" title="매뉴얼">
+            <i class="fa fa-question"></i>
+          </a>
+        </li>
+        <li class="dropdown notifications-menu">
+          <a href="javascript:DoLogout();" class="dropdown-toggle" data-placement="bottom" data-container="body" data-toggle="tooltip" title="로그아웃">
+            <i class="fa fa-sign-out"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

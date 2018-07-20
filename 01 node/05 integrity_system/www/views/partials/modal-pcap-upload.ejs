@@ -1,0 +1,39 @@
+<div class="modal modal-center fade" id="modal_pcap_upload" role="dialog" aria-label="close">
+  <div class="modal-dialog modal-md modal-center" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#6ABDC1;">
+        <button type="button" onClick="modalClose();" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span></button>
+        <h4 class="modal-title"><b> Pcap 업로드 </b></h4>
+      </div>
+      <form name="frm" action="javascript:;" method="post" enctype="multipart/form-data" id="uploadform">
+        <div class="modal-body">
+            <div class="box-body">
+                <div class="form-group">
+                  <label for="category">카테고리</label>
+                  <input type="email" class="form-control" id="category" value="전체" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="comment">비고</label>
+                  <input type="text" class="form-control" name="comment" id="comment" placeholder="">
+                </div>
+                <!-- <div class="fileinput fileinput-new" data-provides="fileinput">
+                  <span class="btn btn-default btn-file"><span>Choose file</span><input type="file" /></span>
+                  <span class="fileinput-filename"></span><span class="fileinput-new">No file chosen</span>
+              </div> -->
+                <div class="form-group">
+                  <label for="selectFile">파일 선택</label>
+                  <input type="file" name="pcap_file" id="selectFile" onChange="checkFile(this);" multiple >
+                </div>
+                <input type="checkbox" name="deleteAll" id="deleteAll" data-onstyle="danger" data-offstyle="success" data-size="small" data-toggle="toggle"
+                       data-on="<i class='fa fa-toggle-on'></i> 삭제" data-off="<i class='fa fa-toggle-off'></i> 유지" data-width="80">
+                <small id="fileHelp" class="form-text text-muted">[삭제] 선택시 기존 pcap 파일을 전부 삭제하고 업로드됩니다.</small>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary upload" onclick="uploadform()"><i class="fa fa-upload"></i> Pcap 업로드</button>
+        </div>
+      </form>
+    </div>
+</div>

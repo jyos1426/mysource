@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/register_back_rela"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+        <ImageView
+            android:id="@+id/register_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/ic_arrow_back"/>
+        <TextView
+            android:id="@+id/register_back_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/register_back"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="품앗이 등록하기"
+            android:textColor="@color/poomAtMain"
+            android:textSize="20dp"/>
+    </RelativeLayout>
+    <ScrollView
+        android:id="@+id/registerScroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/register_back_rela">
+        <include layout="@layout/register_scroll"/>
+    </ScrollView>
+
+
+</RelativeLayout>

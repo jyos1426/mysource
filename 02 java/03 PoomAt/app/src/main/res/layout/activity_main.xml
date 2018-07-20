@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/main_rela"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+        <TextView
+            android:id="@+id/main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="PoomAt"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:textColor="@color/poomAtMain"/>
+        <ImageView
+            android:id="@+id/main_top_icon"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_gamepad"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"/>
+    </RelativeLayout>
+
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/main_tab"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_below="@+id/main_rela"
+        app:pstsIndicatorColor="#ffd10606"
+        app:pstsShouldExpand="true"
+        app:pstsIndicatorHeight="3dp"
+        app:pstsUnderlineColor="@android:color/transparent">
+    </com.astuetz.PagerSlidingTabStrip>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/main_tab">
+    </android.support.v4.view.ViewPager>
+</RelativeLayout>

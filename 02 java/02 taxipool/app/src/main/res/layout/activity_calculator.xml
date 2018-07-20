@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightGray"
+        android:padding="5dp"
+        android:gravity="center"
+        android:text="별점 주기"/>
+    <!-- people info -->
+    <include layout="@layout/view_calculator_people_score" android:visibility="gone"/>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.RecyclerView
+    android:id="@+id/calcullistview"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:divider="@color/darkGray"
+    android:dividerHeight="0.5dp"
+    android:choiceMode="singleChoice"
+    />
+</LinearLayout>
+    <!-- end people info -->
+    <include layout="@layout/view_line"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightGray"
+        android:padding="5dp"
+        android:gravity="center"
+        android:text="택시비 계산 해보기"/>
+    <include layout="@layout/view_line"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="40dp">
+
+        <EditText
+            android:id="@+id/ed_taxicalcul1"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:gravity="right"
+            android:text=""
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/lightGray"
+            android:padding="5dp"
+            android:text="원" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="40dp">
+
+        <EditText
+            android:id="@+id/ed_taxicalcul2"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:inputType="number"
+            android:text="" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/lightGray"
+            android:padding="5dp"
+            android:text="명(전체 인원)" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="40dp">
+
+        <EditText
+            android:id="@+id/ed_taxicalcul3"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:gravity="right"
+            android:text=""
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/lightGray"
+            android:padding="5dp"
+            android:text="명(본인 일행)" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        >
+    <TextView
+        android:id="@+id/tv_calculator_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="30dp"
+
+        />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        >
+        <Button
+            android:id="@+id/bt_calcul"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPoint"
+            android:text="결제 하기"
+            android:textColor="@color/white"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

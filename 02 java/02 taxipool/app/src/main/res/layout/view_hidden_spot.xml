@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_hidden_spot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00ffffff">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+        <ImageView
+            android:id="@+id/img_pin"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:visibility="visible"
+            android:layout_marginBottom="20dp"
+            android:src="@mipmap/ic_from" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="5dp"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <com.my.taxipool.view.InputCustomView
+            android:id="@+id/view_hidden_spot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftLabel="장소"
+            app:rightColor="@color/colorPink"
+            app:rightLabel="장소" />
+
+        <Button
+            android:id="@+id/btn_hidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_drawable_click"
+            android:textColor="@color/white"
+            android:text="현재위치로 선택하기"
+            />
+    </LinearLayout>
+</RelativeLayout>

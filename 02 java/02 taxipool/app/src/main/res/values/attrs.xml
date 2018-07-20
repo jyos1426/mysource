@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="InputCustomView">
+        <attr name="leftLabel" format="string" />
+        <attr name="rightLabel" format="string" />
+        <attr name="rightColor" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="ButtonCustomView">
+        <attr name="backgroundColor" format="color" />
+        <attr name="labelColor" format="color" />
+        <attr name="label" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="RoomListCustomView">
+        <attr name="title1" format="reference|string" />
+        <attr name="levelimage" format="reference|integer" />
+        <attr name="info" format="reference|string" />
+        <attr name="repcount" format="reference|string" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="OrderDAOMapper">
+	
+	<resultMap id="OrderInfoMap" type="OrderInfo">
+		<id property="info_no" column="info_no"/>
+		<result property="info_date" column="info_date"/>	
+		
+		<association property="info_c" javaType="Customer">
+			<result property="id" column="id"/>
+			<result property="password" column="password"/>
+			<result property="name" column="name"/>
+		</association>
+					
+		<collection property="lines" ofType="OrderLine">	
+			<id property="line_p.no" column="prod_no"/>	
+			<id property="line_info_no" column="info_no"/>			
+			<result property="line_quantity" column="line_quantity"/>
+												
+			<association property="line_p"  javaType="Product">	
+				<id property="no" column="prod_no"/>		
+	 			<result property="name" column="prod_name"/>
+	  			<result property="price" column="prod_price"/>
+			</association> 
+		</collection>
+	</resultMap>
+	
+
+	<select id="selectById" parameterType="string" resultMap="OrderInfoMap">
+		SELECT info_no, info_date, line_quantity, prod_no, prod_name, prod_price 
+		FROM order_info info 
+		JOIN order_line line 
+			ON info_no = line_info_no 
+		JOIN product p 
+			ON prod_no = line_prod_no 
+		WHERE info_id = #{id} ORDER BY info_no
+	</select>
+	
+	<select id="selectAll" resultMap="OrderInfoMap">
+		SELECT info_no, info_date, id, password, name, line_info_no , line_prod_no, line_quantity, prod_no, prod_name, prod_price
+		FROM order_info info LEFT OUTER JOIN order_line line ON info_no = line_info_no
+		JOIN customer c ON id = info_id
+		JOIN product p ON prod_no = line_prod_no
+		ORDER BY info_no
+	</select>
+	
+	<insert id="insertInfo" parameterType="OrderInfo">
+		INSERT INTO order_info (INFO_NO, INFO_DATE, INFO_ID)
+		VALUES ( order_info_seq.NEXTVAL,SYSDATE, #{info_c.id})
+	</insert>
+	
+	<insert id="insertLine" parameterType="OrderLine">
+		<selectKey keyProperty="line_info_no"
+				resultType="int"
+				order="BEFORE">
+			SELECT NVL(MAX(info_no),0) 
+			FROM order_info
+		</selectKey>
+		INSERT INTO order_line (LINE_INFO_NO, LINE_PROD_NO, LINE_QUANTITY)
+		VALUES (#{line_info_no}, #{line_p.no}, #{line_quantity})
+	</insert>
+
+</mapper>

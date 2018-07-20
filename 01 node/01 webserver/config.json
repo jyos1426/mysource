@@ -1,0 +1,15 @@
+{
+	"root_path" : "/home1/www",
+	"https_port"    : 3000,
+	"_comment_sensor_timeout" : "set timeout senconds with sensor, ex) 2000 means 2 seconds",
+	"sensor_timeout" : 5000,
+	"_comment_log_enable" : "/log rest api usage value, ex) 0: no use, 1: use",
+	"log_enable" : 0,
+	"mongos_ip"     : "0.0.0.0",
+	"mongos_port"   : 23011,
+	"mongod_ip"     : "0.0.0.0",
+	"mongod_port"   : 24011,
+	"updateSheduleJobCron" : "* * * * *",
+	"removeLogSheduleCron" : "00 00 * * *",
+	"removeLogConditionDt" : "60"
+}

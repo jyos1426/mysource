@@ -1,0 +1,183 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title m-subheader__title--separator">
+        탐지정책설정
+      </h3>
+      <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+          <a href="#" class="m-nav__link m-nav__link--icon">
+            <i class="m-nav__link-icon la la-home"></i>
+          </a>
+        </li>
+        <li class="m-nav__separator">
+          -
+        </li>
+        <li class="m-nav__item">
+          <a href="" class="m-nav__link">
+            <span class="m-nav__link-text">
+              정책
+            </span>
+          </a>
+        </li>
+        <li class="m-nav__separator">
+          -
+        </li>
+        <li class="m-nav__item">
+          <a href="" class="m-nav__link">
+            <span class="m-nav__link-text">
+              탐지정책설정
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- END: Subheader -->
+<div class="m-content">
+  <div class="row">
+    <div class="col-lg-12">
+      <!--begin::Portlet-->
+      <div class="m-portlet m-portlet--mobile">
+        <div class="m-portlet__head">
+          <div class="m-portlet__head-caption">
+            <button
+              class="btn m-btn--pill m-btn--air btn-primary"
+              type="button"
+              title="정책적용"
+              data-toggle="modal"
+              data-target="#modal_editor_submit"
+              (click)="onAcceptRules($event)"
+              [disabled]="countStatement.changed.length === 0"
+            >
+              <i class="fa fa-arrow-circle-o-down"></i> 적용
+            </button>
+            |
+            <button #btnRefresh name="btnRefresh" class="btn btn-sm btn-accent m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air"
+              href="#" title="새로고침" [disabled]="stateRefreshing" (click)="onClickRefresh($event)">
+              <i class="fa fa-refresh"></i>
+            </button>
+            |
+
+            <label class="m-checkbox m-checkbox--solid pull-right">
+              <input [checked]="stateFiltered" type="checkbox" (click)="onToggleFilterRules($event)">
+              수정된 패턴만 보기
+              <span></span>
+            </label>
+            <!-- <div class="m-portlet__head-title">
+              <h3 class="m-portlet__head-text">
+                필터영역
+                <small>
+                  Pattern Editor Filter Area
+                </small>
+              </h3>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <!--end::Portlet-->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2 col-md-12 col-sm-12">
+      <div class="m-portlet m-portlet--mobile">
+        <div class="m-portlet__body">
+          <div class="row">
+            <!-- <div class="col-lg-2 col-md-12 col-sm-12 category-area category-area--air"> -->
+            <div class="col-12 category-area" style="width: 100%; height: 463px;">
+              <p-tree
+                #pTree
+                [value]="categoryNodes"
+                selectionMode="single"
+                [(selection)]="selectedCategory2"
+                (onNodeSelect)="changeCategory($event)"
+              >
+                <ng-template let-node pTemplate="default">
+                  {{node.label}}
+                </ng-template>
+                <ng-template let-node pTemplate="template_node">
+                  <div [ngSwitch]="node.data.flow">
+                    <div *ngSwitchCase="-1">
+                      <a class="btn btn-primary m-btn m-btn--icon btn-xs m-btn--icon-only m-btn--pill" href="#" title="전체">
+                        <i class="fa fa-arrows-v"></i>
+                      </a>&nbsp;&nbsp;{{node.label}}
+                    </div>
+                    <div *ngSwitchCase="0">
+                      <a class="btn btn-danger m-btn m-btn--icon btn-xs m-btn--icon-only m-btn--pill" href="#" title="InBound">
+                        <i class="fa fa-long-arrow-down"></i>
+                      </a>&nbsp;&nbsp;{{node.label}}
+                    </div>
+                    <div *ngSwitchCase="1">
+                      <a class="btn btn-success m-btn m-btn--icon btn-xs m-btn--icon-only m-btn--pill" href="#" title="OutBound">
+                        <i class="fa fa-long-arrow-up"></i>
+                      </a>&nbsp;&nbsp;{{node.label}}
+                    </div>
+                    <!-- <div *ngSwitchDefault>
+                    </div> -->
+                  </div>
+                </ng-template>
+                <ng-template let-node  pTemplate="category_node">
+                  {{node.label}}
+                  <span *ngIf="node.data.isChanged">
+                    <a class="btn btn-success m-btn m-btn--icon btn-xs m-btn--icon-only ag-cell-state-changed" title="수정됨"  alt="changed">
+                      <i class="fa fa-pencil m--font-light"></i>
+                    </a>&nbsp;{{node.data.isChanged}}
+                  </span>
+                  <span *ngIf="node.data.isAdded">
+                    <a class="btn btn-success m-btn m-btn--icon btn-xs m-btn--icon-only ag-cell-state-added" title="추가됨"  alt="added">
+                      <i class="fa fa-plus m--font-light"></i>
+                    </a>&nbsp;{{node.data.isAdded}}
+                  </span>
+                  <span *ngIf="node.data.isRemoved">
+                    <a class="btn btn-success m-btn m-btn--icon btn-xs m-btn--icon-only ag-cell-state-removed" title="삭제됨"  alt="removed">
+                      <i class="fa fa-minus m--font-light"></i>
+                    </a>&nbsp;{{node.data.isRemoved}}
+                  </span>
+
+                  
+                  <!-- <a class="btn btn-success m-btn m-btn--icon btn-xs m-btn--icon-only m-btn--pill" href="#" title="수정됨"  alt="changed" *ngIf="node.data.isChanged">
+                    <i class="fa fa-pencil"></i>
+                  </a> -->
+                  <!-- <span class="m--font-light" title="수정됨" alt="changed"><i class="fa fa-pencil"></i></span>
+                  <span class="m--font-light" title="추가됨" alt="added"><i class="fa fa-plus"></i></span>
+                  <span class="m--font-light" title="삭제됨" alt="removed"><i class="fa fa-minus"></i></span> -->
+                </ng-template>
+              </p-tree>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-10 col-md-12 col-sm-12">
+      <!--begin::Portlet-->
+      <div class="m-portlet m-portlet--mobile">
+        <div class="m-portlet__body">
+          <div class="row">
+            <div class="col-12">
+              <ag-grid-angular
+                #agGrid
+                class="ag-theme-custom"
+                style="width: 100%; height: 463px;"
+                [columnDefs]="gridColumnDefs"
+                [gridOptions]="gridOptions"
+                [enableColResize]="true"
+                [animateRows]="true"
+                [getRowNodeId]="getRowNodeId"
+                enableSorting
+                rowSelection="multiple"
+                (gridReady)="onGridReady($event)"
+                (cellValueChanged)="onCellValueChanged($event)"
+              ></ag-grid-angular>
+              <!-- [rowData]="gridData" -->
+              <!-- editType="fullRow" -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end::Portlet-->
+    </div>
+  </div>
+</div>
+<app-submit-editor-modal #submitEditorModal></app-submit-editor-modal>

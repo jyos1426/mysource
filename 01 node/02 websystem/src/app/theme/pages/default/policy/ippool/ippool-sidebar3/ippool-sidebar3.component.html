@@ -1,0 +1,122 @@
+<!-- begin::Quick Sidebar -->
+<div id="m_detail_sidebar3" class="m-quick-sidebar m-quick-sidebar--tabbed m-quick-sidebar--skin-light" appunwraptag="">
+	<div class="m-quick-sidebar__content m--hide">
+		<span id="m_detail_sidebar_close3" class="m-quick-sidebar__close" #btnDetailSidebarClose>
+      <i class="la la-close"></i>
+    </span>
+    
+  	<ul id="m_detail_sidebar_tabs3" class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+      <li class="nav-item m-tabs__item">
+        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_detail_sidebar_tabs_template" role="tab" #tabObjectAdd>
+          정책 템플릿 관리
+        </a>
+      </li>      
+    </ul>
+  	<div class="tab-content">
+    	<div class="m-alert m-alert--icon alert alert-danger" role="alert" *ngIf="error_msg != ''">
+				<div class="m-alert__icon">
+					<i class="la la-warning"></i>
+				</div>
+				<div class="m-alert__text">
+					{{error_msg}}<br>
+					<small>{{error_detail}}</small>
+				</div>
+			</div>			
+  		
+  		<div class="tab-pane active m-scrollable" id="m_detail_sidebar_tabs_template" role="tabpanel">
+  			<form class="m-form m-form--fit m-form--label-align-right m-form--group-seperator" (ngSubmit)="onSubmitTemplateAdd()" #templateAddForm="ngForm" novalidate>
+  				<div class="m-portlet__body">
+						<div class="m-form__section m-form__section--first">
+							<div class="form-group m-form__group" style="padding-left: 0; padding-right: 0;">
+								<div class="row">
+									<label class="col-lg-4 col-form-label">
+										템플릿ID
+									</label>
+									<div class="col-lg-8">
+										<input class="form-control m-input" placeholder="Enter template id (1-255)" type="number" name="template-id" [(ngModel)]="templateData.template_id" required [min]="'1'" [max]="'255'" #templateID>
+									<!-- 	<span class="m-form__help">
+											유효범위 1 ~ 255 
+										</span> -->
+									</div>
+								</div>
+								<div class="row">
+									<label class="col-lg-4 col-form-label">
+										템플릿명
+									</label>
+									<div class="col-lg-8">
+										<input class="form-control m-input" placeholder="Enter template name" type="text" name="template-name" [(ngModel)]="templateData.template_name" required #templateName>
+									</div>
+								</div>
+								<div class="row">
+									<label class="col-lg-4 col-form-label">
+										방향
+									</label>
+									<div class="col-lg-8">
+										<select class="form-control m-input" #templateFlow>
+											<option [selected]="templateData.flow == -1" [value]="-1">
+												전체
+											</option>
+											<option [selected]="templateData.flow == 0" [value]="0">
+												Inbound
+											</option>
+											<option [selected]="templateData.flow == 1" [value]="1">
+												Outbound
+											</option>
+										</select>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-9">
+									</div>
+									<div class="col-lg-3">
+										<button type="submit" class="btn btn-primary m-btn m-btn--air" title="추가">
+			          			추가
+			        			</button>
+			        		</div>
+								</div>
+							</div>
+						</div>
+					</div>
+  			</form>
+  			<kendo-grid
+			    [data]="gridView"
+					[pageable]="true" 
+					[skip]="skip" 
+					[pageSize]="pageSize"
+					[scrollable]="'none'"
+					(pageChange)="pageChange($event)">
+				
+					<kendo-grid-column field="id" title="템플릿ID" [width]="80" [headerStyle]="{'text-align': 'center'}"></kendo-grid-column>
+
+					<kendo-grid-column field="flow" title="방향" [width]="120" [headerStyle]="{'text-align': 'center'}">
+						<ng-template kendoGridCellTemplate let-dataItem>
+							<div [ngSwitch]="dataItem.flow">
+								<span *ngSwitchCase="-1"><i class="la la-arrows-v"></i>전체</span>
+								<span *ngSwitchCase="0"><i class="la la-arrow-down"></i>Inbound</span>
+								<span *ngSwitchCase="1"><i class="la la-arrow-up"></i>Outbound</span>
+							</div>
+						</ng-template>
+					</kendo-grid-column>
+
+					<kendo-grid-column field="name" title="템플릿명" [width]="150" [headerStyle]="{'text-align': 'center'}"></kendo-grid-column>
+
+					<kendo-grid-column field="delete" title="" [width]="30" [headerStyle]="{'text-align': 'center'}">
+						<ng-template kendoGridCellTemplate let-dataItem>
+							<a *ngIf="dataItem.id != 65535" href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="템플릿 삭제" (click)="delTemplate(dataItem)">
+  							<i class="fa fa-trash"></i>
+  						</a>
+						</ng-template>
+					</kendo-grid-column>
+				</kendo-grid>
+  		</div>
+
+  		<br>
+
+  		<div id="m_detail_sidebar_footer3" class="modal-footer">
+      	<button type="button" class="btn btn-primary m-btn m-btn--air" title="닫기" (click)="closePopup($event)">
+          닫기
+        </button>
+      </div>			
+  	</div>
+	</div>
+</div>

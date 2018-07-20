@@ -1,0 +1,12 @@
+<div class="cell-editor-wrapper">
+  <kendo-numerictextbox
+    #input
+    class="form-control"
+    [(ngModel)]="value"
+    [value]="value"
+    [autoCorrect]="true"
+    [format]="'n0'"
+    (keydown)="onKeyDown($event)"
+  >
+  </kendo-numerictextbox>
+</div>

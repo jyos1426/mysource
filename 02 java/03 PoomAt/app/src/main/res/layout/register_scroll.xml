@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chooserRela"
+    android:layout_below="@+id/registerItemImage"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFFFF">
+
+    <ImageView
+        android:id="@+id/registerImage"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/color2"/>
+    <TextView
+        android:id="@+id/foodNameTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registerImage"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="18dp"
+        android:text="식재료 이름"
+        android:textSize="16sp"/>
+    <EditText
+        android:id="@+id/foodNameEdit"
+        android:layout_below="@+id/foodNameTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:hint="정확하게 입력해 주세요"
+        android:textSize="14dp"/>
+    <TextView
+        android:id="@+id/foodCateTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/foodNameEdit"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="18dp"
+        android:text="카테고리"
+        android:textSize="16sp"/>
+    <Spinner
+        android:id="@+id/foodBigSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:entries="@array/bigSpinner"
+        android:prompt="@string/big_cate"
+        android:layout_below="@+id/foodCateTitle"/>
+
+    <TextView
+        android:id="@+id/foodLocationTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/foodBigSpinner"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="18dp"
+        android:text="위치(현재위치를 꾸욱~~~누르면 마커가 생겨요!)"
+        android:textSize="16sp"/>
+    <fragment
+        android:id="@+id/userRegistMap"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/foodLocationTitle"
+        class="com.google.android.gms.maps.MapFragment" />
+
+    <TextView
+        android:id="@+id/foodBuyDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userRegistMap"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="18dp"
+        android:text="구매시기"
+        android:textSize="16sp"/>
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_below="@+id/foodBuyDate"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </DatePicker>
+
+   <Button
+        android:id="@+id/registerButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/datePicker"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="10dp"
+        android:text="등록하기"/>
+
+</RelativeLayout>

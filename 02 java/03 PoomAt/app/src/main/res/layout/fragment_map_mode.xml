@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <fragment
+        android:id="@+id/mapModeMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/info"
+        class="com.google.android.gms.maps.MapFragment" />
+    <RelativeLayout
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/foodImage"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
+            android:background="@drawable/bg_image_02"/>
+        <TextView
+            android:id="@+id/foodName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/foodImage"
+            android:text="달걀 / 슈퍼마켓"/>
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/foodName"
+            android:layout_toRightOf="@id/foodImage"
+            android:text="죠스" />
+        <TextView
+            android:id="@+id/foodInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/foodImage"
+            android:layout_below="@+id/userName"
+            android:text="6개. 산지 얼마 안되었음. 당근 원함" />
+    </RelativeLayout>
+</RelativeLayout>

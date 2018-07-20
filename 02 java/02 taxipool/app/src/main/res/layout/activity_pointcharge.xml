@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:background="@color/black"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/bt_pointlist"
+            android:layout_marginTop="130dp"
+            android:background="@drawable/buttoncolorless"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:text="내역보기"
+            android:textColor="@color/colorPoint"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_nowpoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="30dp"
+            android:layout_marginBottom="20dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.my.taxipool.util.ClearEditText
+            android:id="@+id/et_inputpoint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="금액(원)"
+            android:textSize="30dp"
+            android:inputType="number"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"/>
+       <!-- <EditText
+            android:id="@+id/et_inputpoint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="금액(원)"
+            android:textSize="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"/>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp">
+
+            <Button
+                android:id="@+id/bt_5"
+                android:background="@drawable/button90"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="+5만원"/>
+            <Button
+                android:id="@+id/bt_1"
+                android:background="@drawable/button90"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="+1만원"/>
+            <Button
+                android:id="@+id/bt_0_5"
+                android:background="@drawable/button90"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="+5천원"/>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/bt_freepoint"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button90"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="무료 포인트 충전하기(광고)"/>
+        <Button
+            android:id="@+id/bt_pointout"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button90"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="포인트 출금하기"/>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/bt_charge"
+            android:background="@color/colorPoint"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="충전하기"
+            android:textColor="@color/white"
+            android:textSize="15dp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

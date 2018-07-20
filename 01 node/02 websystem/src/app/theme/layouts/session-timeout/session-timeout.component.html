@@ -1,0 +1,32 @@
+<!--begin::Modal-->
+<div class="modal fade" id="modal_session_timeout" tabindex="-1" role="dialog" aria-labelledby="session-timeout" aria-hidden="true" #modal>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" #btnClose>
+          <span aria-hidden="true">
+            &times;
+          </span>
+        </button>
+        <h4 class="modal-title">세션 타임아웃 알림</h4>
+      </div>
+      <div class="modal-body">
+        <p>세션이 곧 만료되어 로그인 페이지로 {{remainingSecond}} 초 뒤에 리다이렉션됩니다.</p>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped progress-bar-animated countdown-bar active" role="progressbar" style="min-width: 15px;" [style.width]="progress">
+            <span class="countdown-holder">{{remainingSecond}}s</span>
+          </div>
+          <!-- <span class="countdown-holder" style="position:absolute; width:450px; display:table-cell; text-align:center; vertical-align:middle;">{{remainingSecond}}초</span> -->
+        </div>
+        <br/>
+        <p>만약, 세션을 연장/유지 하시려면 키보드의 아무 키를 입력 하시거나 마우스를 클릭 혹은 움직이면 연장됩니다.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="onClickLogout($event)">로그아웃</button>
+        <!-- <button type="button" class="btn btn-primary" (click)="onClickSessionExtention($event)" #btnExtend>연결 유지</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-default" #btnShow data-toggle="modal" data-target="#modal_session_timeout" style="display: none;"></button>
+<!--end::Modal-->

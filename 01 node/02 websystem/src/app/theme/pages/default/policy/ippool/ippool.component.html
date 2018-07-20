@@ -1,0 +1,234 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader">
+	<div class="d-flex align-items-center">
+		<div class="mr-auto">
+			<h3 class="m-subheader__title m-subheader__title--separator">
+				IPPool
+			</h3>
+			<ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+				<li class="m-nav__item m-nav__item--home">
+					<a href="#" class="m-nav__link m-nav__link--icon">
+						<i class="m-nav__link-icon la la-home"></i>
+					</a>
+				</li>
+				<li class="m-nav__separator">
+					-
+				</li>
+				<li class="m-nav__item">
+					<a href="" class="m-nav__link">
+						<span class="m-nav__link-text">
+							정책
+						</span>
+					</a>
+				</li>
+				<li class="m-nav__separator">
+					-
+				</li>
+				<li class="m-nav__item">
+					<a href="" class="m-nav__link">
+						<span class="m-nav__link-text">
+							IPPool
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- END: Subheader -->
+<div class="m-content">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="m-portlet">
+				<div class="m-portlet__head">
+					<div class="m-portlet__head-caption">
+						<button class="btn m-btn--pill m-btn--air btn-primary" type="button" (click)="clickShowSidebar($event, 'group-add')" id="m_detail_sidebar_toggle" #btnSidebar>
+							<i class="fa fa-plus"></i> 그룹추가
+						</button>
+						<button class="btn m-btn--pill m-btn--air btn-primary" type="button" (click)="clickShowSidebar($event, 'object-add')" id="m_detail_sidebar_toggle2" [hidden]="true" #btnSidebar2>
+							<i class="fa fa-plus"></i> 객체추가
+						</button>
+						|
+						<a class="btn btn-sm btn-info m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" href="#" title="갱신" (click)="refreshData()">
+              <i class="fa fa-refresh"></i>
+            </a>
+            |
+            <button class="btn m-btn--pill m-btn--air btn-info" type="button" (click)="clickShowSidebar($event, 'template-manage')" id="m_detail_sidebar_toggle3" #btnSidebar3>
+							<i class="fa fa-bars"></i> 정책 템플릿 관리
+						</button>
+						 |
+            <button class="btn m-btn--pill m-btn--air btn-success" type="button" data-toggle="modal" data-target="#m_modal_compile">
+							<i class="fa fa-check"></i> 엔진적용
+						</button>
+						<div aria-labelledby="exampleModalLabel" class="modal fade" id="m_modal_compile" role="dialog" tabindex="-1" aria-hidden="true" style="display: none;">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">
+											IPPool 엔진적용
+										</h5>
+										<button aria-label="Close" class="close" data-dismiss="modal" type="button">
+											<span aria-hidden="true">
+												×
+											</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<span>
+											IPPool DB정보를 엔진에 적용합니다.<br>
+											네트워크 상태에 따라 최대 2분정도 소요될 수 있습니다.
+										</span>
+									</div>
+									<div class="modal-footer">
+										<button class="btn btn-secondary" data-dismiss="modal" type="button">
+											취소
+										</button>
+										<button class="btn btn-success" type="button" data-dismiss="modal" (click)="doIPPoolCompile()">
+											적용
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						|
+						<a class="btn btn-sm btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" href="#" title="백업" id="m_detail_sidebar_toggle4" (click)="clickShowSidebar($event, 'ippool-backup')">
+              <i class="fa fa-save"></i>
+            </a>
+					</div>
+					<div class="m-portlet__head-tools">
+						<ul class="m-portlet__nav">
+							<li class="m-portlet__nav-item">
+								<div class="m-input-icon m-input-icon--left">
+									<input class="form-control m-input" placeholder="Filter" type="text" (keyup)="onSearchInputKeyUp($event)" #inputSearch>
+									<span class="m-input-icon__icon m-input-icon__icon--left">
+										<span>
+											<i class="fa fa-search"></i>
+										</span>
+									</span>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="m-portlet__body">
+					<div class="alert alert-metal alert-dismissible fade show   m-alert m-alert--air m-alert--outline m-alert--outline-2x" role="alert" [hidden]="existFilterResult()">
+						<strong>
+							"{{searchString}}"
+						</strong>
+						필터결과가 존재하지 않습니다.
+					</div>
+					<div class="row" *ngFor="let group of groupDatas">
+						<div class="col-lg-12 widget-class" [hidden]="isHideData(group)">
+						<!-- <div class="col-lg-12 widget-class"> -->
+							<widget-grid  
+								[groupData]="group" 
+								[viewData]="getObjectData(group.g_id)" 
+								[networkViewLimitCount]="networkViewCount" 
+								(showGroupDeleteModal)="showGroupDeleteModal($event)"
+								(showObjectDeleteModal)="showObjectDeleteModal($event)"
+								(clickGroupModShowSidebar)="clickShowSidebar($event, 'group-mod')"
+								(clickObjectAddShowSidebar)="clickShowSidebar($event, 'object-add')"
+								(clickObjectModShowSidebar)="clickShowSidebar($event, 'object-mod')"
+								(clickNetworkModShowSidebar)="clickShowSidebar($event, 'network-mod')"
+								>
+							</widget-grid>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div #dataLoading>
+  <div class="block-overlay" *ngIf="stateLoading"></div>
+  <div class="block-contents" *ngIf="stateLoading">
+    <div class="m-blockui ">
+      <span>{{dataLoadingMessage}}</span>
+      <span>
+        <div class="m-loader  m-loader--success "></div>
+      </span>
+    </div>
+  </div>
+</div>
+
+<ippool-sidebar (submitOK)="submitOK()" #ippoolSidebar></ippool-sidebar>
+<ippool-sidebar2 (submitOK)="submitOK()" #ippoolSidebar2></ippool-sidebar2>
+<ippool-sidebar3 (refreshTemplateData)="refreshTemplateData()" #ippoolSidebar3></ippool-sidebar3>
+<ippool-sidebar4 #ippoolSidebar4></ippool-sidebar4>
+
+<div aria-labelledby="exampleModalLabel" class="modal fade" id="m_modal_del_group" role="dialog" tabindex="-1" aria-hidden="true" style="display: none;" #deleteGroupModal>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">
+					그룹 삭제
+				</h5>
+				<button aria-label="Close" class="close" data-dismiss="modal" type="button">
+					<span aria-hidden="true">
+						×
+					</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<span [innerHTML]="msg_delete_group"></span>
+				<span *ngIf="getDeleteObjectData().length > 0">그룹내에 속하는 아래 객체정보도 삭제됩니다.</span>
+				<p>계속하시겠습니까?</p>
+				<br>
+				<ul>
+					<li *ngFor="let object of getDeleteObjectData()"><strong>{{object.o_name}}</strong>(<small>{{object.o_id}}</small>)</li>
+				</ul>
+			</div>
+			<div class="modal-footer">				
+				<button class="btn btn-danger m-btn m-btn--air" type="button" data-dismiss="modal" (click)="delGroup($event)">
+					삭제
+				</button>
+				<button class="btn btn-secondary m-btn m-btn--air" data-dismiss="modal" type="button">
+					취소
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div aria-labelledby="exampleModalLabel" class="modal fade" id="m_modal_del_object" role="dialog" tabindex="-1" aria-hidden="true" style="display: none;" #deleteObjectModal>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">
+					객체 삭제
+				</h5>
+				<button aria-label="Close" class="close" data-dismiss="modal" type="button">
+					<span aria-hidden="true">
+						×
+					</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<span [innerHTML]="msg_delete_object"></span>
+				<span *ngIf="getDeleteNetworkData().length > 0">객체내에 속하는 아래 네트워크정보도 삭제됩니다.</span>
+				<p>계속하시겠습니까?</p>
+				<br>
+				<ul>
+					<li *ngFor="let network of getDeleteNetworkData()"><strong>{{network.network}}</strong>/<small>{{network.prefix}}</small></li>
+				</ul>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-danger m-btn m-btn--air" type="button" data-dismiss="modal" (click)="delObject($event)">
+					삭제
+				</button>
+				<button class="btn btn-secondary m-btn m-btn--air" data-dismiss="modal" type="button">
+					취소
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 
+<div>
+	<form class="m-form m-form--fit m-form--label-align-right">
+		<div class="m-portlet__body">
+			
+		</div>
+	</form>
+</div> -->

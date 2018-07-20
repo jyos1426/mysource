@@ -1,0 +1,82 @@
+#cpu_chart .ct-series-a .ct-slice-donut-solid {
+  stroke: #36a3f7;
+  fill: #36a3f7;
+}
+
+#mem_chart .ct-series-a .ct-slice-donut-solid {
+  stroke: rgb(113, 106, 202);
+  fill: rgb(113, 106, 202);
+}
+
+.ct-series-b .ct-slice-donut-solid {
+  stroke: rgb(243, 243, 243);
+  fill: rgb(243, 243, 243);
+}
+
+#cpu_chart ._stat{
+  color: #36a3f7;
+}
+
+#mem_chart ._stat{
+  color: rgb(113, 106, 202);
+}
+
+._stat{
+  font-size: 1.2rem;
+  font-weight: 600;
+  top: 35%;
+  left: 35%;
+  position: absolute;
+}
+
+.ct-chart {
+    margin: auto;
+    width: 80%;
+    height: 80%;
+}
+._chart{
+  text-align: center;
+}
+.right {
+  float: right;
+}
+.margin-auto {
+  margin: auto;
+}
+
+.display-block{
+  display: block;
+}
+
+.col {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+.font {
+  font-size: 1.0rem;
+  font-weight: bold;
+  margin-bottom: 0;
+  margin: auto;
+  display: block;
+  width: 25px;
+}
+.percent_label{
+font-size: .85rem;
+float: right;
+margin-top: .3rem;
+
+}
+.percent_number{  
+  font-size: 1.1rem;
+  font-weight: 600;
+}    
+
+.m-widget15__item{
+  width:100px;
+}
+  /* color: #f4516c;
+  font-weight: bold;
+  font-size: 1.2rem;
+  float: right; */

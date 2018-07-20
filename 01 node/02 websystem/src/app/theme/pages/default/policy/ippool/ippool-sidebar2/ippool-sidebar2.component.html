@@ -1,0 +1,268 @@
+<!-- begin::Quick Sidebar -->
+<div id="m_detail_sidebar2" class="m-quick-sidebar m-quick-sidebar--tabbed m-quick-sidebar--skin-light" appunwraptag="">
+	<div class="m-quick-sidebar__content m--hide">
+		<span id="m_detail_sidebar_close2" class="m-quick-sidebar__close" #btnDetailSidebarClose>
+      <i class="la la-close"></i>
+    </span>
+    
+  	<ul id="m_detail_sidebar_tabs2" class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+      <li class="nav-item m-tabs__item" [hidden]="isHiddenTab()">
+        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_detail_sidebar_tabs_object" role="tab" #tabObjectAdd>
+          객체
+        </a>
+      </li>      
+      <li class="nav-item m-tabs__item" [hidden]="isHiddenTab()">
+        <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_detail_sidebar_tabs_network" role="tab" #tabNetworkAdd>
+          Network
+        </a>
+      </li>
+      <li class="nav-item m-tabs__item" [hidden]="isHiddenTab()">
+        <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_detail_sidebar_tabs_template" role="tab">
+          탐지정책
+        </a>
+      </li>
+      <li class="nav-item m-tabs__item">
+        <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_detail_sidebar_tabs_noc" role="tab" #tabNOCAdd>
+          엔진설정
+        </a>
+      </li>
+    </ul>
+    <form class="m-form m-form--fit" (ngSubmit)="onSubmitHandler()" #objectAddForm="ngForm" novalidate>
+    	<div class="tab-content">
+	    	<div class="m-alert m-alert--icon alert alert-danger" role="alert" *ngIf="error_msg != ''">
+					<div class="m-alert__icon">
+						<i class="la la-warning"></i>
+					</div>
+					<div class="m-alert__text">
+						{{error_msg}}<br>
+						<small>{{error_detail}}</small>
+					</div>
+					<!-- <div class="m-alert__close">
+						<button aria-label="Close" class="close" data-close="alert" type="button"></button>
+					</div> -->
+				</div>			
+    		
+    		<div class="tab-pane active m-scrollable" id="m_detail_sidebar_tabs_object" role="tabpanel">
+    		
+      		<div class="m-portlet__body">
+						<div class="m-form__section m-form__section--first">
+							<div class="form-group m-form__group">
+								<label>
+									활성화
+								</label>
+								<div>
+									<span class="m-switch m-switch--outline m-switch--icon m-switch--success">
+										<label>
+											<!-- <input checked="checked" name="" type="checkbox" #objectEnable> -->
+											<input [(ngModel)]="objectData.use" name="object-use" type="checkbox" #objectUse>
+											<span></span>
+										</label>
+									</span>
+								</div>
+							</div>
+							<div class="form-group m-form__group">
+								<label>
+									그룹
+								</label>
+								<select class="form-control m-input" disabled>
+									<option *ngFor="let group of groupDatas" [selected]="group.g_id == objectData.g_id">
+										{{group.g_name}}({{group.g_id}})
+									</option>
+								</select>
+							</div>
+							<div class="form-group m-form__group">
+								<label>
+									객체ID
+								</label>
+								<input class="form-control m-input" placeholder="Enter object id" type="number" name="object-id" [(ngModel)]="objectData.o_id" required [min]="'1'" [max]="'9999'" [disabled]="sidebarMode == 'object-mod'" #objectID>
+								<span class="m-form__help">
+									유효범위 1 ~ 9999 
+								</span>
+							</div>
+							<div class="form-group m-form__group">
+								<label>
+									객체명
+								</label>
+								<input class="form-control m-input" placeholder="Enter object name" type="text" name="object-name" [(ngModel)]="objectData.o_name" required #objectName>
+							</div>
+						</div>
+					</div>
+    		</div>
+    		<div class="tab-pane m-scrollable" id="m_detail_sidebar_tabs_network" role="tabpanel">
+    			<div class="m-portlet__body">
+    				<div class="m-form__section m-form__section--first">
+							<div class="m-form__group form-group">
+								<div class="row">
+									<label class="col-3 col-form-label">
+										IP버전
+									</label>
+									<div class="col-9">
+										<div class="m-radio-inline" [style.margin-top]="'5px'">
+											<label class="m-radio">
+												<input name="rb-network-ipv4" type="radio" value="4" (click)="toggleIPVer(4)" [checked]="networkAddIPVerTab == 4">
+												IPv4
+												<span></span>
+											</label>
+											<label class="m-radio">
+												<input name="rb-network-ipv6" type="radio" value="6" (click)="toggleIPVer(6)" [checked]="networkAddIPVerTab == 6">
+												IPv6
+												<span></span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<label class="col-3 col-form-label">
+										Network
+									</label>
+									<div class="col-9">
+										<div class="input-group" [hidden]="networkAddIPVerTab == 6">
+											<input class="form-control" placeholder="0.0.0.0/32" type="text" [(ngModel)]="inputNetworkV4" name="input-network" (keydown)="onNetworkInputChange($event)">
+											<span class="input-group-btn">
+												<button class="btn btn-primary" type="button" (click)="addHandler($event)" [disabled]="inputNetworkV4 == ''">
+													<i class="fa fa-plus"></i>
+												</button>
+											</span>
+										</div>
+										<div class="input-group" [hidden]="networkAddIPVerTab == 4">
+											<input class="form-control" placeholder="1::1/128" type="text" [(ngModel)]="inputNetworkV6" name="input-network" (keydown)="onNetworkInputChange($event)">
+											<span class="input-group-btn">
+												<button class="btn btn-primary" type="button" (click)="addHandler($event)" [disabled]="inputNetworkV6 == ''">
+													<i class="fa fa-plus"></i>
+												</button>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- <div class="m-form__group form-group">
+								<div class="row">
+								</div>
+							</div> -->
+							<div [hidden]="networkAddIPVerTab == 6">
+								<kendo-grid
+						    [data]="gridViewNetworkV4"
+						    [pageable]="true" 
+						    [skip]="skip" 
+								[pageSize]="pageSize"
+						    [scrollable]="'none'"
+								(pageChange)="pageChange($event)">
+							
+									<kendo-grid-column field="network" title="Network" [width]="90" [headerStyle]="{'text-align': 'center'}"></kendo-grid-column>
+
+									<kendo-grid-column field="prefix" title="Prefix" [width]="50" [headerStyle]="{'text-align': 'center'}"></kendo-grid-column>
+
+									<kendo-grid-column field="desc" title="비고" [width]="50" [headerStyle]="{'text-align': 'center'}"></kendo-grid-column>
+
+									<kendo-grid-column field="delete" title="" [width]="30" [headerStyle]="{'text-align': 'center'}">
+										<ng-template kendoGridCellTemplate let-dataItem>
+											<button type="button" class="btn btn-sm btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air m-nav__link" title="네트워크 삭제" (click)="delNetwork(dataItem, 4)">
+				  							<i class="fa fa-trash"></i>
+				  						</button>
+										</ng-template>
+									</kendo-grid-column>
+								</kendo-grid>
+							</div>
+							<div [hidden]="networkAddIPVerTab == 4">
+								<kendo-grid
+						    [data]="gridViewNetworkV6"
+						    [pageable]="true" 
+						    [skip]="skip" 
+								[pageSize]="pageSize"
+						    [scrollable]="'none'"
+								(pageChange)="pageChange($event)">
+							
+								<kendo-grid-column field="network" title="Network" [width]="90" [headerStyle]="{'text-align': 'center'}"></kendo-grid-column>
+
+									<kendo-grid-column field="prefix" title="Prefix" [width]="50" [headerStyle]="{'text-align': 'center'}"></kendo-grid-column>
+
+									<kendo-grid-column field="desc" title="비고" [width]="50" [headerStyle]="{'text-align': 'center'}"></kendo-grid-column>
+
+									<kendo-grid-column field="delete" title="" [width]="30" [headerStyle]="{'text-align': 'center'}">
+										<ng-template kendoGridCellTemplate let-dataItem>
+											<button type="button" class="btn btn-sm btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air m-nav__link" title="네트워크 삭제" (click)="delNetwork(dataItem, 6)">
+				  							<i class="fa fa-trash"></i>
+				  						</button>
+										</ng-template>
+									</kendo-grid-column>
+								</kendo-grid>
+							</div>
+						</div>
+					</div>
+    		</div>
+    		<div class="tab-pane m-scrollable" id="m_detail_sidebar_tabs_template" role="tabpanel">
+    			<div class="m-portlet__body">
+						<div class="m-form__section m-form__section--first">
+							<div class="form-group m-form__group">
+								<label>
+									Inbound 정책 템플릿
+								</label>
+								<select class="form-control m-input" #inboundTemplate>
+									<option *ngFor="let template of getInboundTemplateData()" [value]="template.template_id" [selected]="template.template_id == objectData.template_inbound">
+										{{template.template_name}}
+									</option>
+								</select>
+							</div>
+							<div class="form-group m-form__group">
+								<label>
+									Outbound 정책 템플릿
+								</label>
+								<select class="form-control m-input" #outboundTemplate>
+									<option *ngFor="let template of getOutboundTemplateData()" [value]="template.template_id" [selected]="template.template_id == objectData.template_outbound">
+										{{template.template_name}}
+									</option>
+								</select>
+							</div>
+						</div>
+					</div>
+    		</div>
+    		<div class="tab-pane m-scrollable" id="m_detail_sidebar_tabs_noc" role="tabpanel">
+    			<div class="m-portlet__body">
+						<div class="m-form__section m-form__section--first">
+		    			<div class="form-group m-form__group">
+								<label>
+									엔진설정
+								</label>
+								<div id="noc-check-all">
+									<input type="checkbox" name="noc-all" (click)="selectNOCAll($event)" [(ngModel)]="toggleSelectNOC">
+									전체
+									<span></span>
+								</div>
+								<div class="example-wrapper">
+									<kendo-multiselect
+										#nocSelect 
+										id="noc-items" 
+										name="noc-items" 
+										class="form-control m-input" 
+										placeholder="Select engine" 
+										[data]="nocItems" 
+										[textField]="'text'" 
+										[valueField]="'value'" 
+										[(ngModel)]="selectedNOC">
+										<ng-template kendoMultiSelectTagTemplate let-dataItem>
+		      						{{ dataItem.text }}
+		    						</ng-template>
+									</kendo-multiselect>
+								</div>
+							</div>
+						</div>
+					</div>
+    		</div>
+
+    		<br>
+
+    		<div id="m_detail_sidebar_footer2" class="modal-footer">
+	      	<button type="submit" class="btn btn-primary m-btn m-btn--air" title="적용" *ngIf="sidebarMode == 'object-add'" [disabled]="onSubmit">
+	          추가
+	        </button>
+	        <button type="submit" class="btn btn-warning m-btn m-btn--air" title="적용" *ngIf="sidebarMode == 'object-mod'" [disabled]="onSubmit">
+	          수정
+	        </button>
+	        <button type="button" class="btn btn-secondary m-btn m-btn--air" title="취소" (click)="closePopup($event)">
+	          취소
+	        </button>
+	      </div>			
+    	</div>
+    </form>
+	</div>
+</div>
