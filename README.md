@@ -8,13 +8,13 @@
 웹서버만 개발
 src/         폴더 내에 남긴 소스 위주
 
-libs/code.js     에러 코드 정의로 클라이언트에서 구체적인 확인 가능
-libs/db.js       읽기,쓰기 sqlite 에서 공통으로 사용하는 코드 모아둔 곳
-libs/log.js      로그 관련 모듈화
-libs/util.js     기타 소스에서 공통으로 사용하는 소스 모아두었으나, 타인이 개발한 소스는 지움
-routes/db        mongodb,sqlite 조회 전용
-routes/integrity 무결성 관련
-routes/sensor    타 서버와 프록시로 통신하여 정보를 조회 - 세션 유지및 관리를 위해 afMap이라는 변수사용
+libs/code.js     에러 코드 정의로 클라이언트에서 구체적인 확인 가능  
+libs/db.js       읽기,쓰기 sqlite 에서 공통으로 사용하는 코드 모아둔 곳  
+libs/log.js      로그 관련 모듈화  
+libs/util.js     기타 소스에서 공통으로 사용하는 소스 모아두었으나, 타인이 개발한 소스는 지움  
+routes/db        mongodb,sqlite 조회 전용  
+routes/integrity 무결성 관련  
+routes/sensor    타 서버와 프록시로 통신하여 정보를 조회 - 세션 유지및 관리를 위해 afMap이라는 변수사용  
 
 - 02 websystem 
 
