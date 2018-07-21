@@ -25,28 +25,39 @@ routes/etc/login-router.js 암호화를 사용한 로그인
 src/app/theme/pages/default/config/user/ 계정관리 클라이언트 파트 참여
 
 
-#### 03 release_system
+- 03 release_system
 릴리즈된 GUI 패키지를 관리했던 웹 시스템 유지보수
 session을 redis로 저장하여 사용
 
-#### 04 license_system
+- 04 license_system
 시리얼과 라이선스를 발급해주는 웹서비스 
 
 routes/makeCer.js           인증서 발급 모듈을 사용하여 발급 및 다운로드 제공하는 api
 syncDB/                     DB 동기화 파이썬 모듈
 
 
-#### 05 integrity_system
-
+- 05 integrity_system
+정책검증시스템 (100%)
 
 ### 02 java
 
+- 01 shopping-site (100%)
+Spring 4.0 MVC 패턴 사용
+
+- 02 taxipool
+클라이언트(안드로이드) 개발 (70%)
+kakao API 연동
+google map API 연동
+
+- 03 PoomAt
+졸업 프로젝트(안드로이드) (100%)
+kakao API 연동
 
 ### 03 delphi
 델파이 사용하여 간단한 유틸 개발 (업무 외)
 
 - 02 BulkEditUserInfo
-센서의 user 정보를 일괄 수정하는 유틸
+센서의 user 정보를 일괄 수정하는 유틸 (100%)
 
 - 03 SnortSeperation
-Snort 룰에서 패턴블럭으로 분리할 수 있는 패턴을 분리하는 유틸
+Snort 룰에서 패턴블럭으로 분리할 수 있는 패턴을 분리하는 유틸 (100%)
