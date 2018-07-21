@@ -39,7 +39,7 @@ syncDB/                     DB 동기화 파이썬 모듈
 - 05 integrity_system
 정책검증시스템 (100%)
 
-### 02 java
+## 02 java
 
 - 01 shopping-site (100%)
 Spring 4.0 MVC 패턴 사용
@@ -53,7 +53,7 @@ google map API 연동
 졸업 프로젝트(안드로이드) (100%)
 kakao API 연동
 
-### 03 delphi
+## 03 delphi
 델파이 사용하여 간단한 유틸 개발 (업무 외)
 
 - 02 BulkEditUserInfo
