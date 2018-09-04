@@ -1,0 +1,34 @@
+{
+  "development": {
+    "host": "localhost",
+    "dialect": "sqlite",
+    "operatorsAliases": "false",
+    "storage": "C:\\Users\\hyeon\\Desktop\\login\\fullstack-graphql-git\\api\\db/test.dbb",
+    "logging": false,
+    "define": {
+      "timestamps": false
+    }
+  },
+  "production": {
+    "host": "localhost",
+    "dialect": "sqlite",
+    "operatorsAliases": "false",
+    "storage": "../db/test.dbb",
+    "logging": false,
+    "define": {
+      "timestamps": false
+    }
+  },
+  "test": {
+    "host": "looncup.c35l92333fvr.ap-northeast-2.rds.amazonaws.com:5432",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": "Amazon RDS"
+    },
+    "logging": "console.log",
+    "pool": {
+      "maxConnections": 5,
+      "maxIdleTime": 30
+    }
+  }
+}
