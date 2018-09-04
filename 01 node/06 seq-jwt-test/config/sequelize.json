@@ -1,0 +1,32 @@
+{
+  "development": {
+    "host": "localhost",
+    "dialect": "sqlite",
+    "operatorsAliases": "false",
+    "storage": "./db/test.dbb",
+    "logging": false,
+    "define": {
+      "timestamps": false
+    }
+  },
+  "test": {
+    "host": "localhost",
+    "dialect": "sqlite",
+    "operatorsAliases": "false",
+    "storage": "./db/test.dbb",
+    "logging": false,
+    "define": {
+      "timestamps": false
+    }
+  },
+  "production": {
+    "host": "localhost",
+    "dialect": "sqlite",
+    "operatorsAliases": "false",
+    "storage": "./db/test.dbb",
+    "logging": false,
+    "define": {
+      "timestamps": false
+    }
+  }
+}
