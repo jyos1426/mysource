@@ -20,15 +20,5 @@
     }
   },
   "test": {
-    "host": "looncup.c35l92333fvr.ap-northeast-2.rds.amazonaws.com:5432",
-    "dialect": "postgres",
-    "dialectOptions": {
-      "ssl": "Amazon RDS"
-    },
-    "logging": "console.log",
-    "pool": {
-      "maxConnections": 5,
-      "maxIdleTime": 30
-    }
   }
 }
